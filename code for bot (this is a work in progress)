@@ -512,4 +512,5 @@ async def factorial(ctx, num1: int):
   a = math.factorial(num1)
   await ctx.send(f"**Result:** {a}") 
 
-client.run(os.environ['TOKEN'])
+client.run(os.environ['KEY'])
+#the key is saved in a private .env folder 
