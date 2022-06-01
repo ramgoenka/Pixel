@@ -132,20 +132,25 @@ encouraging_words = [
     "There is light at the end of the tunnel :)",
     "Sending good vibes and happy thoughts your way  <(^-^<)",
     "Believe in yourself! Because I for sure do :)"
+    "Believe in yourself, you are amazing!"
 ]
 
 hug_gif = [
-    "https://tenor.com/view/hugs-sending-virtual-hugs-loading-gif-8158818",
-    "https://tenor.com/view/ghosthug-gif-7626784",
-    "https://tenor.com/view/ghost-hug-ghost-hugs-just-in-case-you-need-one-hug-gif-16316679",
-    "https://tenor.com/view/hug-gif-20084217",
-    "https://tenor.com/view/hug-hugs-hugs-and-love-hug-romantic-pic-gif-23912005",
-    "https://tenor.com/view/hugs-sending-virtual-hugs-loading-gif-8158818",
-    "https://tenor.com/view/ghosthug-gif-7626784",
-    "https://tenor.com/view/ghost-hug-ghost-hugs-just-in-case-you-need-one-hug-gif-16316679",
-    "https://tenor.com/view/hug-gif-20084217"
+    "https://c.tenor.com/nUrfyD_VmM8AAAAC/hug-cute.gif",
+    "https://c.tenor.com/4XQiR1rkwIAAAAAC/ghost-hug-ghost-hugs.gif",
+    "https://c.tenor.com/UKsNkAqj7YcAAAAC/hug.gif",
+    "https://c.tenor.com/NGFif4dxa-EAAAAC/hug-hugs.gif",
+    "https://c.tenor.com/GdJRGf60YN4AAAAC/hugs-sending-virtual-hugs.gif",
+    "https://c.tenor.com/XQh-aF1wTUIAAAAC/ghosthug.gif",
+    "https://c.tenor.com/Vx-Fmk3G7McAAAAM/cute.gif",
+    "https://media2.giphy.com/media/9Y1LEFKsbbP4hrLgV3/giphy.gif?cid=790b76119eb6ba36ddfbe56bf3ca28b4c38ddc7f8c1cacef&rid=giphy.gif&ct=g",
+    "https://c.tenor.com/8Jk1ueYnyYUAAAAC/hug.gif",
+    "https://c.tenor.com/1T1B8HcWalQAAAAC/anime-hug.gif",
+    "https://c.tenor.com/Ct4bdr2ZGeAAAAAC/teria-wang-kishuku-gakkou-no-juliet.gif",
+    "https://c.tenor.com/ia_mkwn2dwYAAAAC/love.gif",
+    "https://c.tenor.com/endJ8_rbXUYAAAAC/be-happy-love.gif",
+    "https://c.tenor.com/XyMvYx1xcJAAAAAC/super-excited.gif"
 ]
-
 coin_outcomes = [
     "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails",
     "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails",
