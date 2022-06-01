@@ -53,10 +53,6 @@ async def on_message(message):
             f'''Bye {author.mention}! Hope you have a great rest of your day!'''
         )
         await message.add_reaction('\U0001F44B')
-    if message.content.startswith("p;hug"):
-        await message.channel.send(random.choice(hug_gif))
-    if message.content.startswith("p;Hug"):
-        await message.channel.send(random.choice(hug_gif))
     if message.content.startswith('Bye'):
         await message.channel.send(
             f'''Bye {author.mention}! Hope you have a great rest of your day!'''
@@ -72,12 +68,6 @@ async def on_message(message):
         await message.channel.send(random.choice(dice_roll))
     if message.content.startswith('p;Roll'):
         await message.channel.send(random.choice(dice_roll))
-    if message.content.startswith('p;random cat'):
-        await message.channel.send(random.choice(cat_images))
-    if message.content.startswith('p;Random cat'):
-        await message.channel.send(random.choice(cat_images))
-    if message.content.startswith('p;Random Cat'):
-        await message.channel.send(random.choice(cat_images))
     if message.content.startswith('gn'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good Night & sweet dreams! :sleeping:')
@@ -136,3 +126,11 @@ async def on_message(message):
         await message.channel.send('Aww! I appreciate you too :blush:')
     if message.content.startswith('i appreciate pixel'):
         await message.channel.send('Aww! I appreciate you too :blush:')
+    if message.content.startswith('p;random cat'):
+        embed = discord.Embed(title="Meow :cat:", description="", color=0x00FFFF)
+        embed.set_image(url=random.choice(cat_images))
+        await message.channel.send(embed=embed)  
+    if message.content.startswith('p;hug'):
+        embed = discord.Embed(title="", description=f"""{author.mention} Here is a hug for you :)""", color=0xFF00FF)
+        embed.set_image(url=random.choice(hug_gif))
+        await message.channel.send(embed=embed) 
