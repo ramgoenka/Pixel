@@ -1,4 +1,4 @@
-#pixel is written in python (discord.py)
+#pixel is written in Python
 import discord
 import os
 import random
@@ -133,20 +133,25 @@ encouraging_words = [
     "There is light at the end of the tunnel :)",
     "Sending good vibes and happy thoughts your way  <(^-^<)",
     "Believe in yourself! Because I for sure do :)"
+    "Believe in yourself, you are amazing!"
 ]
 
 hug_gif = [
-    "https://tenor.com/view/hugs-sending-virtual-hugs-loading-gif-8158818",
-    "https://tenor.com/view/ghosthug-gif-7626784",
-    "https://tenor.com/view/ghost-hug-ghost-hugs-just-in-case-you-need-one-hug-gif-16316679",
-    "https://tenor.com/view/hug-gif-20084217",
-    "https://tenor.com/view/hug-hugs-hugs-and-love-hug-romantic-pic-gif-23912005",
-    "https://tenor.com/view/hugs-sending-virtual-hugs-loading-gif-8158818",
-    "https://tenor.com/view/ghosthug-gif-7626784",
-    "https://tenor.com/view/ghost-hug-ghost-hugs-just-in-case-you-need-one-hug-gif-16316679",
-    "https://tenor.com/view/hug-gif-20084217"
+    "https://c.tenor.com/nUrfyD_VmM8AAAAC/hug-cute.gif",
+    "https://c.tenor.com/4XQiR1rkwIAAAAAC/ghost-hug-ghost-hugs.gif",
+    "https://c.tenor.com/UKsNkAqj7YcAAAAC/hug.gif",
+    "https://c.tenor.com/NGFif4dxa-EAAAAC/hug-hugs.gif",
+    "https://c.tenor.com/GdJRGf60YN4AAAAC/hugs-sending-virtual-hugs.gif",
+    "https://c.tenor.com/XQh-aF1wTUIAAAAC/ghosthug.gif",
+    "https://c.tenor.com/Vx-Fmk3G7McAAAAM/cute.gif",
+    "https://media2.giphy.com/media/9Y1LEFKsbbP4hrLgV3/giphy.gif?cid=790b76119eb6ba36ddfbe56bf3ca28b4c38ddc7f8c1cacef&rid=giphy.gif&ct=g",
+    "https://c.tenor.com/8Jk1ueYnyYUAAAAC/hug.gif",
+    "https://c.tenor.com/1T1B8HcWalQAAAAC/anime-hug.gif",
+    "https://c.tenor.com/Ct4bdr2ZGeAAAAAC/teria-wang-kishuku-gakkou-no-juliet.gif",
+    "https://c.tenor.com/ia_mkwn2dwYAAAAC/love.gif",
+    "https://c.tenor.com/endJ8_rbXUYAAAAC/be-happy-love.gif",
+    "https://c.tenor.com/XyMvYx1xcJAAAAAC/super-excited.gif"
 ]
-
 coin_outcomes = [
     "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails",
     "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails",
@@ -326,10 +331,6 @@ async def on_message(message):
             f'''Bye {author.mention}! Hope you have a great rest of your day!'''
         )
         await message.add_reaction('\U0001F44B')
-    if message.content.startswith("p;hug"):
-        await message.channel.send(random.choice(hug_gif))
-    if message.content.startswith("p;Hug"):
-        await message.channel.send(random.choice(hug_gif))
     if message.content.startswith('Bye'):
         await message.channel.send(
             f'''Bye {author.mention}! Hope you have a great rest of your day!'''
@@ -345,12 +346,6 @@ async def on_message(message):
         await message.channel.send(random.choice(dice_roll))
     if message.content.startswith('p;Roll'):
         await message.channel.send(random.choice(dice_roll))
-    if message.content.startswith('p;random cat'):
-        await message.channel.send(random.choice(cat_images))
-    if message.content.startswith('p;Random cat'):
-        await message.channel.send(random.choice(cat_images))
-    if message.content.startswith('p;Random Cat'):
-        await message.channel.send(random.choice(cat_images))
     if message.content.startswith('gn'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good Night & sweet dreams! :sleeping:')
@@ -409,16 +404,24 @@ async def on_message(message):
         await message.channel.send('Aww! I appreciate you too :blush:')
     if message.content.startswith('i appreciate pixel'):
         await message.channel.send('Aww! I appreciate you too :blush:')
-    if msg.startswith('p;dm help'):
+    if message.content.startswith('p;random cat'):
+        embed = discord.Embed(title="Meow :cat:", description="", color=0x00FFFF)
+        embed.set_image(url=random.choice(cat_images))
+        await message.channel.send(embed=embed)  
+    if message.content.startswith('p;hug'):
+        embed = discord.Embed(title="", description=f"""{author.mention} Here is a hug for you :)""", color=0xFF00FF)
+        embed.set_image(url=random.choice(hug_gif))
+        await message.channel.send(embed=embed) 
+    if message.content.startswith('p;dm help'):
         await message.channel.send(f"""{author.mention} Commands list sent in DM! """)
-        await message.author.send('''**Commands** :cat:
-__About Me:__
+        embed = discord.Embed(title="Commands :cat:", description='''
+__**About Me**:__
 ``p;help``: Gives a list of commands
 ``p;dm help``: Sends a direct message (DM) to the user with a list of commands  
 ``p;about``: Give me a chance to introduce myself! <-- Under Construction :hammer:
 ``p;ping``: Shows the real time latency (response time) of the bot
                                  
-__Actions:__
+__**Actions**:__
 ``p;hi``: Say hi to me! 
 ``p;hug``: Free hug for the user! Everyone deserves a hug :)
 ``p;random cat``: Sends a random cat image or GIF in the chat
@@ -428,7 +431,7 @@ __Actions:__
 ``p;roll``: Rolls a 6-sided dice
 ``p;fact``: Tells you a random fact
 
-__Math:__                                   
+__**Math**:__                                   
 ``pmathadd value1 value2``: Adds two inputted values together
 ``pmathsubstract value1 value2``: Substracts two inputted values
 ``pmathmultiply value1 value2``: Multiplies two values inputted by the user
@@ -438,23 +441,23 @@ __Math:__
 ``pmathsqrt value1``: Finds the square root of the value inputted        
 ``pmathlog value1 value2``: Finds the logrithm of the inputted value (value1) with respect to the inputted base (value2)
                            
-__Games:__
+__**Games**:__
 ``p;wyr``: Asks a *would you rather* question
 ``p;tod``: Asks a random *Truth (T)*  or *Dare (D)* question <-- Under Construction :hammer:
 ``p;trivia``: Asks a trivia question with the answer hidden in spoilers. Click the spoiler to reveal the answer and check if you are right!
 ``p;dare``: Gives a dare <-- Under Construction :hammer:
-``p;truth``: Asks a question for you to answer, truthfully <-- Under Construction :hammer:
-
-Thanks for using Pixel :)''')
+``p;truth``: Asks a question for you to answer, truthfully <-- Under Construction :hammer:''', color=0x00ff00)
+        embed.set_footer(text="Thank you for using pixel :)")
+        await message.author.send(embed=embed)
     if message.content.startswith('p;help'):
-        await message.channel.send('''**Commands** :cat:
-__About Me:__
+      embed = discord.Embed(title="Commands :cat:", description='''
+__**About Me**:__
 ``p;help``: Gives a list of commands
 ``p;dm help``: Sends a direct message (DM) to the user with a list of commands  
 ``p;about``: Give me a chance to introduce myself! <-- Under Construction :hammer:
 ``p;ping``: Shows the real time latency (response time) of the bot
                                  
-__Actions:__
+__**Actions**:__
 ``p;hi``: Say hi to me! 
 ``p;hug``: Free hug for the user! Everyone deserves a hug :)
 ``p;random cat``: Sends a random cat image or GIF in the chat
@@ -464,7 +467,7 @@ __Actions:__
 ``p;roll``: Rolls a 6-sided dice
 ``p;fact``: Tells you a random fact
 
-__Math:__                                   
+__**Math**:__                                   
 ``pmathadd value1 value2``: Adds two inputted values together
 ``pmathsubstract value1 value2``: Substracts two inputted values
 ``pmathmultiply value1 value2``: Multiplies two values inputted by the user
@@ -474,14 +477,14 @@ __Math:__
 ``pmathsqrt value1``: Finds the square root of the value inputted        
 ``pmathlog value1 value2``: Finds the logrithm of the inputted value (value1) with respect to the inputted base (value2)
                            
-__Games:__
+__**Games**:__
 ``p;wyr``: Asks a *would you rather* question
 ``p;tod``: Asks a random *Truth (T)*  or *Dare (D)* question <-- Under Construction :hammer:
 ``p;trivia``: Asks a trivia question with the answer hidden in spoilers. Click the spoiler to reveal the answer and check if you are right!
 ``p;dare``: Gives a dare <-- Under Construction :hammer:
-``p;truth``: Asks a question for you to answer, truthfully <-- Under Construction :hammer:
-
-Thanks for using Pixel :)''')
+``p;truth``: Asks a question for you to answer, truthfully <-- Under Construction :hammer:''', color=0x00ff00)
+      embed.set_footer(text="Thank you for using pixel :)")
+      await message.channel.send(embed=embed)
 
 @client.command()
 async def add(ctx, num1: int, num2: int):
@@ -523,5 +526,5 @@ async def log(ctx, num1: int, num2: int):
   a = math.log(num1, num2)
   await ctx.send(f"**Result:** {a}")
 
-#KEY saved in a seprate .env secret file
+#the KEY is stored in a secret .env file
 client.run(os.environ['KEY'])
