@@ -1,4 +1,4 @@
-#this bot is coded in python (discord.py)
+#pixel is written in python (discord.py)
 import discord
 import os
 import random
@@ -8,7 +8,7 @@ import math
 client = discord.Client()
 client = commands.Bot(command_prefix='pmath')
 
-sad_words = [
+sad = [
     "I am a failure",
     "i am failure",
     "i am a failure",
@@ -376,21 +376,27 @@ async def on_message(message):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good Night & sweet dreams! :sleeping:')
     if message.content.startswith('gm'):
+        await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good Morning! Hope you have a great day :sunny:')
     if message.content.startswith('Gm'):
+        await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good Morning! Hope you have a great day :sunny:')
     if message.content.startswith('Goodmorning'):
+        await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good Morning! Hope you have a great day :sunny:')
     if message.content.startswith('Good morning'):
+        await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good Morning! Hope you have a great day :sunny:')
     if message.content.startswith('goodmorning'):
+        await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good Morning! Hope you have a great day :sunny:')
     if message.content.startswith('good morning'):
+        await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good Morning! Hope you have a great day :sunny:')
     if message.content.startswith('p;wyr'):
@@ -517,5 +523,5 @@ async def log(ctx, num1: int, num2: int):
   a = math.log(num1, num2)
   await ctx.send(f"**Result:** {a}")
 
-#KEY is saved in a secret .env folder
+#KEY saved in a seprate .env secret file
 client.run(os.environ['KEY'])
