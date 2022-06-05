@@ -1,3 +1,4 @@
+#IMPORTING NEEDED LIBRARIES AND SETTING UP THE CLIENT
 import discord
 import os
 import random
@@ -7,6 +8,16 @@ import datetime
 
 client = discord.Client()
 client = commands.Bot(command_prefix=['pmath', 'pt'])
+
+#LISTS
+embed_stuff = [
+    'Thanks for using pixel :)',
+    'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
+    'Are you from Tennessee? Because you are the only ten I see :D',
+    'If you were a burger at McDonalds, you would be the McAmazing :)',
+    'You seem to have a nice cat-titude :D',
+    'Thanks for checking out my commands :)', 'Hope you have a great day :D',
+    'Your back must hurt from carrying all that amazingness :)']
 
 sad = [
     "I am a failure",
@@ -282,6 +293,7 @@ trivia_questions = [
 ]
 
 
+#CODE FOR SOME OF THE STARTER COMMANDS AND GREETINGS
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -429,133 +441,447 @@ async def on_message(message):
         embed.set_image(url=random.choice(hug_gif))
         await message.channel.send(embed=embed)
 
-
-      
-    #individual commands stuff
+#INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
     if message.content.startswith('p;info help'):
-      embed = discord.Embed(title="__help__ :pencil:", description = '''
+        embed = discord.Embed(title="__**help**__ :pencil:",
+                              description='''
 Use this command to get a list of commands with a brief description of their function.
                             
 __**Syntax**__
-p;help''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)
+p;help''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info dm help'):
-      embed = discord.Embed(title="__dm help__ :calling:", description = '''
+        embed = discord.Embed(title="__**dm help**__ :calling:",
+                              description='''
 Use this command to get a list of commands with a brief description of their function, sent to you in a direct message (DM)
                             
 __**Syntax**__
-p;dm help''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)
+p;dm help''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info about'):
-      embed = discord.Embed(title="__about__ :cat:", description='''
+        embed = discord.Embed(title="__**about**__ :cat:",
+                              description='''
 Give me a chance to tell you a little about me!
 
 __**Syntax**__
-p;about''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)
+p;about''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info ping'):
-      embed = discord.Embed(title="__ping__ :ping_pong:", description='''
+        embed = discord.Embed(title="__**ping**__ :ping_pong:",
+                              description='''
 Use this command to see the real-time latency (response time) of pixel.
                             
 __**Syntax**__
-p;ping''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)
+p;ping''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info hi'):
-      embed = discord.Embed(title="__hi__ :wave:", description='''Say hi to me for a greeting in return :)
+        embed = discord.Embed(
+            title="__**hi**__ :wave:",
+            description='''Say hi to me for a greeting in return :)
                             
 __**Syntax**__
-p;hi''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)
+p;hi''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info hug'):
-      embed = discord.Embed(title="__hug__ :people_hugging:", description='''A hug from pixel for the user! Everyone deserves a hug, hope this makes your day better! :D
+        embed = discord.Embed(
+            title="__**hug**__ :people_hugging:",
+            description=
+            '''A hug from pixel for the user! Everyone deserves a hug, hope this makes your day better! :D
                             
 __**Syntax**__
-p;hug''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)
+p;hug''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info random cat'):
-      embed = discord.Embed(title="__random cat__ :cat2:", description ='''Using this command sends a random cat image or GIF in the chat. Cats are awesome :3
+        embed = discord.Embed(
+            title="__**random cat**__ :cat2:",
+            description=
+            '''Using this command sends a random cat image or GIF in the chat. Cats are awesome :3
 
 __**Syntax**__
 p;random cat
-''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)
+''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info cat'):
-      embed = discord.Embed(title="__cat__ :cat:", description='''Meow!
+        embed = discord.Embed(title="__**cat**__ :cat:",
+                              description='''Meow!
 
 __**Syntax**__
-p;cat''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)
+p;cat''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info kitty'):
-      embed = discord.Embed(title="__kitty__ :cat:", description='''Meow!
+        embed = discord.Embed(title="__**kitty**__ :cat:",
+                              description='''Meow!
 
 __**Syntax**__
-p;cat''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)
+p;cat''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info flip'):
-      embed = discord.Embed(title="__flip__ :coin:", description='''Flips a fair 2-sided coin, and gives the output as heads or tails. So what is your call, heads or tails?
+        embed = discord.Embed(
+            title="__**flip**__ :coin:",
+            description=
+            '''Flips a fair 2-sided coin, and gives the output as heads or tails. So what is your call, heads or tails?
 
 __**Syntax**__
-p;flip''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)  
+p;flip''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info roll'):
-      embed = discord.Embed(title="__roll__ :game_die:", description='''Rolls a fair 6-sided game dice and gives the output in the form of the numerical result of the dice roll. So what number do you think it is going to be?
+        embed = discord.Embed(
+            title="__**roll**__ :game_die:",
+            description=
+            '''Rolls a fair 6-sided game dice and gives the output in the form of the numerical result of the dice roll. So what number do you think it is going to be?
 
 __**Syntax**__
-p;roll''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed) 
+p;roll''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info pmathadd'):
-      embed = discord.Embed(title="__mathadd__ :heavy_plus_sign:", description='''Followed by the function, the user must input two numeric values and pixel will give an output as the sum of the two values (ex. pmathadd 4 5 <-- this will result in pixel giving an output of 9, which is the sum of 4 and 5)
+        embed = discord.Embed(
+            title="__**math: addition**__ <:addition:982883419774140436>",
+            description=
+            '''Followed by the function (``pmathadd``), the user must input two numeric values and pixel will give an output as the sum of the two values (ex. p``mathadd 10 5`` <-- this will result in pixel giving an output of 15, which is the sum of 10 and 5 when added).
 
 __**Syntax**__
-pmathadd''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)  
+pmathadd''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info fact'):
-      embed = discord.Embed(title="__fact__ :books:", description='''Tells you a random fact, because who doesn't enjoy a random cool fact :)
+        embed = discord.Embed(
+            title="__**fact**__ :books:",
+            description=
+            '''Tells you a random fact, because who doesn't enjoy a random cool fact :)
 
 __**Syntax**__
-p;fact''', color=0x00FFFF)
-      embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)
+p;fact''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
-      
-#help
+    if message.content.startswith('p;info pmathsubtract'):
+        embed = discord.Embed(
+            title="__**math: subtraction**__ <:subtraction:982885939686813717>",
+            description=
+            '''Followed by the function (``pmathsubtract``), the user must input two numeric values and pixel will give an output as the difference of the two values (ex. ``pmathsubtract 10 5`` <-- this will result in pixel giving an output of 5, which is the difference between 10 and 5).
+
+__**Syntax**__
+pmathsubtract''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info pmathdivide'):
+        embed = discord.Embed(
+            title="__**math: division**__ <:division:982888820666167306>",
+            description=
+            '''Followed by the function (``pmathdivide``), the user must input two numeric values and pixel will give an output as the quotient of the two values (ex. ``pmathdivide 10 5`` <-- this will result in pixel giving an output of 2, which is the quotient when 10 is divided by 5).
+
+__**Syntax**__
+pmathdivide''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info pmathmultiply'):
+        embed = discord.Embed(
+            title=
+            "__**math: multiplication**__ <:multiplication:982890472886382632>",
+            description=
+            '''Followed by the function (``pmathmultiply``), the user must input two numeric values and pixel will give an output as the product of the two values (ex. ``pmathmultiply 10 5`` <-- this will result in pixel giving an output of 50, which is the product when 10 is multiplied by 5).
+
+__**Syntax**__
+pmathmultiply''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info pmathexp'):
+        embed = discord.Embed(
+            title='__**math: exponent**__ <:exponent:982926856103796736>',
+            description=
+            '''Followed by the function (``pmathexp``), the user must input two numeric values and pixel will give the output as the result where the first value is the base and the second value is the exponent (ex. ``pmathexp 2 4`` <-- this will result in pixel giving an output of 16, which is the result when 2 is raised to 4).
+                            
+__**Syntax**__
+pmathexp''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info pmathfactorial'):
+        embed = discord.Embed(
+            title='__**math: factorial**__ <:factorial:982929962946424862>',
+            description=
+            '''Followed by the function (``pmathfactorial``), the user must input one numeric value and pixel will give the output as the factorial of the inputted value (ex. ``pmathfactorial 4`` <-- this will result in pixel giving an output of 24, which is the factorial of 4).
+                            
+__**Syntax**__
+pmathfactorial''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info pmathsqrt'):
+        embed = discord.Embed(
+            title='__**math: square root**__ <:squareRoot:982932222820614194>',
+            description=
+            '''Followed by the function (``pmathsqrt``), the user must input one numeric value and pixel will give the output as the result of the sqaure root of the inputted value (ex. ``pmathsqrt 4`` <-- this will result in pixel giving an output of 2, which is the sqaure root of 4).
+                            
+__**Syntax**__
+pmathsqrt''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info pmathlog'):
+        embed = discord.Embed(
+            title='__**math: logrithm**__ :wood:',
+            description=
+            '''Followed by the function (``pmathlog``), the user must input two numeric values and pixel will give the output as the result of a logrithm where the first inputted value is what we want to find the logrithm of, and the second inputted value is the base of the logrithm. (ex. ``pmathlog 4 2`` <-- this will result in pixel giving an output of 2, which is the logrithmic value given that 4 is the value we want to find the logirthm for and 2 is the base).
+                            
+__**Syntax**__
+pmathlog''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info wyr'):
+        embed = discord.Embed(
+            title='__**would you rather...**__ :eyes:',
+            description=
+            '''Use this command to have pixel ask you a *would you rather* question. Ready to make some choices and face some interesting questions?
+
+__**Syntax**__
+p;wyr''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info tod'):
+        embed = discord.Embed(
+            title='__**truth or dare...**__ :face_with_monocle:',
+            description=
+            '''Use this command to have pixel ask you a random *truth* or *dare* question. Use this function alone or with a group of people, there are fun questions and dares for everyone!                         
+
+__**Syntax**__
+p;tod''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info trivia'):
+        embed = discord.Embed(
+            title='__**trivia**__ :thinking:',
+            description=
+            '''Use this function to have pixel ask you a random trivia question. The answer is hidden in spoilers, so put your guess in the chat and check if you were correct! There are questions from a variety of different topics, there is something for everyone, use these to test your knowledge or learn something new :)
+
+__**Syntax**__
+p;trivia''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info dare'):
+        embed = discord.Embed(
+            title="__**I dare you to...**__ :smiling_imp:",
+            description=
+            '''Use this command to have pixel give you a random dare to do. There are a bunch of fun dares for all.
+                        
+__**Syntax**__
+p;dare''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info truth'):
+        embed = discord.Embed(
+            title='__**answer truthfully...**__ :detective:',
+            description=
+            '''Use this command to have pixel ask you a question for you to truthfully answer. No lying or cheating ;)
+                            
+__**Syntax**__
+p;truth''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info ptictactoe'):
+        embed = discord.Embed(
+            title='__**TicTacToe...**__ :regional_indicator_x: :o2:',
+            description=
+            '''Use this command to play a game of tictactoe or have two people play a game of tictacoe. To start the game type ``ptictactoe`` followed by the the userID of the first place (i.e pinging the first player) and the userID of the second of the second player (i.e. pinging the second player), it should look something like this: ``ptictactoe @player1 @player2``. Once the game has started, the player who makes the first move is pinged by pixel. To mark a tyle type ``ptplace`` followed by an integer between 1 - 9 (included) corresponding to the value of the tile you want to mark, make sure that the tile hasn't already been marked before, (ex. ``ptplace 4`` <-- this marks the 4th tile). The tiles are numbered in the following manner:
+1 2 3
+4 5 6 
+7 8 9
+Good luck!
+                            
+__**Syntax**__
+ptictactoe''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+#HELP COMMANDS
     if message.content.startswith('p;dm help'):
         await message.channel.send(
             f"""{author.mention} Commands list sent in DM! """)
@@ -580,7 +906,7 @@ __**Actions**:__
 
 __**Math**:__                                   
 ``pmathadd x y``: Adds the inputted values
-``pmathsubstract x y``: Substracts the inputted values
+``pmathsubtract x y``: Substracts the inputted values
 ``pmathmultiply x y``: Multiplies the inputted values
 ``pmathdivide x y``: Divides the inputted values
 ``pmathexp x y``: Raises the base (x) to an exponent (y)
@@ -594,11 +920,18 @@ __**Games**:__
 ``p;trivia``: Asks a trivia question!
 ``p;dare``: Gives a dare
 ``p;truth``: Asks a question for you to answer, truthfully
-``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile.''',
+``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
-        embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/740764365749485638.gif?size=128&quality=lossless")
-        embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
+        embed.set_thumbnail(
+            url=
+            "https://cdn.discordapp.com/emojis/740764365749485638.gif?size=128&quality=lossless"
+        )
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
         await message.author.send(embed=embed)
     if message.content.startswith('p;help'):
         embed = discord.Embed(title="Commands :cat:",
@@ -622,7 +955,7 @@ __**Actions**:__
 
 __**Math**:__                                   
 ``pmathadd x y``: Adds the inputted values
-``pmathsubstract x y``: Substracts the inputted values
+``pmathsubtract x y``: Substracts the inputted values
 ``pmathmultiply x y``: Multiplies the inputted values
 ``pmathdivide x y``: Divides the inputted values
 ``pmathexp x y``: Raises the base (x) to an exponent (y)
@@ -636,61 +969,63 @@ __**Games**:__
 ``p;trivia``: Asks a trivia question!
 ``p;dare``: Gives a dare
 ``p;truth``: Asks a question for you to answer, truthfully
-``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile.''',
+``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
-        embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/740764365749485638.gif?size=128&quality=lossless")
-        embed.set_footer(text="Thank you for using pixel :)", icon_url="https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096")
+        embed.set_thumbnail(
+            url=
+            "https://cdn.discordapp.com/emojis/740764365749485638.gif?size=128&quality=lossless"
+        )
+        embed.set_footer(
+            text=random.choice(embed_stuff),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
         await message.channel.send(embed=embed)
 
 
+#MATH COMMANDS
 @client.command()
 async def add(ctx, num1: int, num2: int):
     a = num1 + num2
     await ctx.send(f"**Result:** {a}")
 
-
 @client.command()
-async def substract(ctx, num1: int, num2: int):
+async def subtract(ctx, num1: int, num2: int):
     a = num1 - num2
     await ctx.send(f"**Result:** {a}")
-
 
 @client.command()
 async def multiply(ctx, num1: int, num2: int):
     a = num1 * num2
     await ctx.send(f"**Result:** {a}")
 
-
 @client.command()
 async def divide(ctx, num1: int, num2: int):
     a = num1 / num2
     await ctx.send(f"**Result:** {a}")
-
 
 @client.command()
 async def exp(ctx, num1: int, num2: int):
     a = num1**num2
     await ctx.send(f"**Result:** {a}")
 
-
 @client.command()
 async def sqrt(ctx, num1: int):
     a = num1**0.5
     await ctx.send(f"**Result:** {a}")
-
 
 @client.command()
 async def factorial(ctx, num1: int):
     a = math.factorial(num1)
     await ctx.send(f"**Result:** {a}")
 
-
 @client.command()
 async def log(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** {a}")
 
+#TICTACTOE
 player1 = ""
 player2 = ""
 turn = ""
@@ -700,7 +1035,6 @@ board = []
 
 winningConditions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7],
                      [2, 5, 8], [0, 4, 8], [2, 4, 6]]
-
 
 @client.command()
 async def ictactoe(ctx, p1: discord.Member, p2: discord.Member):
@@ -745,7 +1079,6 @@ async def ictactoe(ctx, p1: discord.Member, p2: discord.Member):
             "A game is already in progress! Please finish it before starting a new one."
         )
 
-
 @client.command()
 async def place(ctx, pos: int):
     global turn
@@ -777,7 +1110,8 @@ async def place(ctx, pos: int):
                 checkWinner(winningConditions, mark)
                 print(count)
                 if gameOver == True:
-                    await ctx.send(f"""**Result**: {mark} is the winner! :tada:""")
+                    await ctx.send(
+                        f"""**Result**: {mark} is the winner! :tada:""")
                 elif count >= 9:
                     gameOver = True
                     await ctx.send("**Result**: It's a tie!")
@@ -786,12 +1120,15 @@ async def place(ctx, pos: int):
                 elif turn == player2:
                     turn = player1
             else:
-                await ctx.send("Please type ``ptictactoe @player1 @player2`` to start a game of TicTacToe. Type ``ptplace`` followed by an integer from 1 - 9 (inclusive) corresponding to the tile you want to mark. Make sure the tile hasn't already been marked and is empty. Good luck!")
+                await ctx.send(
+                    "Please type ``ptictactoe @player1 @player2`` to start a game of TicTacToe. Type ``ptplace`` followed by an integer from 1 - 9 (inclusive) corresponding to the tile you want to mark. Make sure the tile hasn't already been marked and is empty. Good luck!"
+                )
         else:
             await ctx.send("It is not your turn yet.")
     else:
-        await ctx.send("To start a new game of TicTacToe, type ``ptictactoe @player1 @player2``.")
-
+        await ctx.send(
+            "To start a new game of TicTacToe, type ``ptictactoe @player1 @player2``."
+        )
 
 def checkWinner(winningConditions, mark):
     global gameOver
@@ -799,7 +1136,6 @@ def checkWinner(winningConditions, mark):
         if board[condition[0]] == mark and board[
                 condition[1]] == mark and board[condition[2]] == mark:
             gameOver = True
-
 
 @ictactoe.error
 async def tictactoe_error(ctx, error):
@@ -809,13 +1145,11 @@ async def tictactoe_error(ctx, error):
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please mention 2 players for this command.")
 
-
 @place.error
 async def place_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Please enter a position you would like to mark.")
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
-
 
 client.run(os.environ['SECRET'])
