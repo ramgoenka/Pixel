@@ -5,133 +5,54 @@ import random
 from discord.ext import commands
 import math
 import datetime
+#from discord_components import DiscordComponents, ComponentsBot, Button, SelectOption, Select
 
 client = discord.Client()
 client = commands.Bot(command_prefix=['pmath', 'pt'])
+#DiscordComponents(client)
 
 #LISTS
-embed_stuff = [
+embed_footers = [
     'Thanks for using pixel :)',
     'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
     'Are you from Tennessee? Because you are the only ten I see :D',
     'If you were a burger at McDonalds, you would be the McAmazing :)',
     'You seem to have a nice cat-titude :D',
     'Thanks for checking out my commands :)', 'Hope you have a great day :D',
-    'Your back must hurt from carrying all that amazingness :)']
+    'Your back must hurt from carrying all that amazingness :)'
+]
 
 sad = [
-    "I am a failure",
-    "i am failure",
-    "i am a failure",
-    "im a failure",
-    "i'm failure",
-    "i'm a failure",
-    "I'm a failure",
-    "I am a disgrace",
-    "I am useless",
-    "I am stupid",
-    "I am an idiot",
-    "I am dumb",
-    "I am disappointing",
-    "I am useless",
-    "I am not smart",
-    "I'm dumb",
-    "I'm stupid",
-    "i am disgrace",
-    "i am a disgrace",
-    "im a disgrace",
-    "i'm disgrace",
-    "i'm a disgrace",
-    "i am idiot",
-    "i am an idiot",
-    "im an idiot",
-    "i'm idiot",
-    "i'm an idiot",
-    "i am unsmart",
-    "im unsmart",
-    "i'm unsmart",
-    "i am stupid",
-    "i am a stupid",
-    "im a stupid",
-    "i'm stupid",
-    "i'm a stupid",
-    "i am dumb",
-    "i am a dumb",
-    "im a dumb",
-    "i'm dumb",
-    "i'm a dumb",
-    "i am disappointing",
-    "i am a dissappointing",
-    "im a dissappointing",
-    "i'm dissappointing",
-    "i'm a dissappointing",
-    "i am useless",
-    "i am a useless",
-    "im a useless",
-    "i'm useless",
-    "i'm a useless",
-    "i am unintelligent",
-    "i am a unintelligent",
-    "im a unintelligent",
-    "i'm unintelligent",
-    "i'm a unintelligent",
-    "i am not smart",
-    "i am a not smart",
-    "im a not smart",
-    "i'm not smart",
-    "i'm a not smart",
-    "i am Failure",
-    "i am a Failure",
-    "im a Failure",
-    "i'm Failure",
-    "i'm a Failure",
-    "i am Idiot",
-    "i am a Idiot",
-    "im a Idiot",
-    "i'm Idiot",
-    "i'm a Idiot",
-    "i am Stupid",
-    "i am a Stupid",
-    "im a Stupid",
-    "i'm Stupid",
-    "i'm a Stupid",
-    "i am Dumb",
-    "i am a Dumb",
-    "im a Dumb",
-    "i'm Dumb",
-    "i'm a Dumb",
-    "i am Disappointing",
-    "i am a Disappointing",
-    "im a Disappointing",
-    "i'm Disappointing",
-    "i'm a Disappointing",
-    "i am Useless",
-    "i am a Useless",
-    "im a Useless",
-    "i'm Useless",
-    "i'm a Useless",
-    "i am Disgrace",
-    "i am a Disgrace",
-    "im a Disgrace",
-    "i'm Disgrace",
-    "i'm a Disgrace",
-    "i am Unsmart",
-    "i am a Unsmart",
-    "im a Unsmart",
-    "i'm Unsmart",
-    "i'm a Unsmart",
-    "I'm stupid",
-    "i am Unintelligent",
-    "i am a Unintelligent",
-    "im a Unintelligent",
-    "i'm Unintelligent",
-    "i'm a Unintelligent",
-    "i am Not smart",
-    "I am Not smart",
-    "i am a Not smart",
-    "im a Not smart",
-    "i'm Not smart",
-    "i'm a Not smart",
+    "I am a failure", "i am failure", "i am a failure", "im a failure",
+    "i'm failure", "i'm a failure", "I'm a failure", "I am a disgrace",
+    "I am useless", "I am stupid", "I am an idiot", "I am dumb",
+    "I am disappointing", "I am useless", "I am not smart", "I'm dumb",
+    "I'm stupid", "i am disgrace", "i am a disgrace", "im a disgrace",
+    "i'm disgrace", "i'm a disgrace", "i am idiot", "i am an idiot",
+    "im an idiot", "i'm idiot", "i'm an idiot", "i am unsmart", "im unsmart",
+    "i'm unsmart", "i am stupid", "i am a stupid", "im a stupid", "i'm stupid",
+    "i'm a stupid", "i am dumb", "i am a dumb", "im a dumb", "i'm dumb",
+    "i'm a dumb", "i am disappointing", "i am a dissappointing",
+    "im a dissappointing", "i'm dissappointing", "i'm a dissappointing",
+    "i am useless", "i am a useless", "im a useless", "i'm useless",
+    "i'm a useless", "i am unintelligent", "i am a unintelligent",
+    "im a unintelligent", "i'm unintelligent", "i'm a unintelligent",
+    "i am not smart", "i am a not smart", "im a not smart", "i'm not smart",
+    "i'm a not smart", "i am Failure", "i am a Failure", "im a Failure",
+    "i'm Failure", "i'm a Failure", "i am Idiot", "i am a Idiot", "im a Idiot",
+    "i'm Idiot", "i'm a Idiot", "i am Stupid", "i am a Stupid", "im a Stupid",
+    "i'm Stupid", "i'm a Stupid", "i am Dumb", "i am a Dumb", "im a Dumb",
+    "i'm Dumb", "i'm a Dumb", "i am Disappointing", "i am a Disappointing",
+    "im a Disappointing", "i'm Disappointing", "i'm a Disappointing",
+    "i am Useless", "i am a Useless", "im a Useless", "i'm Useless",
+    "i'm a Useless", "i am Disgrace", "i am a Disgrace", "im a Disgrace",
+    "i'm Disgrace", "i'm a Disgrace", "i am Unsmart", "i am a Unsmart",
+    "im a Unsmart", "i'm Unsmart", "i'm a Unsmart", "I'm stupid",
+    "i am Unintelligent", "i am a Unintelligent", "im a Unintelligent",
+    "i'm Unintelligent", "i'm a Unintelligent", "i am Not smart",
+    "I am Not smart", "i am a Not smart", "im a Not smart", "i'm Not smart",
+    "i'm a Not smart", "I am trash", "i'm trash", "I'm trash", "i am trash",
+    "I’m garbage", "i'm garbage", "I am garbage", "i am garbage"
 ]
 
 encouraging_words = [
@@ -161,13 +82,16 @@ hug_gif = [
     "https://c.tenor.com/Ct4bdr2ZGeAAAAAC/teria-wang-kishuku-gakkou-no-juliet.gif",
     "https://c.tenor.com/ia_mkwn2dwYAAAAC/love.gif",
     "https://c.tenor.com/endJ8_rbXUYAAAAC/be-happy-love.gif",
-    "https://c.tenor.com/XyMvYx1xcJAAAAAC/super-excited.gif"
+    "https://c.tenor.com/XyMvYx1xcJAAAAAC/super-excited.gif",
+    "https://c.tenor.com/3mr1aHrTXSsAAAAC/hug-anime.gif",
+    "https://c.tenor.com/EqzscTWbbXEAAAAC/kanna-dragon-maid.gif",
+    "https://c.tenor.com/cFhjNVecNGcAAAAC/anime-hug.gif"
 ]
 coin_outcomes = [
-    "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails",
-    "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails",
-    "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails",
-    "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails"
+    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
+    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
+    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
+    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**"
 ]
 
 dice_roll = [
@@ -189,33 +113,56 @@ cat_images = [
     "https://i0.wp.com/pixahive.com/wp-content/uploads/2020/10/A-cute-cat-124534-pixahive.jpg?fit=1560%2C1040&ssl=1",
     "https://pixnio.com/free-images/2017/09/26/2017-09-26-09-59-07-1100x733.jpg",
     "https://pixnio.com/free-images/2017/09/26/2017-09-26-07-39-47-1100x733.jpg",
-    "https://live.staticflickr.com/5698/23119711630_c3ffe739a0_b.jpg"
+    "https://live.staticflickr.com/5698/23119711630_c3ffe739a0_b.jpg",
+    "https://cdn.stocksnap.io/img-thumbs/960w/cat-kitten_BY1YIGNS0Y.jpg",
+    "https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3B4NzU1MDcwLWltYWdlLWt3dnhnbzBsLmpwZw.jpg",
+    "https://pixnio.com/free-images/2017/09/26/2017-09-26-07-23-15-1100x818.jpg",
+    "https://c.pxhere.com/photos/5e/7b/cat_feline_staring_kitty_pet_cute_cat-640016.jpg!d",
+
 ]
 
 wyr_questions = [
-    "Would you rather: Give up junk food for a month **or** Give up all forms of social media for a week?",
-    "Would you rather: Be reborn as a cat **or** A dog?",
-    "Would you rather: Be invisible **or** Be able to fly?",
-    "Would you rather: Be rich but lonely **or** Be poor but have friends?",
-    "Would you rather: Know how you die **or** Know when you die?",
-    "Would you rather: Have a lot of distant friends **or** One really good and close friend?",
-    "Would you rather: Cry each time something funny happens **or** Laugh each time something tragic /  sad happens?",
-    "Would you rather: Be caught cheating in a relationship **or** Be caught cheating on a test?",
-    "Would you rather: Have as much wealth as you wish but always remain sad **or** Live paycheck to paycheck but be happy?",
-    "Would you rather: Never be able to speak again **or** Never be able to hear again?",
-    "Would you rather: Be able to sleep 8 hours but only during day-time **or** Only be able to sleep for 1 hour during the night?",
-    "Would you rather: Be able to go back in the past and fix a mistake **or** Be able to go back in the past and revive one dead person?",
-    "Would you rather: Find the love of your life **or** Win a million dollars?",
-    "Would you rather: Give up showering for a month **or** Give up all forms of social media for a month?",
-    "Would you rather: Be a famous serial-killer **or** Be poor?",
-    "Would you rather: Get a private island **or** A private jet?",
-    "Would you rather: Be the fastest runner in the world **or** Have the highest vertical jump in the world?",
-    "Would you rather: Be a famous athlete **or** A famous singer?",
-    "Would you rather: Never be able to lie **or** Always be lied to?",
-    "Would you rather: Give up being able to eat meat **or** Give up being able to eat vegetables?",
-    "Would you rather: Live in the middle of the ocean or an year **or** Live in the middle of a dense forest for an year?",
-    "Would you rather: Live in 45°C for one year **or** Live in -45°C for one year?"
-    "Would you rather: "
+    "Give up junk food for a month **OR** Give up all forms of social media for a week?",
+    "Be reborn as a cat **OR** A dog?",
+    "Be invisible **OR** Be able to fly?",
+    "Be rich but lonely **OR** Be poor but have friends?",
+    "Know how you die **OR** Know when you die?",
+    "Have a lot of distant friends **OR** One really good and close friend?",
+    "Cry each time something funny happens **OR** Laugh each time something tragic /  sad happens?",
+    "Be caught cheating in a relationship **OR** Be caught cheating on a test?",
+    "Have as much wealth as you wish but always remain sad **OR** Live paycheck to paycheck but be happy?",
+    "Never be able to speak again **OR** Never be able to hear again?",
+    "Be able to sleep 8 hours but only during day-time **OR** Only be able to sleep for 1 hour during the night?",
+    "Be able to go back in the past and fix a mistake **OR** Be able to go back in the past and revive one dead person?",
+    "Find the love of your life **OR** Win a million dollars?",
+    "Give up showering for a month **OR** Give up all forms of social media for a month?",
+    "Be a famous serial-killer **OR** Be poor?",
+    "Get a private island **OR** A private jet?",
+    "Be the fastest runner in the world **OR** Have the highest vertical jump in the world?",
+    "Be a famous athlete **OR** A famous singer?",
+    "Never be able to lie **OR** Always be lied to?",
+    "Give up being able to eat meat **OR** Give up being able to eat vegetables?",
+    "Live in the middle of the ocean or an year **OR** Live in the middle of a dense forest for an year?",
+    "Live in 45°C for one year **OR** Live in -45°C for one year?",
+    "Be chased by a clown **OR** Be chased by a lion?",
+    "Be fluent in every language **OR** Be a master of every single musical instrument?",
+    "Be stuck in an elevator with the power supply gone **OR** Be stuck in a train in the middle of nowhere?",
+    "Be 4 feet tall **OR** Be 8 feet tall?",
+    "Be a famous singer **OR** A famous Author?",
+    "Be an Olympic gold medalist **OR** Win a Nobel Prize?",
+    "Never be able to make a phone call ever again **OR** Never be able to send a text ever again?",
+    "Give up social media for the rest of your life **OR** Eat the same dinner for the rest of your life?",
+    "Give up YouTube **OR** Give up Netflix?",
+    "Have the ability to freeze time for 10 minutes but it be only a one time thing **OR** Be able to time travel 10 minutes into the future but have it be only a one time thing (i.e. you only have 1 chance to use the ability)?",
+    "Give up ramen **OR** Give up sushi?",
+    "Give up tea **OR** Give up coffee?",
+    "End world hunger **OR** Be able to eat the most expensive food's for free, whenever and wherever?",
+    "Get $1 million handed to your right now **OR** be paid $10,000 every month for the next 12 months?",
+    "Have front row tickets to a musician you’ve never heard of **OR** Listen to your favorite band perform from the parking lot?",
+    "Only eat burger for the rest of your life **OR** Only eat pizza for the rest of your life?"
+    
+  
+    
 ]
 
 random_facts = [
@@ -292,14 +239,18 @@ trivia_questions = [
     ":thinking: How many centimeters are in 1 inch (Answer: || 2.54, however any value between 2.5 and 2.54 is acceptable ||)"
 ]
 
+#random_tod ['']
+
+#truth_questions_only = ['']
+
+#dare_questions_only = ['']
 
 #CODE FOR SOME OF THE STARTER COMMANDS AND GREETINGS
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     await client.change_presence(activity=discord.Game(name="Type p;help"))
-
-
+  
 @client.event
 async def on_message(message):
     await client.process_commands(message)
@@ -356,13 +307,19 @@ async def on_message(message):
         )
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('p;flip'):
-        await message.channel.send(random.choice(coin_outcomes))
+        embed = discord.Embed(title="",
+                              description=random.choice(coin_outcomes))
+        await message.channel.send(embed=embed)
         await message.add_reaction('\U0001FA99')
-    if message.content.startswith('p;Flip'):
-        await message.channel.send(random.choice(coin_outcomes))
+    if message.content.startswith('P;flip'):
+        embed = discord.Embed(title="",
+                              description=(random.choice(coin_outcomes)))
+        await message.channel.send(embed=embed)
         await message.add_reaction('\U0001FA99')
     if message.content.startswith('p;roll'):
-        await message.channel.send(random.choice(dice_roll))
+        embed = discord.Embed(title="",
+                              description=random.choice(dice_roll))
+        await message.channel.send(embed=embed)
     if message.content.startswith('p;Roll'):
         await message.channel.send(random.choice(dice_roll))
     if message.content.startswith('gn'):
@@ -414,7 +371,8 @@ async def on_message(message):
         await message.channel.send(
             'Good Morning! Hope you have a great day :sunny:')
     if message.content.startswith('p;wyr'):
-        await message.channel.send(random.choice(wyr_questions))
+        embed = discord.Embed(title='Would you rather...', description=random.choice(wyr_questions), color=0xFF6600)
+        await message.channel.send(embed = embed)
     if message.content.startswith('p;fact'):
         await message.channel.send(random.choice(random_facts))
     if message.content.startswith('p;trivia'):
@@ -429,17 +387,6 @@ async def on_message(message):
                               color=0x00FFFF)
         embed.set_image(url=random.choice(cat_images))
         await message.channel.send(embed=embed)
-    if message.content.startswith('p;about'):
-        await message.channel.send(
-            'Hello there! My name is pixel and I am a Discord bot written in Python. I am full of random interesting stuff. Type ``p;help`` to get a list of commands! Meow :)'
-        )
-    if message.content.startswith('p;hug'):
-        embed = discord.Embed(
-            title="",
-            description=f"""{author.mention} Here is a hug for you :)""",
-            color=0xFF00FF)
-        embed.set_image(url=random.choice(hug_gif))
-        await message.channel.send(embed=embed)
 
 #INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
     if message.content.startswith('p;info help'):
@@ -451,7 +398,7 @@ __**Syntax**__
 p;help''',
                               color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -467,7 +414,7 @@ __**Syntax**__
 p;dm help''',
                               color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -483,7 +430,7 @@ __**Syntax**__
 p;about''',
                               color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -499,7 +446,7 @@ __**Syntax**__
 p;ping''',
                               color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -515,7 +462,7 @@ __**Syntax**__
 p;hi''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -532,7 +479,7 @@ __**Syntax**__
 p;hug''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -550,7 +497,7 @@ p;random cat
 ''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -565,7 +512,7 @@ __**Syntax**__
 p;cat''',
                               color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -580,7 +527,7 @@ __**Syntax**__
 p;cat''',
                               color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -597,7 +544,7 @@ __**Syntax**__
 p;flip''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -614,7 +561,7 @@ __**Syntax**__
 p;roll''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -631,7 +578,7 @@ __**Syntax**__
 pmathadd''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -648,7 +595,7 @@ __**Syntax**__
 p;fact''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -665,7 +612,7 @@ __**Syntax**__
 pmathsubtract''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -682,7 +629,7 @@ __**Syntax**__
 pmathdivide''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -700,7 +647,7 @@ __**Syntax**__
 pmathmultiply''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -717,7 +664,7 @@ __**Syntax**__
 pmathexp''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -734,7 +681,7 @@ __**Syntax**__
 pmathfactorial''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -751,7 +698,7 @@ __**Syntax**__
 pmathsqrt''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -768,7 +715,7 @@ __**Syntax**__
 pmathlog''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -785,7 +732,7 @@ __**Syntax**__
 p;wyr''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -802,7 +749,7 @@ __**Syntax**__
 p;tod''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -819,7 +766,7 @@ __**Syntax**__
 p;trivia''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -836,7 +783,7 @@ __**Syntax**__
 p;dare''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -853,7 +800,7 @@ __**Syntax**__
 p;truth''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -862,7 +809,7 @@ p;truth''',
 
     if message.content.startswith('p;info ptictactoe'):
         embed = discord.Embed(
-            title='__**TicTacToe...**__ :regional_indicator_x: :o2:',
+            title='__**TicTacToe**__ :regional_indicator_x: :o2:',
             description=
             '''Use this command to play a game of tictactoe or have two people play a game of tictacoe. To start the game type ``ptictactoe`` followed by the the userID of the first place (i.e pinging the first player) and the userID of the second of the second player (i.e. pinging the second player), it should look something like this: ``ptictactoe @player1 @player2``. Once the game has started, the player who makes the first move is pinged by pixel. To mark a tyle type ``ptplace`` followed by an integer between 1 - 9 (included) corresponding to the value of the tile you want to mark, make sure that the tile hasn't already been marked before, (ex. ``ptplace 4`` <-- this marks the 4th tile). The tiles are numbered in the following manner:
 1 2 3
@@ -874,7 +821,7 @@ __**Syntax**__
 ptictactoe''',
             color=0x00FFFF)
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -928,7 +875,7 @@ __**Games**:__
             "https://cdn.discordapp.com/emojis/740764365749485638.gif?size=128&quality=lossless"
         )
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -977,54 +924,60 @@ __**Games**:__
             "https://cdn.discordapp.com/emojis/740764365749485638.gif?size=128&quality=lossless"
         )
         embed.set_footer(
-            text=random.choice(embed_stuff),
+            text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
         await message.channel.send(embed=embed)
-
-
+ 
 #MATH COMMANDS
 @client.command()
 async def add(ctx, num1: int, num2: int):
     a = num1 + num2
     await ctx.send(f"**Result:** {a}")
 
+
 @client.command()
 async def subtract(ctx, num1: int, num2: int):
     a = num1 - num2
     await ctx.send(f"**Result:** {a}")
+
 
 @client.command()
 async def multiply(ctx, num1: int, num2: int):
     a = num1 * num2
     await ctx.send(f"**Result:** {a}")
 
+
 @client.command()
 async def divide(ctx, num1: int, num2: int):
     a = num1 / num2
     await ctx.send(f"**Result:** {a}")
+
 
 @client.command()
 async def exp(ctx, num1: int, num2: int):
     a = num1**num2
     await ctx.send(f"**Result:** {a}")
 
+
 @client.command()
 async def sqrt(ctx, num1: int):
     a = num1**0.5
     await ctx.send(f"**Result:** {a}")
+
 
 @client.command()
 async def factorial(ctx, num1: int):
     a = math.factorial(num1)
     await ctx.send(f"**Result:** {a}")
 
+
 @client.command()
 async def log(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** {a}")
-
+  
 #TICTACTOE
 player1 = ""
 player2 = ""
@@ -1035,6 +988,7 @@ board = []
 
 winningConditions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7],
                      [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+
 
 @client.command()
 async def ictactoe(ctx, p1: discord.Member, p2: discord.Member):
@@ -1078,7 +1032,7 @@ async def ictactoe(ctx, p1: discord.Member, p2: discord.Member):
         await ctx.send(
             "A game is already in progress! Please finish it before starting a new one."
         )
-
+      
 @client.command()
 async def place(ctx, pos: int):
     global turn
@@ -1130,12 +1084,14 @@ async def place(ctx, pos: int):
             "To start a new game of TicTacToe, type ``ptictactoe @player1 @player2``."
         )
 
+
 def checkWinner(winningConditions, mark):
     global gameOver
     for condition in winningConditions:
         if board[condition[0]] == mark and board[
                 condition[1]] == mark and board[condition[2]] == mark:
             gameOver = True
+
 
 @ictactoe.error
 async def tictactoe_error(ctx, error):
@@ -1144,6 +1100,7 @@ async def tictactoe_error(ctx, error):
         await ctx.send("Please mention 2 players for this command.")
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please mention 2 players for this command.")
+
 
 @place.error
 async def place_error(ctx, error):
