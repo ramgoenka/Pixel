@@ -1,125 +1,58 @@
+#IMPORTING NEEDED LIBRARIES AND SETTING UP THE CLIENT
 import discord
 import os
 import random
 from discord.ext import commands
 import math
+import datetime
+#from discord_components import DiscordComponents, ComponentsBot, Button, SelectOption, Select
 
 client = discord.Client()
-client = commands.Bot(command_prefix='pmath')
+client = commands.Bot(command_prefix=['pmath', 'pt'])
+#DiscordComponents(client)
+
+#LISTS
+embed_footers = [
+    'Thanks for using pixel :)',
+    'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
+    'Are you from Tennessee? Because you are the only ten I see :D',
+    'If you were a burger at McDonalds, you would be the McAmazing :)',
+    'You seem to have a nice cat-titude :D',
+    'Thanks for checking out my commands :)', 'Hope you have a great day :D',
+    'Your back must hurt from carrying all that amazingness :)'
+]
 
 sad = [
-    "I am a failure",
-    "i am failure",
-    "i am a failure",
-    "im a failure",
-    "i'm failure",
-    "i'm a failure",
-    "I'm a failure",
-    "I am a disgrace",
-    "I am useless",
-    "I am stupid",
-    "I am an idiot",
-    "I am dumb",
-    "I am disappointing",
-    "I am useless",
-    "I am not smart",
-    "I'm dumb",
-    "I'm stupid",
-    "i am disgrace",
-    "i am a disgrace",
-    "im a disgrace",
-    "i'm disgrace",
-    "i'm a disgrace",
-    "i am idiot",
-    "i am an idiot",
-    "im an idiot",
-    "i'm idiot",
-    "i'm an idiot",
-    "i am unsmart",
-    "im unsmart",
-    "i'm unsmart",
-    "i am stupid",
-    "i am a stupid",
-    "im a stupid",
-    "i'm stupid",
-    "i'm a stupid",
-    "i am dumb",
-    "i am a dumb",
-    "im a dumb",
-    "i'm dumb",
-    "i'm a dumb",
-    "i am disappointing",
-    "i am a dissappointing",
-    "im a dissappointing",
-    "i'm dissappointing",
-    "i'm a dissappointing",
-    "i am useless",
-    "i am a useless",
-    "im a useless",
-    "i'm useless",
-    "i'm a useless",
-    "i am unintelligent",
-    "i am a unintelligent",
-    "im a unintelligent",
-    "i'm unintelligent",
-    "i'm a unintelligent",
-    "i am not smart",
-    "i am a not smart",
-    "im a not smart",
-    "i'm not smart",
-    "i'm a not smart",
-    "i am Failure",
-    "i am a Failure",
-    "im a Failure",
-    "i'm Failure",
-    "i'm a Failure",
-    "i am Idiot",
-    "i am a Idiot",
-    "im a Idiot",
-    "i'm Idiot",
-    "i'm a Idiot",
-    "i am Stupid",
-    "i am a Stupid",
-    "im a Stupid",
-    "i'm Stupid",
-    "i'm a Stupid",
-    "i am Dumb",
-    "i am a Dumb",
-    "im a Dumb",
-    "i'm Dumb",
-    "i'm a Dumb",
-    "i am Disappointing",
-    "i am a Disappointing",
-    "im a Disappointing",
-    "i'm Disappointing",
-    "i'm a Disappointing",
-    "i am Useless",
-    "i am a Useless",
-    "im a Useless",
-    "i'm Useless",
-    "i'm a Useless",
-    "i am Disgrace",
-    "i am a Disgrace",
-    "im a Disgrace",
-    "i'm Disgrace",
-    "i'm a Disgrace",
-    "i am Unsmart",
-    "i am a Unsmart",
-    "im a Unsmart",
-    "i'm Unsmart",
-    "i'm a Unsmart",
-    "I'm stupid",
-    "i am Unintelligent",
-    "i am a Unintelligent",
-    "im a Unintelligent",
-    "i'm Unintelligent",
-    "i'm a Unintelligent",
-    "i am Not smart",
-    "I am Not smart",
-    "i am a Not smart",
-    "im a Not smart",
-    "i'm Not smart",
-    "i'm a Not smart",
+    "I am a failure", "i am failure", "i am a failure", "im a failure",
+    "i'm failure", "i'm a failure", "I'm a failure", "I am a disgrace",
+    "I am useless", "I am stupid", "I am an idiot", "I am dumb",
+    "I am disappointing", "I am useless", "I am not smart", "I'm dumb",
+    "I'm stupid", "i am disgrace", "i am a disgrace", "im a disgrace",
+    "i'm disgrace", "i'm a disgrace", "i am idiot", "i am an idiot",
+    "im an idiot", "i'm idiot", "i'm an idiot", "i am unsmart", "im unsmart",
+    "i'm unsmart", "i am stupid", "i am a stupid", "im a stupid", "i'm stupid",
+    "i'm a stupid", "i am dumb", "i am a dumb", "im a dumb", "i'm dumb",
+    "i'm a dumb", "i am disappointing", "i am a dissappointing",
+    "im a dissappointing", "i'm dissappointing", "i'm a dissappointing",
+    "i am useless", "i am a useless", "im a useless", "i'm useless",
+    "i'm a useless", "i am unintelligent", "i am a unintelligent",
+    "im a unintelligent", "i'm unintelligent", "i'm a unintelligent",
+    "i am not smart", "i am a not smart", "im a not smart", "i'm not smart",
+    "i'm a not smart", "i am Failure", "i am a Failure", "im a Failure",
+    "i'm Failure", "i'm a Failure", "i am Idiot", "i am a Idiot", "im a Idiot",
+    "i'm Idiot", "i'm a Idiot", "i am Stupid", "i am a Stupid", "im a Stupid",
+    "i'm Stupid", "i'm a Stupid", "i am Dumb", "i am a Dumb", "im a Dumb",
+    "i'm Dumb", "i'm a Dumb", "i am Disappointing", "i am a Disappointing",
+    "im a Disappointing", "i'm Disappointing", "i'm a Disappointing",
+    "i am Useless", "i am a Useless", "im a Useless", "i'm Useless",
+    "i'm a Useless", "i am Disgrace", "i am a Disgrace", "im a Disgrace",
+    "i'm Disgrace", "i'm a Disgrace", "i am Unsmart", "i am a Unsmart",
+    "im a Unsmart", "i'm Unsmart", "i'm a Unsmart", "I'm stupid",
+    "i am Unintelligent", "i am a Unintelligent", "im a Unintelligent",
+    "i'm Unintelligent", "i'm a Unintelligent", "i am Not smart",
+    "I am Not smart", "i am a Not smart", "im a Not smart", "i'm Not smart",
+    "i'm a Not smart", "I am trash", "i'm trash", "I'm trash", "i am trash",
+    "I’m garbage", "i'm garbage", "I am garbage", "i am garbage"
 ]
 
 encouraging_words = [
@@ -149,13 +82,16 @@ hug_gif = [
     "https://c.tenor.com/Ct4bdr2ZGeAAAAAC/teria-wang-kishuku-gakkou-no-juliet.gif",
     "https://c.tenor.com/ia_mkwn2dwYAAAAC/love.gif",
     "https://c.tenor.com/endJ8_rbXUYAAAAC/be-happy-love.gif",
-    "https://c.tenor.com/XyMvYx1xcJAAAAAC/super-excited.gif"
+    "https://c.tenor.com/XyMvYx1xcJAAAAAC/super-excited.gif",
+    "https://c.tenor.com/3mr1aHrTXSsAAAAC/hug-anime.gif",
+    "https://c.tenor.com/EqzscTWbbXEAAAAC/kanna-dragon-maid.gif",
+    "https://c.tenor.com/cFhjNVecNGcAAAAC/anime-hug.gif"
 ]
 coin_outcomes = [
-    "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails",
-    "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails",
-    "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails",
-    "Heads", "Tails", "Heads", "Tails", "Heads", "Tails", "Heads", "Tails"
+    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
+    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
+    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
+    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**"
 ]
 
 dice_roll = [
@@ -165,7 +101,8 @@ dice_roll = [
 ]
 
 cat_images = [
-    "https://upload.wikimedia.org/wikipedia/commons/3/38/Adorable-animal-cat-20787.jpg", "https://images.rawpixel.com/image_1000/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZyYW5pbWFsX2NhdF9raXR0ZW5fYnJpdGlzaC1pbWFnZS1reWJlYXlrNC5qcGc.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/3/38/Adorable-animal-cat-20787.jpg",
+    "https://images.rawpixel.com/image_1000/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZyYW5pbWFsX2NhdF9raXR0ZW5fYnJpdGlzaC1pbWFnZS1reWJlYXlrNC5qcGc.jpg",
     "https://cc0.photo/wp-content/uploads/2016/10/Striped-cat-on-a-meadow-2048x1365.jpg",
     "https://c.pxhere.com/images/8d/1e/604c6eb3dca5d46f3854ae974ccf-1603569.jpg!d",
     "https://pixnio.com/free-images/2021/09/14/2021-09-14-08-25-52-1049x1350.jpg",
@@ -176,54 +113,81 @@ cat_images = [
     "https://i0.wp.com/pixahive.com/wp-content/uploads/2020/10/A-cute-cat-124534-pixahive.jpg?fit=1560%2C1040&ssl=1",
     "https://pixnio.com/free-images/2017/09/26/2017-09-26-09-59-07-1100x733.jpg",
     "https://pixnio.com/free-images/2017/09/26/2017-09-26-07-39-47-1100x733.jpg",
-    "https://live.staticflickr.com/5698/23119711630_c3ffe739a0_b.jpg"
+    "https://live.staticflickr.com/5698/23119711630_c3ffe739a0_b.jpg",
+    "https://cdn.stocksnap.io/img-thumbs/960w/cat-kitten_BY1YIGNS0Y.jpg",
+    "https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3B4NzU1MDcwLWltYWdlLWt3dnhnbzBsLmpwZw.jpg",
+    "https://pixnio.com/free-images/2017/09/26/2017-09-26-07-23-15-1100x818.jpg",
+    "https://c.pxhere.com/photos/5e/7b/cat_feline_staring_kitty_pet_cute_cat-640016.jpg!d",
+
 ]
 
 wyr_questions = [
-    "Would you rather: Give up junk food for a month **or** Give up all forms of social media for a week?",
-    "Would you rather: Be reborn as a cat **or** A dog?",
-    "Would you rather: Be invisible **or** Be able to fly?",
-    "Would you rather: Be rich but lonely **or** Be poor but have friends?",
-    "Would you rather: Know how you die **or** Know when you die?",
-    "Would you rather: Have a lot of distant friends **or** One really good and close friend?",
-    "Would you rather: Cry each time something funny happens **or** Laugh each time something tragic /  sad happens?",
-    "Would you rather: Be caught cheating in a relationship **or** Be caught cheating on a test?",
-    "Would you rather: Have as much wealth as you wish but always remain sad **or** Live paycheck to paycheck but be happy?",
-    "Would you rather: Never be able to speak again **or** Never be able to hear again?",
-    "Would you rather: Be able to sleep 8 hours but only during day-time **or** Only be able to sleep for 1 hour during the night?",
-    "Would you rather: Be able to go back in the past and fix a mistake **or** Be able to go back in the past and revive one dead person?",
-    "Would you rather: Find the love of your life **or** Win a million dollars?",
-    "Would you rather: Give up showering for a month **or** Give up all forms of social media for a month?",
-    "Would you rather: Be a famous serial-killer **or** Be poor?",
-    "Would you rather: Get a private island **or** A private jet?",
-    "Would you rather: Be the fastest runner in the world **or** Have the highest vertical jump in the world?",
-    "Would you rather: Be a famous athlete **or** A famous singer?",
-    "Would you rather: Never be able to lie **or** Always be lied to?",
-    "Would you rather: Give up being able to eat meat **or** Give up being able to eat vegetables?",
-    "Would you rather: Live in the middle of the ocean or an year **or** Live in the middle of a dense forest for an year?",
-    "Would you rather: Live in 45°C for one year **or** Live in -45°C for one year?"
+    "Give up junk food for a month **OR** Give up all forms of social media for a week?",
+    "Be reborn as a cat **OR** A dog?",
+    "Be invisible **OR** Be able to fly?",
+    "Be rich but lonely **OR** Be poor but have friends?",
+    "Know how you die **OR** Know when you die?",
+    "Have a lot of distant friends **OR** One really good and close friend?",
+    "Cry each time something funny happens **OR** Laugh each time something tragic /  sad happens?",
+    "Be caught cheating in a relationship **OR** Be caught cheating on a test?",
+    "Have as much wealth as you wish but always remain sad **OR** Live paycheck to paycheck but be happy?",
+    "Never be able to speak again **OR** Never be able to hear again?",
+    "Be able to sleep 8 hours but only during day-time **OR** Only be able to sleep for 1 hour during the night?",
+    "Be able to go back in the past and fix a mistake **OR** Be able to go back in the past and revive one dead person?",
+    "Find the love of your life **OR** Win a million dollars?",
+    "Give up showering for a month **OR** Give up all forms of social media for a month?",
+    "Be a famous serial-killer **OR** Be poor?",
+    "Get a private island **OR** A private jet?",
+    "Be the fastest runner in the world **OR** Have the highest vertical jump in the world?",
+    "Be a famous athlete **OR** A famous singer?",
+    "Never be able to lie **OR** Always be lied to?",
+    "Give up being able to eat meat **OR** Give up being able to eat vegetables?",
+    "Live in the middle of the ocean or an year **OR** Live in the middle of a dense forest for an year?",
+    "Live in 45°C for one year **OR** Live in -45°C for one year?",
+    "Be chased by a clown **OR** Be chased by a lion?",
+    "Be fluent in every language **OR** Be a master of every single musical instrument?",
+    "Be stuck in an elevator with the power supply gone **OR** Be stuck in a train in the middle of nowhere?",
+    "Be 4 feet tall **OR** Be 8 feet tall?",
+    "Be a famous singer **OR** A famous Author?",
+    "Be an Olympic gold medalist **OR** Win a Nobel Prize?",
+    "Never be able to make a phone call ever again **OR** Never be able to send a text ever again?",
+    "Give up social media for the rest of your life **OR** Eat the same dinner for the rest of your life?",
+    "Give up YouTube **OR** Give up Netflix?",
+    "Have the ability to freeze time for 10 minutes but it be only a one time thing **OR** Be able to time travel 10 minutes into the future but have it be only a one time thing (i.e. you only have 1 chance to use the ability)?",
+    "Give up ramen **OR** Give up sushi?",
+    "Give up tea **OR** Give up coffee?",
+    "End world hunger **OR** Be able to eat the most expensive food's for free, whenever and wherever?",
+    "Get $1 million handed to your right now **OR** be paid $10,000 every month for the next 12 months?",
+    "Have front row tickets to a musician you’ve never heard of **OR** Listen to your favorite band perform from the parking lot?",
+    "Only eat burger for the rest of your life **OR** Only eat pizza for the rest of your life?"
+    
+  
+    
 ]
 
 random_facts = [
-    "Sudan has more pyramids than any country in the world :flag_sd:",
-    "The bumblebee bat is the world’s smallest mammal :bat:",
-    "There are parts of Africa in all four hemispheres :earth_africa:",
-    "The Philippines consists of 7,641 islands :flag_ph:",
-    "Japan has one vending machine for every 40 people :flag_jp:",
-    "There’s only one letter that doesn’t appear in any U.S. state name, it is Q :regional_indicator_q:",
-    "A cow-bison hybrid is called a beefalo :cow: :bison:",
-    "Armadillo shells are bulletproof :muscle:",
-    "Some octopus species lay around 56,000 eggs at a time :octopus:",
-    "Blue whales eat up to half a million calories in one mouthful :whale:",
-    "The current American flag was designed by a high school student :flag_us:",
-    "No number before 1,000 contains the letter A :1234:",
-    "Giraffe tongues can be 20 inches long :giraffe:",
-    "Cats are believed to be the only mammals who don’t taste sweetness :cat:",
-    "Humans aren’t the only animals that dream, rats dream too :rat:",
-    "If the sun exploded right now, you wouldn't know about it for another eight minutes :boom:",
-    "Over 80 million bacteria can be exchanged in one kiss :microbe:",
-    "Australia is wider than the moon, while the moon as a diameter of 3400 km, Australia has a diameter of 4000 km :flag_au:",
-    "*face with tears of joy* is the most used emoji worldwide :joy:"
+    "Sudan has more pyramids than any country in the world. :flag_sd:",
+    "The bumblebee bat is the world’s smallest mammal. :bat:",
+    "There are parts of Africa in all four hemispheres. :earth_africa:",
+    "The Philippines consists of 7,641 islands. :flag_ph:",
+    "Japan has one vending machine for every 40 people. :flag_jp:",
+    "There’s only one letter that doesn’t appear in any U.S. state name, it is Q. :regional_indicator_q:",
+    "A cow-bison hybrid is called a beefalo. :cow: :bison:",
+    "Armadillo shells are bulletproof. :muscle:",
+    "Some octopus species lay around 56,000 eggs at a time. :octopus:",
+    "Blue whales eat up to half a million calories in one mouthful. :whale:",
+    "The current American flag was designed by a high school student. :flag_us:",
+    "No number before 1,000 contains the letter A. :1234:",
+    "Giraffe tongues can be 20 inches long. :giraffe:",
+    "Cats are believed to be the only mammals who don’t taste sweetness. :cat:",
+    "Humans aren’t the only animals that dream, rats dream too. :rat:",
+    "If the sun exploded right now, you wouldn't know about it for another eight minutes. :boom:",
+    "Over 80 million bacteria can be exchanged in one kiss. :microbe:",
+    "Australia is wider than the moon, while the moon as a diameter of 3400 km, Australia has a diameter of 4000 km. :flag_au:",
+    "*face with tears of joy* is the most used emoji worldwide. :joy:",
+    "A shrimp's heart is located in its head. :shrimp:",
+    "Odontophobia is the fear of teeth (or the fear of anything related to dentistry in general). :tooth:",
+    "Elephants are the only animal to have four forward-facing knees. :elephant:"
 ]
 
 trivia_questions = [
@@ -274,3 +238,10 @@ trivia_questions = [
     ":thinking: Uranus and which other planet are nicknamed the “ice giants”? (Answer: || Neptune ||) ",
     ":thinking: How many centimeters are in 1 inch (Answer: || 2.54, however any value between 2.5 and 2.54 is acceptable ||)"
 ]
+
+#random_tod ['']
+
+#truth_questions_only = ['']
+
+#dare_questions_only = ['']
+
