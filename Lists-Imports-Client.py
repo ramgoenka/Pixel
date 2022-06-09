@@ -239,9 +239,4 @@ trivia_questions = [
     ":thinking: How many centimeters are in 1 inch (Answer: || 2.54, however any value between 2.5 and 2.54 is acceptable ||)"
 ]
 
-#random_tod ['']
-
-#truth_questions_only = ['']
-
-#dare_questions_only = ['']
 
