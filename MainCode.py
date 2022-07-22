@@ -55,7 +55,6 @@ sad = [
     "i'm a Not smart", "I am trash", "i'm trash", "I'm trash", "i am trash",
     "I’m garbage", "i'm garbage", "I am garbage", "i am garbage"
 ]
-
 encouraging_words = [
     "Aww! That is not true :(", "No, you are an amazing person :)",
     "Hopefully it gets better <(^-^<)",
@@ -65,8 +64,8 @@ encouraging_words = [
     "Don't give up! You got this!",
     "There is light at the end of the tunnel :)",
     "Sending good vibes and happy thoughts your way  <(^-^<)",
-    "Believe in yourself! Because I for sure do :)"
-    "Believe in yourself, you are amazing!"
+    "Believe in yourself! Because I for sure do :)",
+    "Believe in yourself, you are amazing!", "Stay strong! You are powerful and you are a fighter! You got this!", "I am rooting for you!", "You are a wonderful person!"
 ]
 
 hug_gif = [
