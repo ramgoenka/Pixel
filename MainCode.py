@@ -6,11 +6,14 @@ from discord.ext import commands
 import math
 import datetime
 from keepalive import keep_alive
-#from discord_components import DiscordComponents, ComponentsBot, Button, SelectOption, Select
+#import requests
+#import json
+#from weather import *
 
-client = discord.Client()
-client = commands.Bot(command_prefix=['pmath', 'pt'])
-#DiscordComponents(client)
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents = intents)
+client = commands.Bot(intents = intents, command_prefix=['pmath', 'pt'])
 
 #LISTS
 embed_footers = [
@@ -55,6 +58,7 @@ sad = [
     "i'm a Not smart", "I am trash", "i'm trash", "I'm trash", "i am trash",
     "I’m garbage", "i'm garbage", "I am garbage", "i am garbage"
 ]
+
 encouraging_words = [
     "Aww! That is not true :(", "No, you are an amazing person :)",
     "Hopefully it gets better <(^-^<)",
@@ -92,10 +96,13 @@ hug_gif = [
 ]
 
 coin_outcomes = [
-    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
-    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
-    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
-    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**"
+    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**",
+    "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
+    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**",
+    "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
+    "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**",
+    "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
+    "**Heads**", "**Tails**"
 ]
 
 dice_roll = [
@@ -163,7 +170,7 @@ wyr_questions = [
     "End world hunger **__OR__** Be able to eat your favourite food's for free, whenever and wherever?",
     "Get $1 million handed to your right now **__OR__** be paid $10,000 every month for the next 12 months?",
     "Have front row tickets to a musician you’ve never heard of **OR** Listen to your favorite band perform from the parking lot?",
-    "Only eat burger for the rest of your life **__OR__** Only eat pizza for the rest of your life?", 
+    "Only eat burger for the rest of your life **__OR__** Only eat pizza for the rest of your life?",
     "Eat the same breakfast for the rest of your life **__OR__** Eat the same dinner for the rest of your life?",
     "Always be underdressed **__OR__** Always be overdressed?",
     "Sleep in suit for the rest of your life **__OR__** Attend formal gatherings/events in pyjamas?",
@@ -200,7 +207,7 @@ wyr_questions = [
     "Give up cursing and using any sort of swear words and foul language forever **__OR__** Have to run 5 miles every single morning for the rest of your life?",
     "Do an amazing trickshot but have no one witness it **__OR__** Do something embarrassing and have a lot of people witness it?",
     "Give up ice-cream **__OR__** Give up cola and soda?",
-    "Be expelled from school for 30 days **__OR__** Be in prision for 30 days?"    
+    "Be expelled from school for 30 days **__OR__** Be in prision for 30 days?"
 ]
 
 random_facts = [
@@ -299,140 +306,143 @@ trivia_questions = [
     ":thinking: In which state is *Mount Rushmore* located? (Answer: || South Dakota ||)"
 ]
 
-random_tod = ['Have you ever skipped class? If so then which class was it?',
-                        'Have you ever blamed something you did on someone and have gotten them in trouble?',
-                        'What is the best meal you have ever had?',
-                        'What is something you wish you could tell to your younger self?',
-                        'What is something you regret doing in the past and would like to change?',
-                        'Have you ever spilled someones secret?',
-                        'If you could be anyone or anything for 1 hour, who or what would it be?',
-                        'Have you ever peed the pool?',
-                        'What is your favourite movie?',
-                        'What is one thing you wish you could change about your parents?',
-                        'What is one thing you wish you could change about your friends?',
-                        'Do you know how to tie shoe laces?',
-                        'Do you hold grudges?',
-                        'Have you ever pulled a prank on someone and it went wrong?',
-                        'If there were absolutely no consequences whatsoever, what is the one thing you would do?',
-                        'Have you ever lied to your parents?',
-                        'What is the longest you have ever gone without showering?',
-                        'What is the longest you have ever gone without sleeping?',
-                        'Have you ever broken the law? (i.e. done something illegal)',
-                        'Do you have a secret that you want no one to know? Would you tell it if you were offered $1 million to do so?',
-                        'Have you ever cheated on a test?',
-                        'What is/was your favourite subject in school?',
-                        'Have you ever shoplifted? From where and what did you take?',
-                        'Would you consider yourself an introvert, extrovert or an ambivert?',
-                        'Are you vegetarian? If not then would you be willing to become vegetarian?',
-                        'Do you like cheese?',
-                        'What is the one thing you wish you could change about your past?',
-                        'Do you have any regrets? If so (and if you feel comfortable sharing), what are they?',
-                        'Have you ever been in a relationship? Are you in one as of now?',
-                        'Who is your favourite singer?',
-                        'If you could master one language, which one would it be?',
-                        'Were you a quiet kid or a loud kid?',
-                        'What is your biggest (or one of your biggest) fears?',
-                        'What is your biggest (or one of your biggest) pet peeve?',
-                        'What is the most embarrassing thing you have ever done?',
-                        'When was the last time you said a lie?'
-                        'If you could have dinner with one person, dead or alive, who would it be?',
-                        'Who would be your *plus 1* to a concert by your favorite artist / band?',
-                        'Would you consider your sleep schedule to be good/normal?',
-                        'How many hours did you sleep last night?','Write your name with your non-dominant hand',
-                       'Give up all forms of social media for the next 10 minutes',
-                       'Touch some grass (and if you are allergic to grass then go outside for a brief stroll',
-                       'Give up junk food for the next 16 hours',
-                       'DM someone the word *meow* and respond to everything they say with *meow* for the next 5 minutes',
-                       'Let the group pick a profile picture for you to set for the next 24 hours',
-                       'Do 10 push ups',
-                       'Close your eyes and type a message and send it in the chat', 
-                       'Only type with your left and for the next 10 minutes',
-                       'Act like a 5 year old for the next 5 minutes',
-                       'Talk in an accent for the next 5 minutes',
-                       'Imitate the behaviour of your favourite fictional character',
-                       'Try not to blink for as long as possible',
-                       'DM *uwu* to the 3rd person in your Direct Messeges list',
-                       'Sing your favorite song',
-                       'Type your name only using your toes and send it in the chat',
-                       'Show everyone an embarrassing picture of yourself from your childhood',
-                       'When was the last time you had pizza?',
-                       'Do any missing homework or assignements or any pending work for at least the next one hour',
-                       'Drink a glass of water',
-                       'Rickroll the 5th person in your DMs (Direct Message)',
-                       'Count up to 100 in one sitting']
-
-truth_questions_only = ['Have you ever skipped class? If so then which class was it?',
-                        'Have you ever blamed something you did on someone and have gotten them in trouble?',
-                        'What is the best meal you have ever had?',
-                        'What is something you wish you could tell to your younger self?',
-                        'What is something you regret doing in the past and would like to change?',
-                        'Have you ever spilled someones secret?',
-                        'If you could be anyone or anything for 1 hour, who or what would it be?',
-                        'Have you ever peed the pool?',
-                        'What is your favourite movie?',
-                        'What is one thing you wish you could change about your parents?',
-                        'What is one thing you wish you could change about your friends?',
-                        'Do you know how to tie shoe laces?',
-                        'Do you hold grudges?',
-                        'Have you ever pulled a prank on someone and it went wrong?',
-                        'If there were absolutely no consequences whatsoever, what is the one thing you would do?',
-                        'Have you ever lied to your parents?',
-                        'What is the longest you have ever gone without showering?',
-                        'What is the longest you have ever gone without sleeping?',
-                        'Have you ever broken the law? (i.e. done something illegal)',
-                        'Do you have a secret that you want no one to know? Would you tell it if you were offered $1 million to do so?',
-                        'Have you ever cheated on a test?',
-                        'What is/was your favourite subject in school?',
-                        'Have you ever shoplifted? From where and what did you take?',
-                        'Would you consider yourself an introvert, extrovert or an ambivert?',
-                        'Are you vegetarian? If not then would you be willing to become vegetarian?',
-                        'Do you like cheese?',
-                        'What is the one thing you wish you could change about your past?',
-                        'Do you have any regrets? If so (and if you feel comfortable sharing), what are they?',
-                        'Have you ever been in a relationship? Are you in one as of now?',
-                        'Who is your favourite singer?',
-                        'If you could master one language, which one would it be?',
-                        'Were you a quiet kid or a loud kid?',
-                        'What is your biggest (or one of your biggest) fears?',
-                        'What is your biggest (or one of your biggest) pet peeve?',
-                        'What is the most embarrassing thing you have ever done?',
-                        'When was the last time you said a lie?'
-                        'If you could have dinner with one person, dead or alive, who would it be?',
-                        'Who would be your *plus 1* to a concert by your favorite artist / band?',
-                        'Would you consider your sleep schedule to be good/normal?',
-                        'How many hours did you sleep last night?',
-                        'When was the last time you ate pizza'
+random_tod = [
+    'Have you ever skipped class? If so then which class was it?',
+    'Have you ever blamed something you did on someone and have gotten them in trouble?',
+    'What is the best meal you have ever had?',
+    'What is something you wish you could tell to your younger self?',
+    'What is something you regret doing in the past and would like to change?',
+    'Have you ever spilled someones secret?',
+    'If you could be anyone or anything for 1 hour, who or what would it be?',
+    'Have you ever peed the pool?', 'What is your favourite movie?',
+    'What is one thing you wish you could change about your parents?',
+    'What is one thing you wish you could change about your friends?',
+    'Do you know how to tie shoe laces?', 'Do you hold grudges?',
+    'Have you ever pulled a prank on someone and it went wrong?',
+    'If there were absolutely no consequences whatsoever, what is the one thing you would do?',
+    'Have you ever lied to your parents?',
+    'What is the longest you have ever gone without showering?',
+    'What is the longest you have ever gone without sleeping?',
+    'Have you ever broken the law? (i.e. done something illegal)',
+    'Do you have a secret that you want no one to know? Would you tell it if you were offered $1 million to do so?',
+    'Have you ever cheated on a test?',
+    'What is/was your favourite subject in school?',
+    'Have you ever shoplifted? From where and what did you take?',
+    'Would you consider yourself an introvert, extrovert or an ambivert?',
+    'Are you vegetarian? If not then would you be willing to become vegetarian?',
+    'Do you like cheese?',
+    'What is the one thing you wish you could change about your past?',
+    'Do you have any regrets? If so (and if you feel comfortable sharing), what are they?',
+    'Have you ever been in a relationship? Are you in one as of now?',
+    'Who is your favourite singer?',
+    'If you could master one language, which one would it be?',
+    'Were you a quiet kid or a loud kid?',
+    'What is your biggest (or one of your biggest) fears?',
+    'What is your biggest (or one of your biggest) pet peeve?',
+    'What is the most embarrassing thing you have ever done?',
+    'When was the last time you said a lie?'
+    'If you could have dinner with one person, dead or alive, who would it be?',
+    'Who would be your *plus 1* to a concert by your favorite artist / band?',
+    'Would you consider your sleep schedule to be good/normal?',
+    'How many hours did you sleep last night?',
+    'Write your name with your non-dominant hand',
+    'Give up all forms of social media for the next 10 minutes',
+    'Touch some grass (and if you are allergic to grass then go outside for a brief stroll',
+    'Give up junk food for the next 16 hours',
+    'DM someone the word *meow* and respond to everything they say with *meow* for the next 5 minutes',
+    'Let the group pick a profile picture for you to set for the next 24 hours',
+    'Do 10 push ups',
+    'Close your eyes and type a message and send it in the chat',
+    'Only type with your left and for the next 10 minutes',
+    'Act like a 5 year old for the next 5 minutes',
+    'Talk in an accent for the next 5 minutes',
+    'Imitate the behaviour of your favourite fictional character',
+    'Try not to blink for as long as possible',
+    'DM *uwu* to the 3rd person in your Direct Messeges list',
+    'Sing your favorite song',
+    'Type your name only using your toes and send it in the chat',
+    'Show everyone an embarrassing picture of yourself from your childhood',
+    'When was the last time you had pizza?',
+    'Do any missing homework or assignments or any pending work for at least the next one hour',
+    'Drink a glass of water',
+    'Rickroll the 5th person in your DMs (Direct Message)',
+    'Count up to 100 in one sitting'
 ]
 
-dare_questions_only = ['Write your name with your non-dominant hand',
-                       'Give up all forms of social media for the next 10 minutes',
-                       'Touch some grass (and if you are allergic to grass then go outside for a brief stroll',
-                       'Give up junk food for the next 16 hours',
-                       'DM someone the word *meow* and respond to everything they say with *meow* for the next 5 minutes',
-                       'Let the group pick a profile picture for you to set for the next 24 hours',
-                       'Do 10 push ups',
-                       'Close your eyes and type a message and send it in the chat', 
-                       'Only type with your left and for the next 10 minutes',
-                       'Act like a 5 year old for the next 5 minutes',
-                       'Talk in an accent for the next 5 minutes',
-                       'Imitate the behaviour of your favourite fictional character',
-                       'Try not to blink for as long as possible',
-                       'DM *uwu* to the 3rd person in your Direct Messeges list',
-                       'Sing your favorite song',
-                       'Type your name only using your toes and send it in the chat',
-                       'Show everyone an embarrassing picture of yourself from your childhood',
-                       'Do any missing homework or assignements or any pending work for at least the next one hour',
-                       'Drink a glass of water',
-                       'Rickroll the 5th person in your DMs (Direct Message)',
-                       'Count up to 100 in one sitting'
-                      ]
+truth_questions_only = [
+    'Have you ever skipped class? If so then which class was it?',
+    'Have you ever blamed something you did on someone and have gotten them in trouble?',
+    'What is the best meal you have ever had?',
+    'What is something you wish you could tell to your younger self?',
+    'What is something you regret doing in the past and would like to change?',
+    'Have you ever spilled someones secret?',
+    'If you could be anyone or anything for 1 hour, who or what would it be?',
+    'Have you ever peed the pool?', 'What is your favourite movie?',
+    'What is one thing you wish you could change about your parents?',
+    'What is one thing you wish you could change about your friends?',
+    'Do you know how to tie shoe laces?', 'Do you hold grudges?',
+    'Have you ever pulled a prank on someone and it went wrong?',
+    'If there were absolutely no consequences whatsoever, what is the one thing you would do?',
+    'Have you ever lied to your parents?',
+    'What is the longest you have ever gone without showering?',
+    'What is the longest you have ever gone without sleeping?',
+    'Have you ever broken the law? (i.e. done something illegal)',
+    'Do you have a secret that you want no one to know? Would you tell it if you were offered $1 million to do so?',
+    'Have you ever cheated on a test?',
+    'What is/was your favourite subject in school?',
+    'Have you ever shoplifted? From where and what did you take?',
+    'Would you consider yourself an introvert, extrovert or an ambivert?',
+    'Are you vegetarian? If not then would you be willing to become vegetarian?',
+    'Do you like cheese?',
+    'What is the one thing you wish you could change about your past?',
+    'Do you have any regrets? If so (and if you feel comfortable sharing), what are they?',
+    'Have you ever been in a relationship? Are you in one as of now?',
+    'Who is your favourite singer?',
+    'If you could master one language, which one would it be?',
+    'Were you a quiet kid or a loud kid?',
+    'What is your biggest (or one of your biggest) fears?',
+    'What is your biggest (or one of your biggest) pet peeve?',
+    'What is the most embarrassing thing you have ever done?',
+    'When was the last time you said a lie?'
+    'If you could have dinner with one person, dead or alive, who would it be?',
+    'Who would be your *plus 1* to a concert by your favorite artist / band?',
+    'Would you consider your sleep schedule to be good/normal?',
+    'How many hours did you sleep last night?',
+    'When was the last time you ate pizza'
+]
+
+dare_questions_only = [
+    'Write your name with your non-dominant hand',
+    'Give up all forms of social media for the next 10 minutes',
+    'Touch some grass (and if you are allergic to grass then go outside for a brief stroll',
+    'Give up junk food for the next 16 hours',
+    'DM someone the word *meow* and respond to everything they say with *meow* for the next 5 minutes',
+    'Let the group pick a profile picture for you to set for the next 24 hours',
+    'Do 10 push ups',
+    'Close your eyes and type a message and send it in the chat',
+    'Only type with your left and for the next 10 minutes',
+    'Act like a 5 year old for the next 5 minutes',
+    'Talk in an accent for the next 5 minutes',
+    'Imitate the behaviour of your favourite fictional character',
+    'Try not to blink for as long as possible',
+    'DM *uwu* to the 3rd person in your Direct Messeges list',
+    'Sing your favorite song',
+    'Type your name only using your toes and send it in the chat',
+    'Show everyone an embarrassing picture of yourself from your childhood',
+    'Do any missing homework or assignments or any pending work for at least the next one hour',
+    'Drink a glass of water',
+    'Rickroll the 5th person in your DMs (Direct Message)',
+    'Count up to 100 in one sitting'
+]
+
 
 #CODE FOR SOME OF THE STARTER COMMANDS AND GREETINGS p;hug
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     await client.change_presence(activity=discord.Game(name="Type p;help"))
-  
+
+
 @client.event
 async def on_message(message):
     await client.process_commands(message)
@@ -479,9 +489,10 @@ async def on_message(message):
         await message.add_reaction('\U0001F431')
         await message.channel.send('meow :cat:')
     if message.content.startswith('p;hug'):
-        embed = discord.Embed(title="",
-                              description=f'''{author.mention} Here is a hug for you :)''',
-                              color=0xe78be7)
+        embed = discord.Embed(
+            title="",
+            description=f'''{author.mention} Here is a hug for you :)''',
+            color=0xe78be7)
         embed.set_image(url=random.choice(hug_gif))
         embed.set_footer(text="Hope you have a great day :D")
         await message.channel.send(embed=embed)
@@ -506,65 +517,74 @@ async def on_message(message):
         await message.channel.send(embed=embed)
         await message.add_reaction('\U0001FA99')
     if message.content.startswith('p;roll'):
-        embed = discord.Embed(title="",
-                              description=random.choice(dice_roll))
+        embed = discord.Embed(title="", description=random.choice(dice_roll))
         await message.channel.send(embed=embed)
     if message.content.startswith('p;Roll'):
         await message.channel.send(random.choice(dice_roll))
     if message.content.startswith('gn'):
         await message.add_reaction('\U0001F634')
-        await message.channel.send('Good Night & sweet dreams! :sleeping:')
+        await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('GN'):
         await message.add_reaction('\U0001F634')
-        await message.channel.send('Good Night & sweet dreams! :sleeping:')
+        await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('Gn'):
         await message.add_reaction('\U0001F634')
-        await message.channel.send('Good Night & sweet dreams! :sleeping:')
+        await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('Goodnight'):
         await message.add_reaction('\U0001F634')
-        await message.channel.send('Good Night & sweet dreams! :sleeping:')
+        await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('goodnight'):
         await message.add_reaction('\U0001F634')
-        await message.channel.send('Good Night & sweet dreams! :sleeping:')
+        await message.channel.send('Good night & sweet dreams! :sleeping:')
+    if message.content.startswith('p;about'):
+      await message.channel.send("Hello! My name is Pixel and I am a Discord bot full of random interesting commands and features. Type ``p;help`` to get a list of commands! Thanks for checking me out and I hope you have a nice day :)")
     if message.content.startswith('p;ping'):
         await message.channel.send(
             f'**:ping_pong: Bot latency**: {client.latency * 10000} ms')
     if message.content.startswith('good night'):
         await message.add_reaction('\U0001F634')
-        await message.channel.send('Good Night & sweet dreams! :sleeping:')
+        await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('Good night'):
         await message.add_reaction('\U0001F634')
-        await message.channel.send('Good Night & sweet dreams! :sleeping:')
+        await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('gm'):
         await message.add_reaction('\U0001F304')
         await message.channel.send(
-            'Good Morning! Hope you have a great day :sunny:')
+            'Good morning! Hope you have a great day :sunny:')
     if message.content.startswith('Gm'):
         await message.add_reaction('\U0001F304')
         await message.channel.send(
-            'Good Morning! Hope you have a great day :sunny:')
+            'Good morning! Hope you have a great day :sunny:')
     if message.content.startswith('Goodmorning'):
         await message.add_reaction('\U0001F304')
         await message.channel.send(
-            'Good Morning! Hope you have a great day :sunny:')
+            'Good morning! Hope you have a great day :sunny:')
     if message.content.startswith('Good morning'):
         await message.add_reaction('\U0001F304')
         await message.channel.send(
-            'Good Morning! Hope you have a great day :sunny:')
+            'Good morning! Hope you have a great day :sunny:')
     if message.content.startswith('goodmorning'):
         await message.add_reaction('\U0001F304')
         await message.channel.send(
-            'Good Morning! Hope you have a great day :sunny:')
+            'Good morning! Hope you have a great day :sunny:')
     if message.content.startswith('good morning'):
         await message.add_reaction('\U0001F304')
         await message.channel.send(
-            'Good Morning! Hope you have a great day :sunny:')
+            'Good morning! Hope you have a great day :sunny:')
     if message.content.startswith('p;wyr'):
-        embed = discord.Embed(title='Would you rather...', description=random.choice(wyr_questions), color=0xFF6600)
-        await message.channel.send(embed = embed)
+        embed = discord.Embed(title='Would you rather...',
+                              description=random.choice(wyr_questions),
+                              color=0xFF6600)
+        await message.channel.send(embed=embed)
+    #if message.content.startswith('p;troll'):
+      #embed = discord.Embed(title='We do a little...')
+      #embed.set_image(url='https://c.tenor.com/_bTaLmoLSc4AAAAd/troll-pilled.gif')
+      #await message.channel.send(embed=embed)
     if message.content.startswith('p;fact'):
-        embed = discord.Embed(title="Did you know...", description=random.choice(random_facts), color=0xadd8e6)
-        await message.channel.send(embed = embed)
+        embed = discord.Embed(title="Did you know...",
+                              description=random.choice(random_facts),
+                              color=0xadd8e6)
+        await message.channel.send(embed=embed)
     if message.content.startswith('p;trivia'):
         await message.channel.send(random.choice(trivia_questions))
     if message.content.startswith('I appreciate pixel'):
@@ -572,14 +592,24 @@ async def on_message(message):
     if message.content.startswith('i appreciate pixel'):
         await message.channel.send('Aww! I appreciate you too :blush:')
     if message.content.startswith('p;truth'):
-      embed = discord.Embed(title=random.choice(truth_questions_only), description ='Type: Truth', color=0x008000)
-      await message.channel.send(embed = embed)
+        embed = discord.Embed(title=random.choice(truth_questions_only),
+                              description='Type: Truth',
+                              color=0x008000)
+        await message.channel.send(embed=embed)
     if message.content.startswith('p;dare'):
-      embed = discord.Embed(title=random.choice(dare_questions_only), description ='Type: Dare', color=0xFF0000)
-      await message.channel.send(embed = embed)
+        embed = discord.Embed(title=random.choice(dare_questions_only),
+                              description='Type: Dare',
+                              color=0xFF0000)
+        await message.channel.send(embed=embed)
+    if message.content.startswith('I appreciate Pixel'):
+      await message.channel.send('Aww! I appreciate you too :blush:')
+    if message.content.startswith('i appreciate Pixel'):
+      await message.channel.send('Aww! I appreciate you too :blush:')
     if message.content.startswith('p;tod'):
-      embed = discord.Embed(title=random.choice(random_tod), description ='', color=0xFF0000)
-      await message.channel.send(embed = embed)
+        embed = discord.Embed(title=random.choice(random_tod),
+                              description='',
+                              color=0xFF0000)
+        await message.channel.send(embed=embed)
     if message.content.startswith('p;random cat'):
         embed = discord.Embed(title="Meow :cat:",
                               description="",
@@ -1127,7 +1157,8 @@ __**Games**:__
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
         await message.channel.send(embed=embed)
- 
+
+
 #MATH COMMANDS
 @client.command()
 async def add(ctx, num1: int, num2: int):
@@ -1175,7 +1206,8 @@ async def factorial(ctx, num1: int):
 async def log(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** {a}")
-  
+
+
 #TICTACTOE
 player1 = ""
 player2 = ""
@@ -1230,7 +1262,8 @@ async def ictactoe(ctx, p1: discord.Member, p2: discord.Member):
         await ctx.send(
             "A game is already in progress! Please finish it before starting a new one."
         )
-      
+
+
 @client.command()
 async def place(ctx, pos: int):
     global turn
@@ -1306,8 +1339,6 @@ async def place_error(ctx, error):
         await ctx.send("Please enter a position you would like to mark.")
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
-
-
 
 keep_alive()
 TOKEN = os.environ.get("SECRET")
