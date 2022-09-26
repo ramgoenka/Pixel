@@ -1,4 +1,4 @@
-#IMPORTING NEEDED LIBRARIES AND SETTING UP THE CLIENT
+#---IMPORTING NEEDED LIBRARIES AND SETTING UP THE CLIENT---
 import discord
 import os
 import random
@@ -6,16 +6,13 @@ from discord.ext import commands
 import math
 import datetime
 from keepalive import keep_alive
-#import requests
-#import json
-#from weather import *
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents = intents)
 client = commands.Bot(intents = intents, command_prefix=['pmath', 'pt'])
 
-#LISTS
+#---LISTS---
 embed_footers = [
     'Thanks for using pixel :)',
     'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
@@ -436,7 +433,7 @@ dare_questions_only = [
 ]
 
 
-#CODE FOR SOME OF THE STARTER COMMANDS AND GREETINGS p;hug
+#---CODE FOR SOME OF THE STARTER COMMANDS AND GREETINGS---
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -576,10 +573,6 @@ async def on_message(message):
                               description=random.choice(wyr_questions),
                               color=0xFF6600)
         await message.channel.send(embed=embed)
-    #if message.content.startswith('p;troll'):
-      #embed = discord.Embed(title='We do a little...')
-      #embed.set_image(url='https://c.tenor.com/_bTaLmoLSc4AAAAd/troll-pilled.gif')
-      #await message.channel.send(embed=embed)
     if message.content.startswith('p;fact'):
         embed = discord.Embed(title="Did you know...",
                               description=random.choice(random_facts),
@@ -1159,7 +1152,7 @@ __**Games**:__
         await message.channel.send(embed=embed)
 
 
-#MATH COMMANDS
+#---MATH COMMANDS---
 @client.command()
 async def add(ctx, num1: int, num2: int):
     a = num1 + num2
@@ -1208,7 +1201,7 @@ async def log(ctx, num1: int, num2: int):
     await ctx.send(f"**Result:** {a}")
 
 
-#TICTACTOE
+#---TICTACTOE---
 player1 = ""
 player2 = ""
 turn = ""
@@ -1339,8 +1332,7 @@ async def place_error(ctx, error):
         await ctx.send("Please enter a position you would like to mark.")
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
-
+#---RUNNING THE BOT---
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
-
