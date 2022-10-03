@@ -134,3 +134,5 @@ async def on_message(message):
         embed = discord.Embed(title="", description=f"""{author.mention} Here is a hug for you :)""", color=0xFF00FF)
         embed.set_image(url=random.choice(hug_gif))
         await message.channel.send(embed=embed) 
+
+#Remember to update this later
