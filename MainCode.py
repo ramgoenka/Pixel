@@ -12,7 +12,7 @@ intents.message_content = True
 client = discord.Client(intents = intents)
 client = commands.Bot(intents = intents, command_prefix=['pmath', 'pt'])
 
-#---LISTS---
+#---LISTS: These are large text lists that contain texts that the bot will send upon being triggered---
 embed_footers = [
     'Thanks for using pixel :)',
     'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
@@ -22,6 +22,9 @@ embed_footers = [
     'Thanks for checking out my commands :)', 'Hope you have a great day :D',
     'Your back must hurt from carrying all that amazingness :)'
 ]
+
+#Here is a list of all sad words :( 
+#Upon detecting any of these sad words or phrases, the bot will send an encouraging text to the user!
 
 sad = [
     "I am a failure", "i am failure", "i am a failure", "im a failure",
