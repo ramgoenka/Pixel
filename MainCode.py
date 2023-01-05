@@ -538,14 +538,14 @@ pmathlog''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info wyr'):
+    if message.content.startswith('p;info pmathintegral'):
         embed = discord.Embed(
-            title='__**would you rather...**__ :eyes:',
+            title='__**math: integral**__ :man_teacher:',
             description=
-            '''Use this command to have pixel ask you a *would you rather* question. Ready to make some choices and face some interesting questions?
+            '''Followed by the function (pmathintegral), the user must input some mathemtaical function f(x) for which they wish to find the integral of. Here are ways to interpret the result: For example if the user inputs the function `x`, the output will be `x**2/2` which means `x` to the second power, divided by two                        
 
 __**Syntax**__
-p;wyr''',
+pmathintegral''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
