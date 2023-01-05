@@ -1,3 +1,4 @@
+#THIS FILE IS USED TO KEEP THE BOT ALIVE (ONLINE) FOR 24/7
 from flask import Flask
 from threading import Thread 
 
