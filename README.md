@@ -3,4 +3,4 @@
 
 All code is in the ``MainCode.py`` folder. Other folders are just to have chunks of code from the main file divided into categories.
 
-Please use the command `p;help` to learn more about the various commands the bot has as well as how to use it.
+Please use the command `p;help` in Discord to learn more about the various commands the bot has as well as how to use it.
