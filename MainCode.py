@@ -1,4 +1,4 @@
-#---IMPORTING NEEDED LIBRARIES AND SETTING UP THE CLIENT---
+#IMPORTING NEEDED LIBRARIES AND SETTING UP THE CLIENT
 import discord
 import os
 import random
@@ -6,13 +6,14 @@ from discord.ext import commands
 import math
 import datetime
 from keepalive import keep_alive
+from sympy import *
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents = intents)
-client = commands.Bot(intents = intents, command_prefix=['pmath', 'pt'])
+client = commands.Bot(intents = intents, command_prefix=['pmat', 'pt'])
 
-#---CODE FOR SOME OF THE STARTER COMMANDS AND GREETINGS---
+#CODE FOR SOME OF THE STARTER COMMANDS AND GREETINGS 
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -26,6 +27,19 @@ async def on_message(message):
         return
     msg = message.content
     author = message.author
+
+  
+  #INTEGRAL CALCULATOR
+    if message.content.startswith('pmathintegral'):
+        try:
+            words = message.content.split(None, 1)
+            x = symbols('x')
+            result = integrate(words[1], x)
+            await message.channel.send(f"Result: ```{result}```")
+        except IndexError:
+            await message.channel.send("No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature.")
+
+          
     if message.content.startswith('hello'):
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
@@ -188,6 +202,8 @@ async def on_message(message):
                               color=0x00FFFF)
         embed.set_image(url=random.choice(cat_images))
         await message.channel.send(embed=embed)
+
+      
 #INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
     if message.content.startswith('p;info help'):
         embed = discord.Embed(title="__**help**__ :pencil:",
@@ -612,9 +628,11 @@ p;truth''',
             title='__**TicTacToe**__ :regional_indicator_x: :o2:',
             description=
             '''Use this command to play a game of tictactoe or have two people play a game of tictacoe. To start the game type ``ptictactoe`` followed by the the userID of the first place (i.e pinging the first player) and the userID of the second of the second player (i.e. pinging the second player), it should look something like this: ``ptictactoe @player1 @player2``. Once the game has started, the player who makes the first move is pinged by pixel. To mark a tyle type ``ptplace`` followed by an integer between 1 - 9 (included) corresponding to the value of the tile you want to mark, make sure that the tile hasn't already been marked before, (ex. ``ptplace 4`` <-- this marks the 4th tile). The tiles are numbered in the following manner:
+            
 1 2 3
 4 5 6 
 7 8 9
+
 Good luck!
                             
 __**Syntax**__
@@ -660,6 +678,7 @@ __**Math**:__
 ``pmathfactorial x``: Finds the factorial of the value inputted
 ``pmathsqrt x``: Finds the square root of the value inputted        
 ``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
+``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
                            
 __**Games**:__
 ``p;wyr``: Asks a *would you rather* question
@@ -709,6 +728,7 @@ __**Math**:__
 ``pmathfactorial x``: Finds the factorial of the value inputted
 ``pmathsqrt x``: Finds the square root of the value inputted        
 ``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
+``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
                            
 __**Games**:__
 ``p;wyr``: Asks a *would you rather* question
@@ -731,56 +751,56 @@ __**Games**:__
         await message.channel.send(embed=embed)
 
 
-#---MATH COMMANDS---
+#MATH COMMANDS
 @client.command()
-async def add(ctx, num1: int, num2: int):
+async def hadd(ctx, num1: int, num2: int):
     a = num1 + num2
     await ctx.send(f"**Result:** {a}")
 
 
 @client.command()
-async def subtract(ctx, num1: int, num2: int):
+async def hsubtract(ctx, num1: int, num2: int):
     a = num1 - num2
     await ctx.send(f"**Result:** {a}")
 
 
 @client.command()
-async def multiply(ctx, num1: int, num2: int):
+async def hmultiply(ctx, num1: int, num2: int):
     a = num1 * num2
     await ctx.send(f"**Result:** {a}")
 
 
 @client.command()
-async def divide(ctx, num1: int, num2: int):
+async def hdivide(ctx, num1: int, num2: int):
     a = num1 / num2
     await ctx.send(f"**Result:** {a}")
 
 
 @client.command()
-async def exp(ctx, num1: int, num2: int):
+async def hexp(ctx, num1: int, num2: int):
     a = num1**num2
     await ctx.send(f"**Result:** {a}")
 
 
 @client.command()
-async def sqrt(ctx, num1: int):
+async def hsqrt(ctx, num1: int):
     a = num1**0.5
     await ctx.send(f"**Result:** {a}")
 
 
 @client.command()
-async def factorial(ctx, num1: int):
+async def hfactorial(ctx, num1: int):
     a = math.factorial(num1)
     await ctx.send(f"**Result:** {a}")
 
 
 @client.command()
-async def log(ctx, num1: int, num2: int):
+async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** {a}")
 
 
-#---TICTACTOE---
+#TICTACTOE
 player1 = ""
 player2 = ""
 turn = ""
@@ -911,8 +931,6 @@ async def place_error(ctx, error):
         await ctx.send("Please enter a position you would like to mark.")
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
-        
-#---LISTS: These are large text lists that contain texts that the bot will send upon being triggered---
 embed_footers = [
     'Thanks for using pixel :)',
     'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
@@ -922,9 +940,6 @@ embed_footers = [
     'Thanks for checking out my commands :)', 'Hope you have a great day :D',
     'Your back must hurt from carrying all that amazingness :)'
 ]
-
-#Here is a list of all sad words :( 
-#Upon detecting any of these sad words or phrases, the bot will send an encouraging text to the user!
 
 sad = [
     "I am a failure", "i am failure", "i am a failure", "im a failure",
@@ -956,7 +971,7 @@ sad = [
     "i'm Unintelligent", "i'm a Unintelligent", "i am Not smart",
     "I am Not smart", "i am a Not smart", "im a Not smart", "i'm Not smart",
     "i'm a Not smart", "I am trash", "i'm trash", "I'm trash", "i am trash",
-    "I’m garbage", "i'm garbage", "I am garbage", "i am garbage"
+    "I’m garbage", "i'm garbage", "I am garbage", "i am garbage", "i am dumbest", "I am dumbest"
 ]
 
 encouraging_words = [
@@ -969,7 +984,7 @@ encouraging_words = [
     "There is light at the end of the tunnel :)",
     "Sending good vibes and happy thoughts your way  <(^-^<)",
     "Believe in yourself! Because I for sure do :)",
-    "Believe in yourself, you are amazing!", "Stay strong! You are powerful and you are a fighter! You got this!", "I am rooting for you!", "You are a wonderful person!"
+    "Believe in yourself, you are amazing!", "Stay strong! You are powerful and you are a fighter! You got this!", "I am rooting for you!", "You are a wonderful person!", "You are amazing :)"
 ]
 
 hug_gif = [
@@ -1335,10 +1350,7 @@ dare_questions_only = [
     'Count up to 100 in one sitting'
 ]
 
-#---RUNNING THE BOT---
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
-
-
 
