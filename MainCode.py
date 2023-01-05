@@ -8,15 +8,14 @@ import math
 import datetime
 from keepalive import keep_alive
 from sympy import *
-#import openai
-
 
 intents = discord.Intents.default()
 intents.message_content = True
-client = discord.Client(intents = intents)
-client = commands.Bot(intents = intents, command_prefix=['pmat', 'pt'])
+client = discord.Client(intents=intents)
+client = commands.Bot(intents=intents, command_prefix=['pmat', 'pt'])
 
-#CODE FOR SOME OF THE STARTER COMMANDS AND GREETINGS 
+
+#CODE FOR SOME OF THE STARTER COMMANDS AND GREETINGS
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -30,7 +29,6 @@ async def on_message(message):
         return
     msg = message.content
     author = message.author
-
 #INTEGRAL CALCULATOR
     if message.content.startswith('pmathintegral'):
         try:
@@ -39,9 +37,10 @@ async def on_message(message):
             result = integrate(words[1], x)
             await message.channel.send(f"**Result:** ```{result}```")
         except IndexError:
-            await message.channel.send("No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature.")
+            await message.channel.send(
+                "No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature."
+            )
 
-          
     if message.content.startswith('hello'):
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
@@ -129,7 +128,9 @@ async def on_message(message):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('p;about'):
-      await message.channel.send("Hello! My name is Pixel and I am a Discord bot full of random interesting commands and features. Type ``p;help`` to get a list of commands! Thanks for checking me out and I hope you have a nice day :)")
+        await message.channel.send(
+            "Hello! My name is Pixel and I am a Discord bot full of random interesting commands and features. Type ``p;help`` to get a list of commands! Thanks for checking me out and I hope you have a nice day :)"
+        )
     if message.content.startswith('p;ping'):
         await message.channel.send(
             f'**:ping_pong: Bot latency**: {client.latency * 10000} ms')
@@ -190,9 +191,9 @@ async def on_message(message):
                               color=0xFF0000)
         await message.channel.send(embed=embed)
     if message.content.startswith('I appreciate Pixel'):
-      await message.channel.send('Aww! I appreciate you too :blush:')
+        await message.channel.send('Aww! I appreciate you too :blush:')
     if message.content.startswith('i appreciate Pixel'):
-      await message.channel.send('Aww! I appreciate you too :blush:')
+        await message.channel.send('Aww! I appreciate you too :blush:')
     if message.content.startswith('p;tod'):
         embed = discord.Embed(title=random.choice(random_tod),
                               description='',
@@ -205,7 +206,6 @@ async def on_message(message):
         embed.set_image(url=random.choice(cat_images))
         await message.channel.send(embed=embed)
 
-      
 #INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
     if message.content.startswith('p;info help'):
         embed = discord.Embed(title="__**help**__ :pencil:",
@@ -933,6 +933,8 @@ async def place_error(ctx, error):
         await ctx.send("Please enter a position you would like to mark.")
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
+
+
 embed_footers = [
     'Thanks for using pixel :)',
     'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
@@ -973,7 +975,8 @@ sad = [
     "i'm Unintelligent", "i'm a Unintelligent", "i am Not smart",
     "I am Not smart", "i am a Not smart", "im a Not smart", "i'm Not smart",
     "i'm a Not smart", "I am trash", "i'm trash", "I'm trash", "i am trash",
-    "I’m garbage", "i'm garbage", "I am garbage", "i am garbage", "i am dumbest", "I am dumbest"
+    "I’m garbage", "i'm garbage", "I am garbage", "i am garbage",
+    "i am dumbest", "I am dumbest"
 ]
 
 encouraging_words = [
@@ -986,7 +989,10 @@ encouraging_words = [
     "There is light at the end of the tunnel :)",
     "Sending good vibes and happy thoughts your way  <(^-^<)",
     "Believe in yourself! Because I for sure do :)",
-    "Believe in yourself, you are amazing!", "Stay strong! You are powerful and you are a fighter! You got this!", "I am rooting for you!", "You are a wonderful person!", "You are amazing :)"
+    "Believe in yourself, you are amazing!",
+    "Stay strong! You are powerful and you are a fighter! You got this!",
+    "I am rooting for you!", "You are a wonderful person!",
+    "You are amazing :)"
 ]
 
 hug_gif = [
@@ -1161,7 +1167,12 @@ random_facts = [
     "Kangaroos can not walk backwards. :kangaroo:",
     "There are 31,556,926 seconds in a year. :timer:",
     "Lemons float but limes sink. :lemon:",
-    "Hot water turns into ice faster than cold water. This observation is called the *Mpemba effect* :thermometer:"
+    "Hot water turns into ice faster than cold water. This observation is called the *Mpemba effect* :thermometer:",
+    "The longest word in the English language, according to the Guinness Book of World Records, is ``pneumonoultramicroscopicsilicovolcanoconiosis``. :speaking_head:",
+    "The Mona Lisa is the most valuable painting in the world, with an estimated worth of over $800 million. :art:",
+    "The human nose can detect over 1 trillion different scents. :nose:",
+    "The oldest known living tree on Earth is a bristlecone pine that is over 5,000 years old. :deciduous_tree:"
+    
 ]
 
 trivia_questions = [
