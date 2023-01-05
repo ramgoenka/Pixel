@@ -1,4 +1,5 @@
 #IMPORTING NEEDED LIBRARIES AND SETTING UP THE CLIENT
+
 import discord
 import os
 import random
@@ -7,6 +8,8 @@ import math
 import datetime
 from keepalive import keep_alive
 from sympy import *
+#import openai
+
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -28,14 +31,13 @@ async def on_message(message):
     msg = message.content
     author = message.author
 
-  
-  #INTEGRAL CALCULATOR
+#INTEGRAL CALCULATOR
     if message.content.startswith('pmathintegral'):
         try:
             words = message.content.split(None, 1)
             x = symbols('x')
             result = integrate(words[1], x)
-            await message.channel.send(f"Result: ```{result}```")
+            await message.channel.send(f"**Result:** ```{result}```")
         except IndexError:
             await message.channel.send("No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature.")
 
@@ -755,49 +757,49 @@ __**Games**:__
 @client.command()
 async def hadd(ctx, num1: int, num2: int):
     a = num1 + num2
-    await ctx.send(f"**Result:** {a}")
+    await ctx.send(f"**Result:** ```{a}```")
 
 
 @client.command()
 async def hsubtract(ctx, num1: int, num2: int):
     a = num1 - num2
-    await ctx.send(f"**Result:** {a}")
+    await ctx.send(f"**Result:** ```{a}```")
 
 
 @client.command()
 async def hmultiply(ctx, num1: int, num2: int):
     a = num1 * num2
-    await ctx.send(f"**Result:** {a}")
+    await ctx.send(f"**Result:** ```{a}```")
 
 
 @client.command()
 async def hdivide(ctx, num1: int, num2: int):
     a = num1 / num2
-    await ctx.send(f"**Result:** {a}")
+    await ctx.send(f"**Result:** ```{a}```")
 
 
 @client.command()
 async def hexp(ctx, num1: int, num2: int):
     a = num1**num2
-    await ctx.send(f"**Result:** {a}")
+    await ctx.send(f"**Result:** ```{a}```")
 
 
 @client.command()
 async def hsqrt(ctx, num1: int):
     a = num1**0.5
-    await ctx.send(f"**Result:** {a}")
+    await ctx.send(f"**Result:** ```{a}```")
 
 
 @client.command()
 async def hfactorial(ctx, num1: int):
     a = math.factorial(num1)
-    await ctx.send(f"**Result:** {a}")
+    await ctx.send(f"**Result:** ```{a}```")
 
 
 @client.command()
 async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
-    await ctx.send(f"**Result:** {a}")
+    await ctx.send(f"**Result:** ```{a}```")
 
 
 #TICTACTOE
@@ -1353,4 +1355,3 @@ dare_questions_only = [
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
-
