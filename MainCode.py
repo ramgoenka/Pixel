@@ -18,7 +18,7 @@ client = commands.Bot(intents=intents, command_prefix=['pmat', 'pt'])
 #CODE
 @client.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print('Logged in as {0.user}'.format(client))
     await client.change_presence(activity=discord.Game(name="Type p;help"))
 
 
