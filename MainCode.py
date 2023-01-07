@@ -15,7 +15,7 @@ client = discord.Client(intents=intents)
 client = commands.Bot(intents=intents, command_prefix=['pmat', 'pt'])
 
 
-#CODE FOR SOME OF THE STARTER COMMANDS AND GREETINGS
+#CODE
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -29,7 +29,7 @@ async def on_message(message):
         return
     msg = message.content
     author = message.author
-#INTEGRAL CALCULATOR
+    #INTEGRAL CALCULATOR
     if message.content.startswith('pmathintegral'):
         try:
             words = message.content.split(None, 1)
@@ -934,7 +934,6 @@ async def place_error(ctx, error):
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
 
-
 embed_footers = [
     'Thanks for using pixel :)',
     'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
@@ -1172,7 +1171,6 @@ random_facts = [
     "The Mona Lisa is the most valuable painting in the world, with an estimated worth of over $800 million. :art:",
     "The human nose can detect over 1 trillion different scents. :nose:",
     "The oldest known living tree on Earth is a bristlecone pine that is over 5,000 years old. :deciduous_tree:"
-    
 ]
 
 trivia_questions = [
