@@ -5,11 +5,13 @@ import random
 from discord.ext import commands
 import math
 import datetime
-#from discord_components import DiscordComponents, ComponentsBot, Button, SelectOption, Select
+from keepalive import keep_alive
+from sympy import *
 
-client = discord.Client()
-client = commands.Bot(command_prefix=['pmath', 'pt'])
-#DiscordComponents(client)
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
+client = commands.Bot(intents=intents, command_prefix=['pmat', 'pt'])
 
 #--LISTS--
 
