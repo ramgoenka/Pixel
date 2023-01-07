@@ -29,7 +29,9 @@ async def on_message(message):
         return
     msg = message.content
     author = message.author
-    #INTEGRAL CALCULATOR
+    
+#INTEGRAL CALCULATOR
+
     if message.content.startswith('pmathintegral'):
         try:
             words = message.content.split(None, 1)
