@@ -12,6 +12,9 @@
 
 **Here** are some images from a tictactoe game between two players, which was played using the bot:
 <img width="339" alt="Screen Shot 2023-01-13 at 11 29 39 AM" src="https://user-images.githubusercontent.com/98141763/212262722-de7a84ef-7399-47b6-8605-af4554a780ec.png">
+
 <img width="281" alt="Screen Shot 2023-01-13 at 11 27 56 AM" src="https://user-images.githubusercontent.com/98141763/212262727-c95c1c6b-c511-482a-94ea-fc37effbb074.png">
+
 <img width="281" alt="Screen Shot 2023-01-13 at 11 28 08 AM" src="https://user-images.githubusercontent.com/98141763/212262735-dab25ecb-3e8e-4bbd-96d3-69d27f1ad2a9.png">
+
 <img width="275" alt="Screen Shot 2023-01-13 at 11 25 30 AM" src="https://user-images.githubusercontent.com/98141763/212262745-bdb3c9fc-ceed-4fdd-bab6-2e0cfe40596d.png">
