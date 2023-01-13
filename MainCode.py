@@ -560,7 +560,7 @@ pmathintegral''',
         embed = discord.Embed(
             title='__**truth or dare...**__ :face_with_monocle:',
             description=
-            '''Use this command to have pixel ask you a random *truth* or *dare* question. Use this function alone or with a group of people, there are fun questions and dares for everyone!                         
+            '''Use this command to have Pixel ask you a random *truth* or *dare* question. Use this function alone or with a group of people, there are fun questions and dares for everyone!                         
 
 __**Syntax**__
 p;tod''',
@@ -577,7 +577,7 @@ p;tod''',
         embed = discord.Embed(
             title='__**trivia**__ :thinking:',
             description=
-            '''Use this function to have pixel ask you a random trivia question. The answer is hidden in spoilers, so put your guess in the chat and check if you were correct! There are questions from a variety of different topics, there is something for everyone, use these to test your knowledge or learn something new :)
+            '''Use this function to have Pixel ask you a random trivia question. The answer is hidden in spoilers, so put your guess in the chat and check if you were correct! There are questions from a variety of different topics, there is something for everyone, use these to test your knowledge or learn something new :)
 
 __**Syntax**__
 p;trivia''',
@@ -594,7 +594,7 @@ p;trivia''',
         embed = discord.Embed(
             title="__**I dare you to...**__ :smiling_imp:",
             description=
-            '''Use this command to have pixel give you a random dare to do. There are a bunch of fun dares for all.
+            '''Use this command to have Pixel give you a random dare to do. There are a bunch of fun dares for all.
                         
 __**Syntax**__
 p;dare''',
@@ -611,7 +611,7 @@ p;dare''',
         embed = discord.Embed(
             title='__**answer truthfully...**__ :detective:',
             description=
-            '''Use this command to have pixel ask you a question for you to truthfully answer. No lying or cheating ;)
+            '''Use this command to have Pixel ask you a question for you to truthfully answer. No lying or cheating ;)
                             
 __**Syntax**__
 p;truth''',
@@ -621,6 +621,22 @@ p;truth''',
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+    if message.content.startswith('p;info prps'):
+      ember = discord.Embed(
+        title='__**rock paper scissors**__ :rock: :scroll: :scissors:',
+        description=
+        '''Use this command to play a game of rock paper scissors with Pixel! To use this command, type ``prps`` followed by your move, for example ``prps rock`` if you want to use rock, and Pixel will reply with its move!
+
+__**Syntax**__
+prps''',
+          color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+      )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
