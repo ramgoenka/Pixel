@@ -770,7 +770,7 @@ __**Games**:__
 #ROCK PAPER SCISSORS
       
     if message.content.startswith("prps"):
-        choices = ["rock", "paper", "scissors"]
+        choices = choices = ["rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors"]
         bot_choice = random.choice(choices)
         user_choice = message.content[5:]
         if user_choice.lower() in choices:
