@@ -17,4 +17,4 @@
 
 <img width="281" alt="Screen Shot 2023-01-13 at 11 28 08 AM" src="https://user-images.githubusercontent.com/98141763/212262735-dab25ecb-3e8e-4bbd-96d3-69d27f1ad2a9.png">
 
-<img width="275" alt="Screen Shot 2023-01-13 at 11 25 30 AM" src="https://user-images.githubusercontent.com/98141763/212262745-bdb3c9fc-ceed-4fdd-bab6-2e0cfe40596d.png">
+
