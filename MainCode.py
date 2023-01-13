@@ -1,4 +1,3 @@
-#THIS FILE IS THE MAIN FILE THAT CONTAINS ALL THE CODE FOR THE BOT.
 #IMPORTING NEEDED LIBRARIES AND SETTING UP THE CLIENT
 import discord
 import os
@@ -18,7 +17,7 @@ client = commands.Bot(intents=intents, command_prefix=['pmat', 'pt'])
 #CODE
 @client.event
 async def on_ready():
-    print('Logged in as {0.user}'.format(client))
+    print('We have logged in as {0.user}'.format(client))
     await client.change_presence(activity=discord.Game(name="Type p;help"))
 
 
@@ -29,9 +28,7 @@ async def on_message(message):
         return
     msg = message.content
     author = message.author
-    
-#INTEGRAL CALCULATOR
-
+    #INTEGRAL CALCULATOR
     if message.content.startswith('pmathintegral'):
         try:
             words = message.content.split(None, 1)
@@ -754,6 +751,22 @@ __**Games**:__
         )
         await message.channel.send(embed=embed)
 
+#ROCK PAPER SCISSORS
+      
+    if message.content.startswith("prps"):
+        choices = ["rock", "paper", "scissors"]
+        bot_choice = random.choice(choices)
+        user_choice = message.content[5:]
+        if user_choice.lower() in choices:
+            if user_choice.lower() == bot_choice:
+                await message.channel.send("I choose **" + bot_choice + "** too! It's a tie.")
+            elif (user_choice.lower() == "rock" and bot_choice == "scissors") or (user_choice.lower() == "scissors" and bot_choice == "paper") or (user_choice.lower() == "paper" and bot_choice == "rock"):
+                await message.channel.send("I choose **" + bot_choice + "**. You win!")
+            else:
+                await message.channel.send("I choose **" + bot_choice + "**. I win!")
+        else:
+            await message.channel.send("**Invalid choice**. Please choose rock, paper or scissors.")
+
 
 #MATH COMMANDS
 @client.command()
@@ -935,8 +948,8 @@ async def place_error(ctx, error):
         await ctx.send("Please enter a position you would like to mark.")
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
-        
-#--LISTS--
+
+
 
 embed_footers = [
     'Thanks for using pixel :)',
@@ -1368,3 +1381,4 @@ dare_questions_only = [
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
+
