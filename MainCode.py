@@ -7,6 +7,8 @@ import math
 import datetime
 from keepalive import keep_alive
 from sympy import *
+#import requests
+#from bs4 import BeautifulSoup
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -54,7 +56,7 @@ async def on_message(message):
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('p;hi'):
         await message.channel.send(
-            f"""Hi {author.mention}! I Hope you have a great day!""")
+            f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('Hey'):
         await message.channel.send(
@@ -624,22 +626,21 @@ p;truth''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
     if message.content.startswith('p;info prps'):
-      ember = discord.Embed(
-        title='__**rock paper scissors**__ :rock: :scroll: :scissors:',
-        description=
-        '''Use this command to play a game of rock paper scissors with Pixel! To use this command, type ``prps`` followed by your move, for example ``prps rock`` if you want to use rock, and Pixel will reply with its move!
+        ember = discord.Embed(
+            title='__**rock paper scissors**__ :rock: :scroll: :scissors:',
+            description=
+            '''Use this command to play a game of rock paper scissors with Pixel! To use this command, type ``prps`` followed by your move, for example ``prps rock`` if you want to use rock, and Pixel will reply with its move!
 
 __**Syntax**__
 prps''',
-          color=0x00FFFF)
+            color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-      )
+        )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
-
     if message.content.startswith('p;info ptictactoe'):
         embed = discord.Embed(
             title='__**TicTacToe**__ :regional_indicator_x: :o2:',
@@ -768,20 +769,33 @@ __**Games**:__
         await message.channel.send(embed=embed)
 
 #ROCK PAPER SCISSORS
-      
+
     if message.content.startswith("prps"):
-        choices = choices = ["rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors"]
+        choices = choices = [
+            "rock", "paper", "scissors", "rock", "paper", "scissors", "rock",
+            "paper", "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors"
+        ]
         bot_choice = random.choice(choices)
         user_choice = message.content[5:]
         if user_choice.lower() in choices:
             if user_choice.lower() == bot_choice:
-                await message.channel.send("I choose **" + bot_choice + "** too! It's a tie.")
-            elif (user_choice.lower() == "rock" and bot_choice == "scissors") or (user_choice.lower() == "scissors" and bot_choice == "paper") or (user_choice.lower() == "paper" and bot_choice == "rock"):
-                await message.channel.send("I choose **" + bot_choice + "**. You win!")
+                await message.channel.send("I choose **" + bot_choice +
+                                           "** too! It's a tie.")
+            elif (user_choice.lower() == "rock" and bot_choice == "scissors"
+                  ) or (user_choice.lower() == "scissors" and bot_choice
+                        == "paper") or (user_choice.lower() == "paper"
+                                        and bot_choice == "rock"):
+                await message.channel.send("I choose **" + bot_choice +
+                                           "**. You win!")
             else:
-                await message.channel.send("I choose **" + bot_choice + "**. I win!")
+                await message.channel.send("I choose **" + bot_choice +
+                                           "**. I win!")
         else:
-            await message.channel.send("**Invalid choice**. Please choose rock, paper or scissors.")
+            await message.channel.send(
+                "**Invalid choice**. Please choose rock, paper or scissors.")
 
 
 #MATH COMMANDS
@@ -831,8 +845,7 @@ async def hfactorial(ctx, num1: int):
 async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** ```{a}```")
-
-
+  
 #TICTACTOE
 player1 = ""
 player2 = ""
@@ -964,9 +977,7 @@ async def place_error(ctx, error):
         await ctx.send("Please enter a position you would like to mark.")
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
-
-
-
+ 
 embed_footers = [
     'Thanks for using pixel :)',
     'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
@@ -1393,8 +1404,6 @@ dare_questions_only = [
     'Rickroll the 5th person in your DMs (Direct Message)',
     'Count up to 100 in one sitting'
 ]
-
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
-
