@@ -816,12 +816,7 @@ __**Games**:__
 #ROCK PAPER SCISSORS
 
     if message.content.startswith("prps"):
-        choices = choices = [
-            "rock", "paper", "scissors", "rock", "paper", "scissors", "rock",
-            "paper", "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors"
+        choices = choices = [ "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors","rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors"
         ]
         bot_choice = random.choice(choices)
         user_choice = message.content[5:]
@@ -1481,4 +1476,5 @@ dare_questions_only = [
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
+
 
