@@ -495,6 +495,23 @@ pmathexp''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
+    if message.content.startswith('p;info pcountdown'):
+        embed = discord.Embed(
+            title='__**countdown...**__ :hourglass_flowing_sand:',
+            description=
+            '''Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over.
+                            
+__**Syntax**__
+pcountdown''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
     if message.content.startswith('p;info pmathfactorial'):
         embed = discord.Embed(
             title='__**math: factorial**__ <:factorial:982929962946424862>',
@@ -850,7 +867,7 @@ async def ountdown(ctx, seconds: int):
         await asyncio.sleep(1)
         seconds -= 1
         await message.edit(content=f'{seconds} seconds left!')
-    await ctx.send(f'{ctx.author.mention}: The countdown you set is complete!')
+    await ctx.send(f'{ctx.author.mention}, the countdown you set is complete!')
 
 @client.command()
 async def hdivide(ctx, num1: int, num2: int):
