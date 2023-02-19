@@ -9,11 +9,12 @@ from keepalive import keep_alive
 from sympy import *
 #import requests
 #from bs4 import BeautifulSoup
+import asyncio
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
-client = commands.Bot(intents=intents, command_prefix=['pmat', 'pt'])
+client = commands.Bot(intents=intents, command_prefix=['pmat', 'pt', 'pr'])
 
 
 #CODE
@@ -42,10 +43,19 @@ async def on_message(message):
                 "No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature."
             )
 
-    if any(word in msg for word in hello):
+#"hello", "Hello", "hEllo", "heLlo", "helLo", "hellO", "HELLO", "HELLo", "HELlo", "HEllo", "HeLlO", "hElLo", "heLLo", "HeLlO", "HEllO", "HeLlo"
+    if message.content.startswith('hello'):
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')  
+    if message.content.startswith("Hello"):
+      await message.channel.send(
+            f"""Hello {author.mention}! I Hope you have a great day!""")
+      await message.add_reaction('\U0001F44B') 
+    if message.content.startswith("HELLO"):
+      await message.channel.send(
+            f"""Hello {author.mention}! I Hope you have a great day!""")
+      await message.add_reaction('\U0001F44B')  
     if message.content.startswith('p;Hi'):
         await message.channel.send(
             f"""Hi {author.mention}! I Hope you have a great day!""")
@@ -54,7 +64,11 @@ async def on_message(message):
         await message.channel.send(
             f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
-    if any(word in msg for word in hey):
+    if message.content.startswith("hey"):
+        await message.channel.send(
+            f"""Hey {author.mention}! I Hope you have a great day!""")
+        await message.add_reaction('\U0001F44B')
+    if message.content.startswith("Hey"):
         await message.channel.send(
             f"""Hey {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
@@ -678,6 +692,7 @@ __**Actions**:__
 ``p;flip``: Flips a coin
 ``p;roll``: Rolls a 6-sided dice
 ``p;fact``: Tells you a random fact
+``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
 
 __**Math**:__                                   
 ``pmathadd x y``: Adds the inputted values
@@ -696,6 +711,7 @@ __**Games**:__
 ``p;trivia``: Asks a trivia question!
 ``p;dare``: Gives a dare
 ``p;truth``: Asks a question for you to answer, truthfully
+``prps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
 ``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
@@ -728,6 +744,7 @@ __**Actions**:__
 ``p;flip``: Flips a coin
 ``p;roll``: Rolls a 6-sided dice
 ``p;fact``: Tells you a random fact
+``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
 
 __**Math**:__                                   
 ``pmathadd x y``: Adds the inputted values
@@ -746,6 +763,7 @@ __**Games**:__
 ``p;trivia``: Asks a trivia question!
 ``p;dare``: Gives a dare
 ``p;truth``: Asks a question for you to answer, truthfully
+``prps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
 ``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
@@ -835,6 +853,23 @@ async def hfactorial(ctx, num1: int):
 async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** ```{a}```")
+
+@client.command()
+async def emindme(ctx, time: int, unit: str, *, reminder: str):
+    await ctx.send(f"{ctx.author.mention}, I will make sure to remind you :)")
+    unit = unit.lower()
+    if unit == 'seconds':
+        await asyncio.sleep(time)
+    elif unit == 'minutes':
+        await asyncio.sleep(time * 60)
+    elif unit == 'hours':
+        await asyncio.sleep(time * 60 * 60)
+    elif unit == 'days':
+        await asyncio.sleep(time * 60 * 60 * 24)
+    else:
+        await ctx.send(f"{ctx.author.mention}, please provide a valid time unit (seconds/minutes/hours/days).")
+        return
+    await ctx.send(f"{ctx.author.mention}, you asked me to remind you: **{reminder}**")
   
 #TICTACTOE
 player1 = ""
@@ -977,10 +1012,6 @@ embed_footers = [
     'Thanks for checking out my commands :)', 'Hope you have a great day :D',
     'Your back must hurt from carrying all that amazingness :)'
 ]
-
-hey = ["hey", "Hey", "HEY", "hEy", "heY", "HEy", "hEY", "HeY", "heyy", "heyyy", "heyyyy", "heyyyyy", "heyyyyyy", "heyyyyyyy", "heyyyyyyyyyyyyyy", "Heyy", "Heyyy", "Heyyyy", "Heyyyyy", "Heyyyyyy", "Heyyyyyyy", "Heyyyyyyyyyyyyyy"]
-
-hello = ["hello", "Hello", "hEllo", "heLlo", "helLo", "hellO", "HELLO", "HELLo", "HELlo", "HEllo", "HeLlO", "hElLo", "heLLo", "HeLlO", "HEllO", "HeLlo"]
 
 sad = [
     "I am a failure", "i am failure", "i am a failure", "im a failure",
