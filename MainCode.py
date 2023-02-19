@@ -14,7 +14,7 @@ import asyncio
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
-client = commands.Bot(intents=intents, command_prefix=['pmat', 'pt', 'pr'])
+client = commands.Bot(intents=intents, command_prefix=['pmat', 'pt', 'pr', 'pc'])
 
 #CODE
 @client.event
@@ -41,7 +41,7 @@ async def on_message(message):
             await message.channel.send(
                 "No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature."
             )
-
+          
 #"hello", "Hello", "hEllo", "heLlo", "helLo", "hellO", "HELLO", "HELLo", "HELlo", "HEllo", "HeLlO", "hElLo", "heLLo", "HeLlO", "HEllO", "HeLlo"
     if message.content.startswith('hello'):
         await message.channel.send(
@@ -693,42 +693,43 @@ ptictactoe''',
         embed = discord.Embed(title="Commands :cat:",
                               description='''
 __**About Me**:__
-``p;help``: Gives a list of commands
-``p;info <command>``: For more detailed information about the specific command (ex. p;help fact)
-``p;dm help``: Sends a DM to the user with a list of commands  
-``p;about``: Give me a chance to introduce myself!
-``p;ping``: Shows the real time response time of pixel
+• ``p;help``: Gives a list of commands
+• ``p;info <command>``: For more detailed information about the specific command (ex. p;help fact)
+• ``p;dm help``: Sends a DM to the user with a list of commands  
+• ``p;about``: Give me a chance to introduce myself!
+• ``p;ping``: Shows the real time response time of pixel
                                  
 __**Actions**:__
-``p;hi``: Say hi to me! 
-``p;hug``: Free hug for the user! Everyone deserves a hug :)
-``p;random cat``: Sends a random cat image or GIF in the chat
-``p;cat``: meow! 
-``p;kitty``: meow!
-``p;flip``: Flips a coin
-``p;roll``: Rolls a 6-sided dice
-``p;fact``: Tells you a random fact
-``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
+• ``p;hi``: Say hi to me! 
+• ``p;hug``: Free hug for the user! Everyone deserves a hug :)
+• ``p;random cat``: Sends a random cat image or GIF in the chat
+• ``p;cat``: meow! 
+• ``p;kitty``: meow!
+• ``p;flip``: Flips a coin
+• ``p;roll``: Rolls a 6-sided dice
+• ``p;fact``: Tells you a random fact
+• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example • ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
+• ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over. 
 
 __**Math**:__                                   
-``pmathadd x y``: Adds the inputted values
-``pmathsubtract x y``: Substracts the inputted values
-``pmathmultiply x y``: Multiplies the inputted values
-``pmathdivide x y``: Divides the inputted values
-``pmathexp x y``: Raises the base (x) to an exponent (y)
-``pmathfactorial x``: Finds the factorial of the value inputted
-``pmathsqrt x``: Finds the square root of the value inputted        
-``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
-``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
+• ``pmathadd x y``: Adds the inputted values
+• ``pmathsubtract x y``: Substracts the inputted values
+• ``pmathmultiply x y``: Multiplies the inputted values
+• ``pmathdivide x y``: Divides the inputted values
+• ``pmathexp x y``: Raises the base (x) to an exponent (y)
+• ``pmathfactorial x``: Finds the factorial of the value inputted
+• ``pmathsqrt x``: Finds the square root of the value inputted     
+• ``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
+• ``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
                            
 __**Games**:__
-``p;wyr``: Asks a *would you rather* question
-``p;tod``: Asks a random *Truth*  or *Dare* question
-``p;trivia``: Asks a trivia question!
-``p;dare``: Gives a dare
-``p;truth``: Asks a question for you to answer, truthfully
-``prps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
-``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
+• ``p;wyr``: Asks a *would you rather* question
+• ``p;tod``: Asks a random *Truth*  or *Dare* question
+• ``p;trivia``: Asks a trivia question!
+• ``p;dare``: Gives a dare
+• ``p;truth``: Asks a question for you to answer, truthfully
+• ``prps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
+• ``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
         embed.set_thumbnail(
@@ -745,42 +746,43 @@ __**Games**:__
         embed = discord.Embed(title="Commands :cat:",
                               description='''
 __**About Me**:__
-``p;help``: Gives a list of commands
-``p;info <command>``: For more detailed information about the specific command (ex. p;help fact)
-``p;dm help``: Sends a DM to the user with a list of commands  
-``p;about``: Give me a chance to introduce myself!
-``p;ping``: Shows the real time response time of pixel
+• ``p;help``: Gives a list of commands
+• ``p;info <command>``: For more detailed information about the specific command (ex. p;help fact)
+• ``p;dm help``: Sends a DM to the user with a list of commands  
+• ``p;about``: Give me a chance to introduce myself!
+• ``p;ping``: Shows the real time response time of pixel
                                  
 __**Actions**:__
-``p;hi``: Say hi to me! 
-``p;hug``: Free hug for the user! Everyone deserves a hug :)
-``p;random cat``: Sends a random cat image or GIF in the chat
-``p;cat``: meow! 
-``p;kitty``: meow!
-``p;flip``: Flips a coin
-``p;roll``: Rolls a 6-sided dice
-``p;fact``: Tells you a random fact
-``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
+• ``p;hi``: Say hi to me! 
+• ``p;hug``: Free hug for the user! Everyone deserves a hug :)
+• ``p;random cat``: Sends a random cat image or GIF in the chat
+• ``p;cat``: meow! 
+• ``p;kitty``: meow!
+• ``p;flip``: Flips a coin
+• ``p;roll``: Rolls a 6-sided dice
+• ``p;fact``: Tells you a random fact
+• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example • ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
+• ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over. 
 
 __**Math**:__                                   
-``pmathadd x y``: Adds the inputted values
-``pmathsubtract x y``: Substracts the inputted values
-``pmathmultiply x y``: Multiplies the inputted values
-``pmathdivide x y``: Divides the inputted values
-``pmathexp x y``: Raises the base (x) to an exponent (y)
-``pmathfactorial x``: Finds the factorial of the value inputted
-``pmathsqrt x``: Finds the square root of the value inputted        
-``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
-``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
+• ``pmathadd x y``: Adds the inputted values
+• ``pmathsubtract x y``: Substracts the inputted values
+• ``pmathmultiply x y``: Multiplies the inputted values
+• ``pmathdivide x y``: Divides the inputted values
+• ``pmathexp x y``: Raises the base (x) to an exponent (y)
+• ``pmathfactorial x``: Finds the factorial of the value inputted
+• ``pmathsqrt x``: Finds the square root of the value inputted     
+• ``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
+• ``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
                            
 __**Games**:__
-``p;wyr``: Asks a *would you rather* question
-``p;tod``: Asks a random *Truth*  or *Dare* question
-``p;trivia``: Asks a trivia question!
-``p;dare``: Gives a dare
-``p;truth``: Asks a question for you to answer, truthfully
-``prps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
-``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
+• ``p;wyr``: Asks a *would you rather* question
+• ``p;tod``: Asks a random *Truth*  or *Dare* question
+• ``p;trivia``: Asks a trivia question!
+• ``p;dare``: Gives a dare
+• ``p;truth``: Asks a question for you to answer, truthfully
+• ``prps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
+• ``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
         embed.set_thumbnail(
@@ -841,6 +843,14 @@ async def hmultiply(ctx, num1: int, num2: int):
     a = num1 * num2
     await ctx.send(f"**Result:** ```{a}```")
 
+@client.command()
+async def ountdown(ctx, seconds: int):
+    message = await ctx.send(f'{seconds} seconds left!')
+    while seconds > 0:
+        await asyncio.sleep(1)
+        seconds -= 1
+        await message.edit(content=f'{seconds} seconds left!')
+    await ctx.send(f'{ctx.author.mention}: The countdown you set is complete!')
 
 @client.command()
 async def hdivide(ctx, num1: int, num2: int):
@@ -851,7 +861,6 @@ async def hdivide(ctx, num1: int, num2: int):
 async def hexp(ctx, num1: int, num2: int):
     a = num1**num2
     await ctx.send(f"**Result:** ```{a}```")
-
 
 @client.command()
 async def hsqrt(ctx, num1: int):
