@@ -533,7 +533,7 @@ pmathsqrt''',
         embed = discord.Embed(
           title='__**remind me!**__ :timer:',
           description= 
-          '''The ``premindme`` command allows the user to set a reminder for themselves for any amount of time they desire to. To use this command, the user must first type ``premindme`` and then follow it by the amount of time and units and the reminder they want to set. An example of this would be: ``premindme 10 minutes go for a walk``, the bot will ping the user after 10 minutes reminding them that they need to go for a walk. Note that only the following units are acceptable and in must be written in the command in the following manner only: ``seconds``, ``seconds``, ``minute``, ``minutes``, ``hour``, ``hours``, ``day``, ``days``.
+          '''The ``premindme`` command allows the user to set a reminder for themselves for any amount of time they desire to. To use this command, the user must first type ``premindme`` and then follow it by the amount of time and units and the reminder they want to set. An example of this would be: ``premindme 10 minutes go for a walk``, the bot will ping the user after 10 minutes reminding them that they need to go for a walk. Note that only the following units are acceptable and in must be written in the command in the following manner only: ``seconds``, ``seconds``, ``minute``, ``minutes``, ``hour``, ``hours``, ``day``, ``days``. The case of the input does not matter (i.e. the bot will accept: Second, SeCONds, SeconD, so the case of the letters in the input does not matter). 
           
 __**Syntax**__
 premindme''',
@@ -1455,3 +1455,4 @@ dare_questions_only = [
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
+
