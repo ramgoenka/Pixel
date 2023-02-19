@@ -16,7 +16,6 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 client = commands.Bot(intents=intents, command_prefix=['pmat', 'pt', 'pr'])
 
-
 #CODE
 @client.event
 async def on_ready():
@@ -531,10 +530,10 @@ pmathsqrt''',
         await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info premindme'):  
-        ember = discord.Embed(
-          title='__**remind me!**__ :timer:__',
+        embed = discord.Embed(
+          title='__**remind me!**__ :timer:',
           description= 
-          '''The ``premindme`` command allows the user to set a reminder for themselves for any amount of time they desire to. To use this command, the user must first type ``premindme`` and then follow it by the amount of time and units and the reminder they want to set. An example of this would be: ``premindme 10 minutes go for a walk``, the bot will ping the user after 10 minutes reminding them that they need to go for a walk.
+          '''The ``premindme`` command allows the user to set a reminder for themselves for any amount of time they desire to. To use this command, the user must first type ``premindme`` and then follow it by the amount of time and units and the reminder they want to set. An example of this would be: ``premindme 10 minutes go for a walk``, the bot will ping the user after 10 minutes reminding them that they need to go for a walk. Note that only the following units are acceptable and in must be written in the command in the following manner only: ``seconds``, ``seconds``, ``minute``, ``minutes``, ``hour``, ``hours``, ``day``, ``days``.
           
 __**Syntax**__
 premindme''',
@@ -865,7 +864,6 @@ async def hfactorial(ctx, num1: int):
     a = math.factorial(num1)
     await ctx.send(f"**Result:** ```{a}```")
 
-
 @client.command()
 async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
@@ -877,14 +875,22 @@ async def emindme(ctx, time: int, unit: str, *, reminder: str):
     unit = unit.lower()
     if unit == 'seconds':
         await asyncio.sleep(time)
+    elif unit == 'second':
+        await asyncio.sleep(time)
     elif unit == 'minutes':
+        await asyncio.sleep(time * 60)
+    elif unit == 'minute':
         await asyncio.sleep(time * 60)
     elif unit == 'hours':
         await asyncio.sleep(time * 60 * 60)
+    elif unit == 'hour':
+        await asyncio.sleep(time * 60 * 60)
     elif unit == 'days':
         await asyncio.sleep(time * 60 * 60 * 24)
+    elif unit == 'day':
+        await asyncio.sleep(time * 60 * 60 * 24)
     else:
-        await ctx.send(f"{ctx.author.mention}, please provide a valid time unit (seconds/minutes/hours/days).")
+        await ctx.send(f"{ctx.author.mention}, please provide a valid time unit (second/seconds/minute/minutes/hour/hours/day/days).")
         return
     await ctx.send(f"{ctx.author.mention}, you asked me to remind you: **{reminder}**")
   
