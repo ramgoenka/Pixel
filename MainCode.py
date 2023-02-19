@@ -7,8 +7,8 @@ import math
 import datetime
 from keepalive import keep_alive
 from sympy import *
-import requests
-from bs4 import BeautifulSoup
+#import requests
+#from bs4 import BeautifulSoup
 
 intents = discord.Intents.default()
 intents.message_content = True
