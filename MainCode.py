@@ -7,8 +7,8 @@ import math
 import datetime
 from keepalive import keep_alive
 from sympy import *
-#import requests
-#from bs4 import BeautifulSoup
+import requests
+from bs4 import BeautifulSoup
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -42,14 +42,10 @@ async def on_message(message):
                 "No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature."
             )
 
-    if message.content.startswith('hello'):
+    if any(word in msg for word in hello):
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith('Hello'):
-        await message.channel.send(
-            f"""Hello {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
+        await message.add_reaction('\U0001F44B')  
     if message.content.startswith('p;Hi'):
         await message.channel.send(
             f"""Hi {author.mention}! I Hope you have a great day!""")
@@ -58,11 +54,7 @@ async def on_message(message):
         await message.channel.send(
             f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
-    if message.content.startswith('Hey'):
-        await message.channel.send(
-            f"""Hey {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith('hey'):
+    if any(word in msg for word in hey):
         await message.channel.send(
             f"""Hey {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
@@ -803,8 +795,7 @@ __**Games**:__
 async def hadd(ctx, num1: int, num2: int):
     a = num1 + num2
     await ctx.send(f"**Result:** ```{a}```")
-
-
+  
 @client.command()
 async def hsubtract(ctx, num1: int, num2: int):
     a = num1 - num2
@@ -821,8 +812,7 @@ async def hmultiply(ctx, num1: int, num2: int):
 async def hdivide(ctx, num1: int, num2: int):
     a = num1 / num2
     await ctx.send(f"**Result:** ```{a}```")
-
-
+      
 @client.command()
 async def hexp(ctx, num1: int, num2: int):
     a = num1**num2
@@ -987,6 +977,10 @@ embed_footers = [
     'Thanks for checking out my commands :)', 'Hope you have a great day :D',
     'Your back must hurt from carrying all that amazingness :)'
 ]
+
+hey = ["hey", "Hey", "HEY", "hEy", "heY", "HEy", "hEY", "HeY", "heyy", "heyyy", "heyyyy", "heyyyyy", "heyyyyyy", "heyyyyyyy", "heyyyyyyyyyyyyyy", "Heyy", "Heyyy", "Heyyyy", "Heyyyyy", "Heyyyyyy", "Heyyyyyyy", "Heyyyyyyyyyyyyyy"]
+
+hello = ["hello", "Hello", "hEllo", "heLlo", "helLo", "hellO", "HELLO", "HELLo", "HELlo", "HEllo", "HeLlO", "hElLo", "heLLo", "HeLlO", "HEllO", "HeLlo"]
 
 sad = [
     "I am a failure", "i am failure", "i am a failure", "im a failure",
