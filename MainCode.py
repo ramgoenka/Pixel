@@ -530,6 +530,23 @@ pmathsqrt''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
+    if message.content.startswith('p;info premindme'):  
+        ember = discord.Embed(
+          title='__**remind me!**__ :timer:__',
+          description= 
+          '''The ``premindme`` command allows the user to set a reminder for themselves for any amount of time they desire to. To use this command, the user must first type ``premindme`` and then follow it by the amount of time and units and the reminder they want to set. An example of this would be: ``premindme 10 minutes go for a walk``, the bot will ping the user after 10 minutes reminding them that they need to go for a walk.
+          
+__**Syntax**__
+premindme''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
     if message.content.startswith('p;info pmathlog'):
         embed = discord.Embed(
             title='__**math: logrithm**__ :wood:',
