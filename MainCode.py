@@ -135,7 +135,11 @@ async def on_message(message):
         await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('p;about'):
         await message.channel.send(
-            "Hello! My name is Pixel and I am a Discord bot full of random interesting commands and features. Type ``p;help`` to get a list of commands! Thanks for checking me out and I hope you have a nice day :)"
+            '''Hello! 
+            
+My name is Pixel and I am a Discord bot full of random interesting commands and features. I am written using multiple libraries in Python, and can perform various functions such as calculations, setting reminders, sending cat images and much more. Type ``p;help`` to get a list of all my commands!
+
+Thanks for checking me out and I hope you have a nice day :)'''
         )
     if message.content.startswith('p;ping'):
         await message.channel.send(
@@ -228,6 +232,20 @@ p;help''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
+      
+    if message.content.startswith("p;info pmathgcd"):
+      embed = discord.Embed(title="__**math: greatest common divisor**__ :asterisk:", description='''This command can be used to calculate the greatest common divisor (gcd) of two numbers. To use this command, the user must type ``pmathgcd`` and then the two numbers they desire to calculate the gcd for. For example if a user wishes to find the gcd of ``4`` and ``2`` they must type ``pmathgcd 4 2`` and the bot will respond with the result which is ``2``.
+
+__**Syntax**__
+pmathgcd''',
+                           color=0x00FFFF)
+      embed.set_footer(
+          text=random.choice(embed_footers),
+          icon_url=
+"https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"          
+        )
+      embed.timestamp = datetime.datetime.utcnow()
+      await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info dm help'):
         embed = discord.Embed(title="__**dm help**__ :calling:",
@@ -738,6 +756,7 @@ __**Math**:__
 • ``pmathsqrt x``: Finds the square root of the value inputted     
 • ``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
 • ``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
+• ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
                            
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -791,6 +810,7 @@ __**Math**:__
 • ``pmathsqrt x``: Finds the square root of the value inputted     
 • ``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
 • ``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
+• ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
                            
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -868,7 +888,17 @@ async def ountdown(ctx, seconds: int):
 async def hdivide(ctx, num1: int, num2: int):
     a = num1 / num2
     await ctx.send(f"**Result:** ```{a}```")
-      
+
+@client.command()
+async def hgcd(ctx, num1: int, num2: int):
+    a = max(num1, num2)
+    b = min(num1, num2)
+    while b != 0:
+        temp = b
+        b = a % b
+        a = temp
+    await ctx.send(f"**Result:** ```{a}```")
+
 @client.command()
 async def hexp(ctx, num1: int, num2: int):
     a = num1**num2
@@ -878,8 +908,7 @@ async def hexp(ctx, num1: int, num2: int):
 async def hsqrt(ctx, num1: int):
     a = num1**0.5
     await ctx.send(f"**Result:** ```{a}```")
-
-
+      
 @client.command()
 async def hfactorial(ctx, num1: int):
     a = math.factorial(num1)
@@ -1164,7 +1193,8 @@ cat_images = [
     "https://images.rawpixel.com/image_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3B4NzU1MDcwLWltYWdlLWt3dnhnbzBsLmpwZw.jpg",
     "https://pixnio.com/free-images/2017/09/26/2017-09-26-07-23-15-1100x818.jpg",
     "https://c.pxhere.com/photos/5e/7b/cat_feline_staring_kitty_pet_cute_cat-640016.jpg!d",
-    "https://c.tenor.com/ZhfMGWrmCTcAAAAC/cute-kitty-best-kitty.gif"
+    "https://c.tenor.com/ZhfMGWrmCTcAAAAC/cute-kitty-best-kitty.gif",
+"https://media.discordapp.net/attachments/1011341536597917705/1044029794783858808/Tumblr_l_52756928702686.gif"
 ]
 
 wyr_questions = [
