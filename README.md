@@ -1,7 +1,7 @@
 # Pixel 
 🐱 **Pixel** is a Discord bot written in Python and contains a bunch of random commands. From greetings to sending cat images to asking trivia questions, and more, pixel is a fun-to-use chatbot!
 
-⚠️ **NOTE**: All code is in the ``MainCode.py`` file. The ``keepalive.py`` file is used to have the bot stay online and running 24/7. The ``CodeByCategories`` folder is just to create seprate files with chunks of code form the main file organized into categories, making it easier to update, write code, and read. Please refer to the ``MainCode.py`` file if you want the mose upto date version of the bot with all the functions.
+⚠️ **NOTE**: All code is in the ``MainCode.py`` file and the ``keepalive.py``. The ``keepalive.py`` file is used to enable the bot to stay online and running 24/7.
 
 ⚠️ **Please** use the command `p;help` in Discord to learn more about the various commands the bot has as well as how to use it.
 
