@@ -10,12 +10,13 @@ from sympy import *
 #import requests
 #from bs4 import BeautifulSoup
 import asyncio
+import requests
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 client = commands.Bot(intents=intents,
-                      command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp'])
+                      command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd'])
 
 
 #CODE
@@ -264,6 +265,22 @@ ppoll''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)  
+
+    if message.content.startswith('p;info pdefine'):
+        embed = discord.Embed(title="__**define**__ :book:",
+                              description='''
+Use this command to find the definiton of any word in the english langauge. For example, if the user wishes to find the definition of the word "dessert", then the user must type ``pdefine dessert`` and the bot will reply with the definition of the word "dessert". 
+                            
+__**Syntax**__
+pdefine''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
       
     if message.content.startswith("p;info pmathgcd"):
         embed = discord.Embed(
@@ -781,6 +798,7 @@ __**Actions**:__
 • ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example • ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
 • ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over. 
 • ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. To use this command, the user must type ``ppoll`` followed by the question and the options. Type ``p;info ppoll`` for detailed information on functionality and useage!
+• ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
 
 __**Math**:__                                   
 • ``pmathadd x y``: Adds the inputted values
@@ -836,6 +854,7 @@ __**Actions**:__
 • ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example • ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
 • ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over. 
 • ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. To use this command, the user must type ``ppoll`` followed by the question and the options. Type ``p;info ppoll`` for detailed information on functionality and useage!
+• ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
 
 __**Math**:__                                   
 • ``pmathadd x y``: Adds the inputted values
@@ -992,6 +1011,15 @@ async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** ```{a}```")
 
+@client.command()
+async def efine(ctx, word):
+    url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()[0]['meanings'][0]['definitions'][0]['definition']
+        await ctx.send(f"**{word}**: {data}")
+    else:
+        await ctx.send(f"Sorry, I couldn't find the definition for **{word}**.")
 
 @client.command()
 async def oll(ctx, question, *options: str):
