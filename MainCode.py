@@ -14,7 +14,9 @@ import asyncio
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
-client = commands.Bot(intents=intents, command_prefix=['pmat', 'pt', 'pr', 'pc'])
+client = commands.Bot(intents=intents,
+                      command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp'])
+
 
 #CODE
 @client.event
@@ -41,28 +43,45 @@ async def on_message(message):
             await message.channel.send(
                 "No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature."
             )
-          
+    if message.content.startswith('!poll'):
+        # Extract the poll question and options from the message
+        poll_data = message.content[5:].split('/')
+        poll_question = poll_data[0]
+        poll_options = [option.strip() for option in poll_data[1:]]
+
+        # Create the poll message
+        poll_message = '**{}**\n\n'.format(poll_question)
+        for i, option in enumerate(poll_options):
+            poll_message += '{}️⃣ {}\n'.format(i + 1, option)
+
+        # Send the poll message
+        poll = await message.channel.send(poll_message)
+
+        # Add the reactions to the poll message
+        for i in range(len(poll_options)):
+            reaction = '️️️️️️{}️⃣'.format(i + 1)
+            await poll.add_reaction(reaction)
 #"hello", "Hello", "hEllo", "heLlo", "helLo", "hellO", "HELLO", "HELLo", "HELlo", "HEllo", "HeLlO", "hElLo", "heLLo", "HeLlO", "HEllO", "HeLlo"
     if message.content.startswith('hello'):
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')  
+        await message.add_reaction('\U0001F44B')
     if message.content.startswith("Hello"):
-      await message.channel.send(
+        await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
-      await message.add_reaction('\U0001F44B') 
+        await message.add_reaction('\U0001F44B')
     if message.content.startswith("HELLO"):
-      await message.channel.send(
+        await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
-      await message.add_reaction('\U0001F44B')  
+        await message.add_reaction('\U0001F44B')
     if message.content.startswith('p;Hi'):
         await message.channel.send(
             f"""Hi {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('p;hi'):
         await message.channel.send(
-            f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
+            f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
+        )
     if message.content.startswith("hey"):
         await message.channel.send(
             f"""Hey {author.mention}! I Hope you have a great day!""")
@@ -134,13 +153,11 @@ async def on_message(message):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('p;about'):
-        await message.channel.send(
-            '''Hello! 
+        await message.channel.send('''Hello! 
             
 My name is Pixel and I am a Discord bot full of random interesting commands and features. I am written using multiple libraries in Python, and can perform various functions such as calculations, setting reminders, sending cat images and much more. Type ``p;help`` to get a list of all my commands!
 
-Thanks for checking me out and I hope you have a nice day :)'''
-        )
+Thanks for checking me out and I hope you have a nice day :)''')
     if message.content.startswith('p;ping'):
         await message.channel.send(
             f'**:ping_pong: Bot latency**: {client.latency * 10000} ms')
@@ -232,20 +249,38 @@ p;help''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
+    if message.content.startswith('p;info ppoll'):
+        embed = discord.Embed(title="__**poll**__ :ballot_box:",
+                              description='''
+Use this command to create a poll with a question and upto 10 options. For example, if the user wishes to ask the question: "What is the best animal?", with the options: "Cats Dogs Lions Tigers", then they must type ``ppoll What is the best animal? Cats Dogs Lions Tigers`` and the bot will create a poll with reactions for members to be able to react and show their choice. For yes or no style questions, the user must type "yes" or "no" as the options. For example: ``ppoll Should I get a haircut? Yes No``. 
+                          
+__**Syntax**__
+ppoll''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)  
       
     if message.content.startswith("p;info pmathgcd"):
-      embed = discord.Embed(title="__**math: greatest common divisor**__ :asterisk:", description='''This command can be used to calculate the greatest common divisor (gcd) of two numbers. To use this command, the user must type ``pmathgcd`` and then the two numbers they desire to calculate the gcd for. For example if a user wishes to find the gcd of ``4`` and ``2`` they must type ``pmathgcd 4 2`` and the bot will respond with the result which is ``2``.
+        embed = discord.Embed(
+            title="__**math: greatest common divisor**__ :asterisk:",
+            description=
+            '''This command can be used to calculate the greatest common divisor (gcd) of two numbers. To use this command, the user must type ``pmathgcd`` and then the two numbers they desire to calculate the gcd for. For example if a user wishes to find the gcd of ``4`` and ``2`` they must type ``pmathgcd 4 2`` and the bot will respond with the result which is ``2``.
 
 __**Syntax**__
 pmathgcd''',
-                           color=0x00FFFF)
-      embed.set_footer(
-          text=random.choice(embed_footers),
-          icon_url=
-"https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"          
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
-      embed.timestamp = datetime.datetime.utcnow()
-      await message.channel.send(embed=embed)
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info dm help'):
         embed = discord.Embed(title="__**dm help**__ :calling:",
@@ -564,11 +599,11 @@ pmathsqrt''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info premindme'):  
+    if message.content.startswith('p;info premindme'):
         embed = discord.Embed(
-          title='__**remind me!**__ :timer:',
-          description= 
-          '''The ``premindme`` command allows the user to set a reminder for themselves for any amount of time they desire to. To use this command, the user must first type ``premindme`` and then follow it by the amount of time and units and the reminder they want to set. An example of this would be: ``premindme 10 minutes go for a walk``, the bot will ping the user after 10 minutes reminding them that they need to go for a walk. Note that only the following units are acceptable and in must be written in the command in the following manner only: ``seconds``, ``seconds``, ``minute``, ``minutes``, ``hour``, ``hours``, ``day``, ``days``. The case of the input does not matter (i.e. the bot will accept: Second, SeCONds, SeconD, so the case of the letters in the input does not matter). 
+            title='__**remind me!**__ :timer:',
+            description=
+            '''The ``premindme`` command allows the user to set a reminder for themselves for any amount of time they desire to. To use this command, the user must first type ``premindme`` and then follow it by the amount of time and units and the reminder they want to set. An example of this would be: ``premindme 10 minutes go for a walk``, the bot will ping the user after 10 minutes reminding them that they need to go for a walk. Note that only the following units are acceptable and in must be written in the command in the following manner only: ``seconds``, ``seconds``, ``minute``, ``minutes``, ``hour``, ``hours``, ``day``, ``days``. The case of the input does not matter (i.e. the bot will accept: Second, SeCONds, SeconD, so the case of the letters in the input does not matter). 
           
 __**Syntax**__
 premindme''',
@@ -745,6 +780,7 @@ __**Actions**:__
 • ``p;fact``: Tells you a random fact
 • ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example • ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
 • ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over. 
+• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. To use this command, the user must type ``ppoll`` followed by the question and the options. Type ``p;info ppoll`` for detailed information on functionality and useage!
 
 __**Math**:__                                   
 • ``pmathadd x y``: Adds the inputted values
@@ -799,6 +835,7 @@ __**Actions**:__
 • ``p;fact``: Tells you a random fact
 • ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example • ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
 • ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over. 
+• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. To use this command, the user must type ``ppoll`` followed by the question and the options. Type ``p;info ppoll`` for detailed information on functionality and useage!
 
 __**Math**:__                                   
 • ``pmathadd x y``: Adds the inputted values
@@ -836,7 +873,35 @@ __**Games**:__
 #ROCK PAPER SCISSORS
 
     if message.content.startswith("prps"):
-        choices = choices = [ "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors","rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors", "rock", "paper", "scissors"
+        choices = choices = [
+            "rock", "paper", "scissors", "rock", "paper", "scissors", "rock",
+            "paper", "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors", "rock", "paper", "scissors", "rock", "paper",
+            "scissors"
         ]
         bot_choice = random.choice(choices)
         user_choice = message.content[5:]
@@ -863,7 +928,8 @@ __**Games**:__
 async def hadd(ctx, num1: int, num2: int):
     a = num1 + num2
     await ctx.send(f"**Result:** ```{a}```")
-  
+
+
 @client.command()
 async def hsubtract(ctx, num1: int, num2: int):
     a = num1 - num2
@@ -875,6 +941,7 @@ async def hmultiply(ctx, num1: int, num2: int):
     a = num1 * num2
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def ountdown(ctx, seconds: int):
     message = await ctx.send(f'{seconds} seconds left!')
@@ -884,10 +951,12 @@ async def ountdown(ctx, seconds: int):
         await message.edit(content=f'{seconds} seconds left!')
     await ctx.send(f'{ctx.author.mention}, the countdown you set is complete!')
 
+
 @client.command()
 async def hdivide(ctx, num1: int, num2: int):
     a = num1 / num2
     await ctx.send(f"**Result:** ```{a}```")
+
 
 @client.command()
 async def hgcd(ctx, num1: int, num2: int):
@@ -899,25 +968,53 @@ async def hgcd(ctx, num1: int, num2: int):
         a = temp
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def hexp(ctx, num1: int, num2: int):
     a = num1**num2
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def hsqrt(ctx, num1: int):
     a = num1**0.5
     await ctx.send(f"**Result:** ```{a}```")
-      
+
+
 @client.command()
 async def hfactorial(ctx, num1: int):
     a = math.factorial(num1)
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** ```{a}```")
+
+
+@client.command()
+async def oll(ctx, question, *options: str):
+    if len(options) <= 1:
+        await ctx.send("You need more than one option to create a poll!")
+        return
+    if len(options) > 10:
+        await ctx.send("You cannot create a poll with more than 10 options!")
+        return
+    if len(options) == 2 and options[0] == 'yes' and options[1] == 'no':
+        reactions = ['👍', '👎']
+    else:
+        reactions = [
+            '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'
+        ]
+    description = []
+    for i, option in enumerate(options):
+        description += '\n {} {}'.format(reactions[i], option)
+    embed = discord.Embed(title=question, description=''.join(description))
+    react_message = await ctx.send(embed=embed)
+    for reaction in reactions[:len(options)]:
+        await react_message.add_reaction(reaction)
+
 
 @client.command()
 async def emindme(ctx, time: int, unit: str, *, reminder: str):
@@ -940,10 +1037,14 @@ async def emindme(ctx, time: int, unit: str, *, reminder: str):
     elif unit == 'day':
         await asyncio.sleep(time * 60 * 60 * 24)
     else:
-        await ctx.send(f"{ctx.author.mention}, please provide a valid time unit (second/seconds/minute/minutes/hour/hours/day/days).")
+        await ctx.send(
+            f"{ctx.author.mention}, please provide a valid time unit (second/seconds/minute/minutes/hour/hours/day/days)."
+        )
         return
-    await ctx.send(f"{ctx.author.mention}, you asked me to remind you: **{reminder}**")
-  
+    await ctx.send(
+        f"{ctx.author.mention}, you asked me to remind you: **{reminder}**")
+
+
 #TICTACTOE
 player1 = ""
 player2 = ""
@@ -1075,7 +1176,8 @@ async def place_error(ctx, error):
         await ctx.send("Please enter a position you would like to mark.")
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
- 
+
+
 embed_footers = [
     'Thanks for using pixel :)',
     'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
@@ -1194,7 +1296,7 @@ cat_images = [
     "https://pixnio.com/free-images/2017/09/26/2017-09-26-07-23-15-1100x818.jpg",
     "https://c.pxhere.com/photos/5e/7b/cat_feline_staring_kitty_pet_cute_cat-640016.jpg!d",
     "https://c.tenor.com/ZhfMGWrmCTcAAAAC/cute-kitty-best-kitty.gif",
-"https://media.discordapp.net/attachments/1011341536597917705/1044029794783858808/Tumblr_l_52756928702686.gif"
+    "https://media.discordapp.net/attachments/1011341536597917705/1044029794783858808/Tumblr_l_52756928702686.gif"
 ]
 
 wyr_questions = [
