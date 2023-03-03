@@ -45,36 +45,38 @@ async def on_message(message):
                 "No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature."
             )
     if message.content.startswith('!poll'):
-        # Extract the poll question and options from the message
         poll_data = message.content[5:].split('/')
         poll_question = poll_data[0]
         poll_options = [option.strip() for option in poll_data[1:]]
-
-        # Create the poll message
         poll_message = '**{}**\n\n'.format(poll_question)
         for i, option in enumerate(poll_options):
             poll_message += '{}️⃣ {}\n'.format(i + 1, option)
-
-        # Send the poll message
         poll = await message.channel.send(poll_message)
-
-        # Add the reactions to the poll message
         for i in range(len(poll_options)):
             reaction = '️️️️️️{}️⃣'.format(i + 1)
             await poll.add_reaction(reaction)
-#"hello", "Hello", "hEllo", "heLlo", "helLo", "hellO", "HELLO", "HELLo", "HELlo", "HEllo", "HeLlO", "hElLo", "heLLo", "HeLlO", "HEllO", "HeLlo"
-    if message.content.startswith('hello'):
+    words = message.content.split()
+    if words[0].lower() == 'hello':
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
-    if message.content.startswith("Hello"):
-        await message.channel.send(
-            f"""Hello {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith("HELLO"):
-        await message.channel.send(
-            f"""Hello {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
+    if words[0].lower() == 'hola':
+      await message.channel.send(
+            f"""Hola {author.mention}! I Hope you have a great day!""")
+      await message.add_reaction('\U0001F44B')
+    if words[0].lower() == 'howdy':
+      await message.channel.send(
+            f"""Howdy {author.mention}! I Hope you have a great day!""")
+      await message.add_reaction('🤠')
+    if words[0].lower() == 'heya':
+      await message.channel.send(
+            f"""Heya {author.mention}! I Hope you have a great day!""")
+      await message.add_reaction('\U0001F44B')
+    if words[0].lower() == 'heyo':
+      await message.channel.send(
+            f"""Heyo {author.mention}! I Hope you have a great day!""")
+      await message.add_reaction('\U0001F44B')
+    
     if message.content.startswith('p;Hi'):
         await message.channel.send(
             f"""Hi {author.mention}! I Hope you have a great day!""")
@@ -83,28 +85,20 @@ async def on_message(message):
         await message.channel.send(
             f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
         )
-    if message.content.startswith("hey"):
-        await message.channel.send(
-            f"""Hey {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith("Hey"):
+      
+    if words[0].lower() == 'hey':
         await message.channel.send(
             f"""Hey {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if any(word in msg for word in sad):
         await message.channel.send(random.choice(encouraging_words))
-    if message.content.startswith('p;kitty'):
+    if words[0].lower() == 'kitty':
         await message.channel.send('meow :cat:')
         await message.add_reaction('\U0001F431')
-    if message.content.startswith('p;Kitty'):
+    if words[0].lower() == 'cat':
         await message.add_reaction('\U0001F431')
         await message.channel.send('meow :cat:')
-    if message.content.startswith('p;cat'):
-        await message.add_reaction('\U0001F431')
-        await message.channel.send('meow :cat:')
-    if message.content.startswith('p;Cat'):
-        await message.add_reaction('\U0001F431')
-        await message.channel.send('meow :cat:')
+      
     if message.content.startswith('p;hug'):
         embed = discord.Embed(
             title="",
@@ -113,15 +107,11 @@ async def on_message(message):
         embed.set_image(url=random.choice(hug_gif))
         embed.set_footer(text="Hope you have a great day :D")
         await message.channel.send(embed=embed)
-    if message.content.startswith('bye'):
+      
+    if words[0].lower() == 'bye':
         await message.channel.send(
-            f'''Bye {author.mention}! Hope you have a great rest of your day!'''
-        )
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith('Bye'):
-        await message.channel.send(
-            f'''Bye {author.mention}! Hope you have a great rest of your day!'''
-        )
+            f'''Bye {author.mention}! Hope you have a great rest of your day!''')
+      
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('p;flip'):
         embed = discord.Embed(title="",
@@ -138,21 +128,14 @@ async def on_message(message):
         await message.channel.send(embed=embed)
     if message.content.startswith('p;Roll'):
         await message.channel.send(random.choice(dice_roll))
-    if message.content.startswith('gn'):
+      
+    if words[0].lower() == 'gn':
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
-    if message.content.startswith('GN'):
+    if words[0].lower() == 'Goodnight':
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
-    if message.content.startswith('Gn'):
-        await message.add_reaction('\U0001F634')
-        await message.channel.send('Good night & sweet dreams! :sleeping:')
-    if message.content.startswith('Goodnight'):
-        await message.add_reaction('\U0001F634')
-        await message.channel.send('Good night & sweet dreams! :sleeping:')
-    if message.content.startswith('goodnight'):
-        await message.add_reaction('\U0001F634')
-        await message.channel.send('Good night & sweet dreams! :sleeping:')
+      
     if message.content.startswith('p;about'):
         await message.channel.send('''Hello! 
             
@@ -162,29 +145,22 @@ Thanks for checking me out and I hope you have a nice day :)''')
     if message.content.startswith('p;ping'):
         await message.channel.send(
             f'**:ping_pong: Bot latency**: {client.latency * 10000} ms')
+      
+    if words[0].lower() == 'goodnight':
+        await message.add_reaction('\U0001F634')
+        await message.channel.send(
+            'Good night & sweet dreams! :sleeping:')
     if message.content.startswith('good night'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('Good night'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
-    if message.content.startswith('gm'):
+    if words[0].lower() == 'gm':
         await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good morning! Hope you have a great day :sunny:')
-    if message.content.startswith('Gm'):
-        await message.add_reaction('\U0001F304')
-        await message.channel.send(
-            'Good morning! Hope you have a great day :sunny:')
-    if message.content.startswith('Goodmorning'):
-        await message.add_reaction('\U0001F304')
-        await message.channel.send(
-            'Good morning! Hope you have a great day :sunny:')
-    if message.content.startswith('Good morning'):
-        await message.add_reaction('\U0001F304')
-        await message.channel.send(
-            'Good morning! Hope you have a great day :sunny:')
-    if message.content.startswith('goodmorning'):
+    if words[0].lower() == 'goodmorning':
         await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good morning! Hope you have a great day :sunny:')
@@ -192,6 +168,11 @@ Thanks for checking me out and I hope you have a nice day :)''')
         await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good morning! Hope you have a great day :sunny:')
+    if message.content.startswith('Good morning'):
+        await message.add_reaction('\U0001F304')
+        await message.channel.send(
+            'Good morning! Hope you have a great day :sunny:')
+
     if message.content.startswith('p;wyr'):
         embed = discord.Embed(title='Would you rather...',
                               description=random.choice(wyr_questions),
@@ -390,36 +371,6 @@ __**Syntax**__
 p;random cat
 ''',
             color=0x00FFFF)
-        embed.set_footer(
-            text=random.choice(embed_footers),
-            icon_url=
-            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)
-
-    if message.content.startswith('p;info cat'):
-        embed = discord.Embed(title="__**cat**__ :cat:",
-                              description='''Meow!
-
-__**Syntax**__
-p;cat''',
-                              color=0x00FFFF)
-        embed.set_footer(
-            text=random.choice(embed_footers),
-            icon_url=
-            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)
-
-    if message.content.startswith('p;info kitty'):
-        embed = discord.Embed(title="__**kitty**__ :cat:",
-                              description='''Meow!
-
-__**Syntax**__
-p;cat''',
-                              color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
             icon_url=
@@ -790,8 +741,6 @@ __**Actions**:__
 • ``p;hi``: Say hi to me! 
 • ``p;hug``: Free hug for the user! Everyone deserves a hug :)
 • ``p;random cat``: Sends a random cat image or GIF in the chat
-• ``p;cat``: meow! 
-• ``p;kitty``: meow!
 • ``p;flip``: Flips a coin
 • ``p;roll``: Rolls a 6-sided dice
 • ``p;fact``: Tells you a random fact
@@ -846,8 +795,6 @@ __**Actions**:__
 • ``p;hi``: Say hi to me! 
 • ``p;hug``: Free hug for the user! Everyone deserves a hug :)
 • ``p;random cat``: Sends a random cat image or GIF in the chat
-• ``p;cat``: meow! 
-• ``p;kitty``: meow!
 • ``p;flip``: Flips a coin
 • ``p;roll``: Rolls a 6-sided dice
 • ``p;fact``: Tells you a random fact
@@ -1633,6 +1580,7 @@ dare_questions_only = [
     'Rickroll the 5th person in your DMs (Direct Message)',
     'Count up to 100 in one sitting'
 ]
+
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
