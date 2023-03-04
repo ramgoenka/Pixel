@@ -11,6 +11,7 @@ from sympy import *
 #from bs4 import BeautifulSoup
 import asyncio
 import requests
+import mpmath
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -214,7 +215,7 @@ Thanks for checking me out and I hope you have a nice day :)''')
                               color=0x00FFFF)
         embed.set_image(url=random.choice(cat_images))
         await message.channel.send(embed=embed)
-
+      
 #INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
     if message.content.startswith('p;info help'):
         embed = discord.Embed(title="__**help**__ :pencil:",
@@ -480,6 +481,29 @@ pmathdivide''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info pmathpi'):
+        embed = discord.Embed(
+            title="__**math: pi**__ :pie:",
+            description=
+            '''This command allows the user to ask the bot to send the first ``n`` digits of pi. To use this command, the user must first type ``pmathpi`` and then followed by the digits of pi the desire to be sent by the bot. For example if a user wants the first 100 digits of pi, then they must type ``pmathpi 100`` and the bot will then respond with the first 100 digits of pi. No more than 1000 digits can be requested.
+
+__**Syntax**__
+pmathpi''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+
+
+
+
+      
 
     if message.content.startswith('p;info pmathmultiply'):
         embed = discord.Embed(
@@ -760,6 +784,7 @@ __**Math**:__
 • ``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
 • ``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
 • ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
+• ``pmathpi n``: Sends the first ``n`` digits of pi.
                            
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -814,6 +839,7 @@ __**Math**:__
 • ``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
 • ``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
 • ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
+• ``pmathpi n``: Sends the first ``n`` digits of pi.
                            
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -923,7 +949,6 @@ async def hdivide(ctx, num1: int, num2: int):
     a = num1 / num2
     await ctx.send(f"**Result:** ```{a}```")
 
-
 @client.command()
 async def hgcd(ctx, num1: int, num2: int):
     a = max(num1, num2)
@@ -934,19 +959,25 @@ async def hgcd(ctx, num1: int, num2: int):
         a = temp
     await ctx.send(f"**Result:** ```{a}```")
 
-
+@client.command()
+async def hpi(ctx, digits: int):
+    if digits > 1000:
+        await ctx.send("Sorry, I only know up to 1000 digits of pi.")
+    else:
+        mpmath.mp.dps = digits
+        pi_value = str(mpmath.pi)
+        await ctx.send(f"The first **{digits}** digits of pi are: ```{pi_value}```")
+      
 @client.command()
 async def hexp(ctx, num1: int, num2: int):
     a = num1**num2
     await ctx.send(f"**Result:** ```{a}```")
 
-
 @client.command()
 async def hsqrt(ctx, num1: int):
     a = num1**0.5
     await ctx.send(f"**Result:** ```{a}```")
-
-
+  
 @client.command()
 async def hfactorial(ctx, num1: int):
     a = math.factorial(num1)
@@ -989,7 +1020,6 @@ async def oll(ctx, question, *options: str):
     react_message = await ctx.send(embed=embed)
     for reaction in reactions[:len(options)]:
         await react_message.add_reaction(reaction)
-
 
 @client.command()
 async def emindme(ctx, time: int, unit: str, *, reminder: str):
@@ -1584,5 +1614,6 @@ dare_questions_only = [
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
+
 
 
