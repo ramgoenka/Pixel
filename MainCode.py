@@ -251,6 +251,7 @@ p;help''',
                               description='''
 Use this command to get a count of characters in a given text. To use this command, the user must type ``p;countchar`` followed by the text the want to find the count of characters for. For example if a user wishes to find the number of characters in the text "Hello Pixel," they must type ``p;countchat Hello Pixel`` and the bot will then respond with the number of characters in the given text.                                               
 __**Syntax**__
+
 p;countchar''',
                               color=0x00FFFF)
         embed.set_footer(
