@@ -7,18 +7,19 @@ import math
 import datetime
 from keepalive import keep_alive
 from sympy import *
-#import requests
-#from bs4 import BeautifulSoup
 import asyncio
 import requests
 import mpmath
+from bs4 import BeautifulSoup
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 client = commands.Bot(intents=intents,
-                      command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd'])
+                      command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps'])
 
+
+cookies = {}
 
 #CODE
 @client.event
@@ -62,22 +63,22 @@ async def on_message(message):
             f"""Hello {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if words[0].lower() == 'hola':
-      await message.channel.send(
+        await message.channel.send(
             f"""Hola {author.mention}! I Hope you have a great day!""")
-      await message.add_reaction('\U0001F44B')
+        await message.add_reaction('\U0001F44B')
     if words[0].lower() == 'howdy':
-      await message.channel.send(
+        await message.channel.send(
             f"""Howdy {author.mention}! I Hope you have a great day!""")
-      await message.add_reaction('🤠')
+        await message.add_reaction('🤠')
     if words[0].lower() == 'heya':
-      await message.channel.send(
+        await message.channel.send(
             f"""Heya {author.mention}! I Hope you have a great day!""")
-      await message.add_reaction('\U0001F44B')
+        await message.add_reaction('\U0001F44B')
     if words[0].lower() == 'heyo':
-      await message.channel.send(
+        await message.channel.send(
             f"""Heyo {author.mention}! I Hope you have a great day!""")
-      await message.add_reaction('\U0001F44B')
-    
+        await message.add_reaction('\U0001F44B')
+
     if message.content.startswith('p;Hi'):
         await message.channel.send(
             f"""Hi {author.mention}! I Hope you have a great day!""")
@@ -86,7 +87,7 @@ async def on_message(message):
         await message.channel.send(
             f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
         )
-      
+
     if words[0].lower() == 'hey':
         await message.channel.send(
             f"""Hey {author.mention}! I Hope you have a great day!""")
@@ -99,7 +100,21 @@ async def on_message(message):
     if words[0].lower() == 'cat':
         await message.add_reaction('\U0001F431')
         await message.channel.send('meow :cat:')
+    if words[0].lower() == 'meow':
+        await message.add_reaction('\U0001F431')
+        await message.channel.send('meow :cat:')
       
+    if message.content.startswith('p;cookie'):
+        if len(message.mentions) == 0:
+            await message.channel.send('You need to mention a user to give a cookie to!')
+        else:
+            user = message.mentions[0]
+            if client.user in message.mentions:
+                await message.channel.send(f'Aww, thank you for the cookie, {message.author.mention}! :cookie:')
+            else:
+                await message.channel.send(f':cookie: {message.author.mention} has given a cookie to {user.mention}! :cookie:')
+              
+
     if message.content.startswith('p;hug'):
         embed = discord.Embed(
             title="",
@@ -108,11 +123,12 @@ async def on_message(message):
         embed.set_image(url=random.choice(hug_gif))
         embed.set_footer(text="Hope you have a great day :D")
         await message.channel.send(embed=embed)
-      
+
     if words[0].lower() == 'bye':
         await message.channel.send(
-            f'''Bye {author.mention}! Hope you have a great rest of your day!''')
-      
+            f'''Bye {author.mention}! Hope you have a great rest of your day!'''
+        )
+
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('p;flip'):
         embed = discord.Embed(title="",
@@ -129,28 +145,28 @@ async def on_message(message):
         await message.channel.send(embed=embed)
     if message.content.startswith('p;Roll'):
         await message.channel.send(random.choice(dice_roll))
-      
+
     if words[0].lower() == 'gn':
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
     if words[0].lower() == 'Goodnight':
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
-      
     if message.content.startswith('p;about'):
         await message.channel.send('''Hello! 
             
-My name is Pixel and I am a Discord bot full of random interesting commands and features. I am written using multiple libraries in Python, and can perform various functions such as calculations, setting reminders, sending cat images and much more. Type ``p;help`` to get a list of all my commands!
+My name is Pixel and I am a Discord bot full of random interesting commands and features. I am written using multiple libraries in Python, and can perform various functions such as calculations, setting reminders, sending cat images, playing games, and much more! Type ``p;help`` to get a list of all my commands! Additionally you can type ``p;info <command name>`` to get more information on a specific command from my list of commands!
 
-Thanks for checking me out and I hope you have a nice day :)''')
+Thanks for checking me out and I hope you have a nice day :)
+
+~ Meow :cat:''')
     if message.content.startswith('p;ping'):
         await message.channel.send(
             f'**:ping_pong: Bot latency**: {client.latency * 10000} ms')
-      
+
     if words[0].lower() == 'goodnight':
         await message.add_reaction('\U0001F634')
-        await message.channel.send(
-            'Good night & sweet dreams! :sleeping:')
+        await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('good night'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
@@ -173,7 +189,12 @@ Thanks for checking me out and I hope you have a nice day :)''')
         await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good morning! Hope you have a great day :sunny:')
-
+      
+    if message.content.startswith('!decimaltobinary'):
+        decimal = int(message.content.split(' ')[1])  
+        binary = bin(decimal)[2:]  
+        await message.channel.send(f'The binary equivalent of {decimal} is {binary}.')
+      
     if message.content.startswith('p;wyr'):
         embed = discord.Embed(title='Would you rather...',
                               description=random.choice(wyr_questions),
@@ -204,17 +225,6 @@ Thanks for checking me out and I hope you have a nice day :)''')
         await message.channel.send('Aww! I appreciate you too :blush:')
     if message.content.startswith('i appreciate Pixel'):
         await message.channel.send('Aww! I appreciate you too :blush:')
-    if message.content.startswith('p;tod'):
-        embed = discord.Embed(title=random.choice(random_tod),
-                              description='',
-                              color=0xFF0000)
-        await message.channel.send(embed=embed)
-    if message.content.startswith('p;random cat'):
-        embed = discord.Embed(title="Meow :cat:",
-                              description="",
-                              color=0x00FFFF)
-        embed.set_image(url=random.choice(cat_images))
-        await message.channel.send(embed=embed)
       
 #INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
     if message.content.startswith('p;info help'):
@@ -232,6 +242,27 @@ p;help''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
+    if message.content.startswith('p;info psearch'):
+        embed = discord.Embed(title="__**search**__ :mag_right:",
+                              description='''
+This command returns the first few results (upto 5) realted to a query inputted by the user. To use this command the user must type ``psearch`` followed by the topic the hope to find search results for. For example if a user wants search results for cats, they must time ``psearch cat`` and the bot will return the first few web search results it is able to fetch relating to cats. 
+                            
+__**Syntax**__
+psearch''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+
+
+
+
+  
     if message.content.startswith('p;info ppoll'):
         embed = discord.Embed(title="__**poll**__ :ballot_box:",
                               description='''
@@ -246,7 +277,7 @@ ppoll''',
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
         embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)  
+        await message.channel.send(embed=embed)
 
     if message.content.startswith('p;info pdefine'):
         embed = discord.Embed(title="__**define**__ :book:",
@@ -263,7 +294,7 @@ pdefine''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
-      
+
     if message.content.startswith("p;info pmathgcd"):
         embed = discord.Embed(
             title="__**math: greatest common divisor**__ :asterisk:",
@@ -499,12 +530,6 @@ pmathpi''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-
-
-
-
-      
-
     if message.content.startswith('p;info pmathmultiply'):
         embed = discord.Embed(
             title=
@@ -548,6 +573,23 @@ pmathexp''',
                             
 __**Syntax**__
 pcountdown''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+      
+    if message.content.startswith('p;info cookie'):
+        embed = discord.Embed(
+            title='__**cookie**__ :cookie:',
+            description=
+            '''Allows the user to send a cookie to another user/bot in the server. The user can also give themselves a cookie. Sharing is caring and sharing the sweetness of cookies with everyone in the server is great! So share cookies with your server members and enjoy :)
+                            
+__**Syntax**__
+p;cookie''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -772,6 +814,8 @@ __**Actions**:__
 • ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over. 
 • ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. To use this command, the user must type ``ppoll`` followed by the question and the options. Type ``p;info ppoll`` for detailed information on functionality and useage!
 • ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
+• ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
+• ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. 
 
 __**Math**:__                                   
 • ``pmathadd x y``: Adds the inputted values
@@ -827,6 +871,8 @@ __**Actions**:__
 • ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over. 
 • ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. To use this command, the user must type ``ppoll`` followed by the question and the options. Type ``p;info ppoll`` for detailed information on functionality and useage!
 • ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
+• ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
+• ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. 
 
 __**Math**:__                                   
 • ``pmathadd x y``: Adds the inputted values
@@ -933,7 +979,6 @@ async def hmultiply(ctx, num1: int, num2: int):
     a = num1 * num2
     await ctx.send(f"**Result:** ```{a}```")
 
-
 @client.command()
 async def ountdown(ctx, seconds: int):
     message = await ctx.send(f'{seconds} seconds left!')
@@ -943,11 +988,25 @@ async def ountdown(ctx, seconds: int):
         await message.edit(content=f'{seconds} seconds left!')
     await ctx.send(f'{ctx.author.mention}, the countdown you set is complete!')
 
+@client.command()
+async def search(ctx, *, query: str):
+    query = query.replace(" ", "+")
+    url = f"https://www.google.com/search?q={query}&num=5"
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
+    res = requests.get(url, headers=headers)
+    soup = BeautifulSoup(res.text, "html.parser")
+    results = soup.select(".g")
+    for i, result in enumerate(results):
+        title = result.select_one(".DKV0Md").text
+        link = result.select_one("a")["href"]
+        snippet = result.select_one(".VwiC3b").text
+        await ctx.send(f"**Result {i+1}:**\n**{title}**\n{link}\n{snippet}\n")
 
 @client.command()
 async def hdivide(ctx, num1: int, num2: int):
     a = num1 / num2
     await ctx.send(f"**Result:** ```{a}```")
+
 
 @client.command()
 async def hgcd(ctx, num1: int, num2: int):
@@ -959,6 +1018,7 @@ async def hgcd(ctx, num1: int, num2: int):
         a = temp
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def hpi(ctx, digits: int):
     if digits > 1000:
@@ -966,18 +1026,21 @@ async def hpi(ctx, digits: int):
     else:
         mpmath.mp.dps = digits
         pi_value = str(mpmath.pi)
-        await ctx.send(f"The first **{digits}** digits of pi are: ```{pi_value}```")
-      
+        await ctx.send(
+            f"The first **{digits}** digits of pi are: ```{pi_value}```")
+
+
 @client.command()
 async def hexp(ctx, num1: int, num2: int):
     a = num1**num2
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def hsqrt(ctx, num1: int):
     a = num1**0.5
     await ctx.send(f"**Result:** ```{a}```")
-  
+
 @client.command()
 async def hfactorial(ctx, num1: int):
     a = math.factorial(num1)
@@ -994,10 +1057,13 @@ async def efine(ctx, word):
     url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
     response = requests.get(url)
     if response.status_code == 200:
-        data = response.json()[0]['meanings'][0]['definitions'][0]['definition']
+        data = response.json(
+        )[0]['meanings'][0]['definitions'][0]['definition']
         await ctx.send(f"**{word}**: {data}")
     else:
-        await ctx.send(f"Sorry, I couldn't find the definition for **{word}**.")
+        await ctx.send(f"Sorry, I couldn't find the definition for **{word}**."
+                       )
+
 
 @client.command()
 async def oll(ctx, question, *options: str):
@@ -1020,6 +1086,7 @@ async def oll(ctx, question, *options: str):
     react_message = await ctx.send(embed=embed)
     for reaction in reactions[:len(options)]:
         await react_message.add_reaction(reaction)
+
 
 @client.command()
 async def emindme(ctx, time: int, unit: str, *, reminder: str):
@@ -1614,6 +1681,4 @@ dare_questions_only = [
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
-
-
 
