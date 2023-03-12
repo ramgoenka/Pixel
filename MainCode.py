@@ -11,10 +11,12 @@ import asyncio
 import requests
 import mpmath
 from bs4 import BeautifulSoup
+from autocorrect import Speller
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
+spell = Speller(lang='en')
 client = commands.Bot(intents=intents,
                       command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps'])
 
@@ -228,6 +230,13 @@ Thanks for checking me out and I hope you have a nice day :)
       text = message.content.split(' ', 1)[1]
       count = len(text)
       await message.channel.send(f'The text "{text}" has **{count}** characters.')
+    if message.content.startswith('p;autocorrect'):
+        text = message.content.split(' ', 1)[1]
+        corrected = spell(text)
+        if corrected != text:
+            await message.channel.send(corrected)
+        else:
+            await message.channel.send('No errors found in the given text.')
 
 #INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
     if message.content.startswith('p;info help'):
@@ -245,13 +254,30 @@ p;help''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info autocorrect'):
+        embed = discord.Embed(title="__**autocorrect**__ :white_check_mark:",
+                              description='''
+Use this command to fix any potential issues with a given text. The command takes a given text as an input and returns a(n) (auto)correct version of the text free of any spelling errors. Note, the command will not successfully work 100% of the times and can cause issues thus looking at the correct version and making a decision about if or not it is the desired output might be necessary if needed. 
+                            
+__**Syntax**__
+p;autocorrect''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
       
     if message.content.startswith('p;info countchar'):
         embed = discord.Embed(title="__**count characters**__ :1234:",
                               description='''
 Use this command to get a count of characters in a given text. To use this command, the user must type ``p;countchar`` followed by the text the want to find the count of characters for. For example if a user wishes to find the number of characters in the text "Hello Pixel," they must type ``p;countchat Hello Pixel`` and the bot will then respond with the number of characters in the given text.                                               
-__**Syntax**__
 
+__**Syntax**__
 p;countchar''',
                               color=0x00FFFF)
         embed.set_footer(
@@ -832,6 +858,7 @@ __**Actions**:__
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. 
 • ``p;countchat text``: Counts the number of characters in a given text. 
+• ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 
 __**Math**:__                                   
 • ``pmathadd x y``: Adds the inputted values
@@ -890,6 +917,7 @@ __**Actions**:__
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. 
 • ``p;countchat text``: Counts the number of characters in a given text. 
+• ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 
 __**Math**:__                                   
 • ``pmathadd x y``: Adds the inputted values
