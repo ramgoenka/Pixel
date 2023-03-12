@@ -18,7 +18,6 @@ client = discord.Client(intents=intents)
 client = commands.Bot(intents=intents,
                       command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps'])
 
-
 cookies = {}
 
 #CODE
@@ -225,7 +224,11 @@ Thanks for checking me out and I hope you have a nice day :)
         await message.channel.send('Aww! I appreciate you too :blush:')
     if message.content.startswith('i appreciate Pixel'):
         await message.channel.send('Aww! I appreciate you too :blush:')
-      
+    if message.content.startswith('p;countchar'):
+      text = message.content.split(' ', 1)[1]
+      count = len(text)
+      await message.channel.send(f'The text "{text}" has **{count}** characters.')
+
 #INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
     if message.content.startswith('p;info help'):
         embed = discord.Embed(title="__**help**__ :pencil:",
@@ -242,6 +245,25 @@ p;help''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
+      
+    if message.content.startswith('p;info countchat'):
+        embed = discord.Embed(title="__**count characters**__ :1234:",
+                              description='''
+Use this command to get a count of characters in a given text. To use this command, the user must type ``p;countchar`` followed by the text the want to find the count of characters for. For example if a user wishes to find the number of characters in the text "Hello Pixel," they must type ``p;countchat Hello Pixel`` and the bot will then respond with the number of characters in the given text.                                               
+__**Syntax**__
+p;countchar''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+
+
+      
     if message.content.startswith('p;info psearch'):
         embed = discord.Embed(title="__**search**__ :mag_right:",
                               description='''
@@ -816,6 +838,7 @@ __**Actions**:__
 • ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. 
+• ``p;countchat text``: Counts the number of characters in a given text. 
 
 __**Math**:__                                   
 • ``pmathadd x y``: Adds the inputted values
@@ -873,6 +896,7 @@ __**Actions**:__
 • ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. 
+• ``p;countchat text``: Counts the number of characters in a given text. 
 
 __**Math**:__                                   
 • ``pmathadd x y``: Adds the inputted values
@@ -966,8 +990,7 @@ __**Games**:__
 async def hadd(ctx, num1: int, num2: int):
     a = num1 + num2
     await ctx.send(f"**Result:** ```{a}```")
-
-
+  
 @client.command()
 async def hsubtract(ctx, num1: int, num2: int):
     a = num1 - num2
@@ -989,7 +1012,7 @@ async def ountdown(ctx, seconds: int):
     await ctx.send(f'{ctx.author.mention}, the countdown you set is complete!')
 
 @client.command()
-async def search(ctx, *, query: str):
+async def earch(ctx, *, query: str):
     query = query.replace(" ", "+")
     url = f"https://www.google.com/search?q={query}&num=5"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
@@ -1681,4 +1704,3 @@ dare_questions_only = [
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
-
