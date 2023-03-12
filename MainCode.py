@@ -74,15 +74,15 @@ async def on_message(message):
         await message.add_reaction('\U0001F44B')
     if message.content.startswith("hola"):
         await message.channel.send(
-            f"""Hello {author.mention}! I Hope you have a great day!""")
+            f"""Hola {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if message.content.startswith("Hola"):
         await message.channel.send(
-            f"""Hello {author.mention}! I Hope you have a great day!""")
+            f"""Hola {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if message.content.startswith("HOLA"):
         await message.channel.send(
-            f"""Hello {author.mention}! I Hope you have a great day!""")
+            f"""Hola {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('howdy'):
         await message.channel.send(
