@@ -320,6 +320,8 @@ Thanks for checking me out and I hope you have a nice day :)
             await message.channel.send(corrected)
         else:
             await message.channel.send('No errors found in the given text.')
+    if client.user in message.mentions:
+      await message.channel.send(f"Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!")
 
 #INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
     if message.content.startswith('p;info help'):
