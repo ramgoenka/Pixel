@@ -17,10 +17,12 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 spell = Speller(lang='en')
-client = commands.Bot(intents=intents,
-                      command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps'])
+client = commands.Bot(
+    intents=intents,
+    command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps'])
 
 cookies = {}
+
 
 #CODE
 @client.event
@@ -59,7 +61,7 @@ async def on_message(message):
             reaction = '️️️️️️{}️⃣'.format(i + 1)
             await poll.add_reaction(reaction)
     words = message.content.split()
-  
+
     if message.content.startswith("Hello"):
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
@@ -82,7 +84,7 @@ async def on_message(message):
         await message.add_reaction('\U0001F44B')
     if message.content.startswith("HOLA"):
         await message.channel.send(
-            f"""Hola {author.mention}! I Hope you have a great day!""")
+            f"""Hika {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('howdy'):
         await message.channel.send(
@@ -135,7 +137,8 @@ async def on_message(message):
 
     if message.content.startswith('p;Hi'):
         await message.channel.send(
-            f"""Hi {author.mention}! I Hope you have a great day!""")
+            f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
+        )
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('p;hi'):
         await message.channel.send(
@@ -165,17 +168,21 @@ async def on_message(message):
     if words[0].lower() == 'meow':
         await message.add_reaction('\U0001F431')
         await message.channel.send('meow :cat:')
-      
+
     if message.content.startswith('p;cookie'):
         if len(message.mentions) == 0:
-            await message.channel.send('You need to mention a user to give a cookie to!')
+            await message.channel.send(
+                'You need to mention a user to give a cookie to!')
         else:
             user = message.mentions[0]
             if client.user in message.mentions:
-                await message.channel.send(f'Aww, thank you for the cookie, {message.author.mention}! :cookie:')
+                await message.channel.send(
+                    f'Aww, thank you for the cookie, {message.author.mention}! :cookie:'
+                )
             else:
-                await message.channel.send(f':cookie: {message.author.mention} has given a cookie to {user.mention}! :cookie:')
-              
+                await message.channel.send(
+                    f':cookie: {message.author.mention} has given a cookie to {user.mention}! :cookie:'
+                )
 
     if message.content.startswith('p;hug'):
         embed = discord.Embed(
@@ -273,12 +280,13 @@ Thanks for checking me out and I hope you have a nice day :)
         await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good morning! Hope you have a great day :sunny:')
-      
+
     if message.content.startswith('p;binary'):
-        decimal = int(message.content.split(' ')[1])  
-        binary = bin(decimal)[2:]  
-        await message.channel.send(f'The binary equivalent of {decimal} is: **{binary}**.')
-      
+        decimal = int(message.content.split(' ')[1])
+        binary = bin(decimal)[2:]
+        await message.channel.send(
+            f'The binary equivalent of {decimal} is: **{binary}**.')
+
     if message.content.startswith('p;wyr'):
         embed = discord.Embed(title='Would you rather...',
                               description=random.choice(wyr_questions),
@@ -310,18 +318,34 @@ Thanks for checking me out and I hope you have a nice day :)
     if message.content.startswith('i appreciate Pixel'):
         await message.channel.send('Aww! I appreciate you too :blush:')
     if message.content.startswith('p;countchar'):
-      text = message.content.split(' ', 1)[1]
-      count = len(text)
-      await message.channel.send(f'The text "{text}" has **{count}** characters.')
+        text = message.content.split(' ', 1)[1]
+        count = len(text)
+        await message.channel.send(
+            f'The text "{text}" has **{count}** characters.')
     if message.content.startswith('p;autocorrect'):
         text = message.content.split(' ', 1)[1]
         corrected = spell(text)
         if corrected != text:
-            await message.channel.send(corrected)
+            await message.channel.send(
+                f'Here is the corrected text: **{corrected}**')
         else:
             await message.channel.send('No errors found in the given text.')
     if client.user in message.mentions:
-      await message.channel.send(f"Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!")
+        await message.channel.send(
+            f"Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"
+            "")
+
+    if message.content.startswith('p;solve '):
+        try:
+            function = message.content.split('p;solve ')[1]
+            x = symbols('x')
+            solution = solve(function, x)
+            solution_string = '\n'.join([f'{x} = {sol}' for sol in solution])
+            await message.channel.send(
+                f'Solutions to the function ``{function}`` are:```{solution_string}```')
+        except:
+            await message.channel.send(
+                'Invalid input or syntax. Please try again.')
 
 #INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
     if message.content.startswith('p;info help'):
@@ -339,6 +363,23 @@ p;help''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info solve'):
+        embed = discord.Embed(title="__**solve**__ :abacus:",
+                              description='''
+Use this command to find the solution to any equation of the form ``f(x) = 0``. For example, if the user wishes to find solutions to the equation ``x^2 + 2x + 1 = 0``, they must type ``p;solve x**2 + 2*x + 1`` and the bot will respond with the solutions to the equation. If the user wishes to solve the equation ``3^x = 9``, they must type ``p;solve 3**x - 9`` and the bot will repsond with the solutions to the function. Note: The bot as of now can only solve single variable functions. 
+                            
+__**Syntax**__
+p;solve''',
+                              color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
     if message.content.startswith('p;info binary'):
         embed = discord.Embed(title="__**binary**__ :zero: :one:",
                               description='''
@@ -354,7 +395,6 @@ p;binary''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
-        
 
     if message.content.startswith('p;info autocorrect'):
         embed = discord.Embed(title="__**autocorrect**__ :white_check_mark:",
@@ -372,7 +412,6 @@ p;autocorrect''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-      
     if message.content.startswith('p;info countchar'):
         embed = discord.Embed(title="__**count characters**__ :1234:",
                               description='''
@@ -723,7 +762,7 @@ pcountdown''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
-      
+
     if message.content.startswith('p;info cookie'):
         embed = discord.Embed(
             title='__**cookie**__ :cookie:',
@@ -974,6 +1013,7 @@ __**Math**:__
 • ``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
 • ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
 • ``pmathpi n``: Sends the first ``n`` digits of pi.
+• ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type ``p;info solve`` for more information!
                            
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1034,6 +1074,7 @@ __**Math**:__
 • ``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
 • ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
 • ``pmathpi n``: Sends the first ``n`` digits of pi.
+• ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type ``p;info solve`` for more information!
                            
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1114,7 +1155,8 @@ __**Games**:__
 async def hadd(ctx, num1: int, num2: int):
     a = num1 + num2
     await ctx.send(f"**Result:** ```{a}```")
-  
+
+
 @client.command()
 async def hsubtract(ctx, num1: int, num2: int):
     a = num1 - num2
@@ -1126,6 +1168,7 @@ async def hmultiply(ctx, num1: int, num2: int):
     a = num1 * num2
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def ountdown(ctx, seconds: int):
     message = await ctx.send(f'{seconds} seconds left!')
@@ -1135,11 +1178,15 @@ async def ountdown(ctx, seconds: int):
         await message.edit(content=f'{seconds} seconds left!')
     await ctx.send(f'{ctx.author.mention}, the countdown you set is complete!')
 
+
 @client.command()
 async def earch(ctx, *, query: str):
     query = query.replace(" ", "+")
     url = f"https://www.google.com/search?q={query}&num=5"
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
+    headers = {
+        "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+    }
     res = requests.get(url, headers=headers)
     soup = BeautifulSoup(res.text, "html.parser")
     results = soup.select(".g")
@@ -1148,6 +1195,7 @@ async def earch(ctx, *, query: str):
         link = result.select_one("a")["href"]
         snippet = result.select_one(".VwiC3b").text
         await ctx.send(f"**Result {i+1}:**\n**{title}**\n{link}\n{snippet}\n")
+
 
 @client.command()
 async def hdivide(ctx, num1: int, num2: int):
@@ -1188,6 +1236,7 @@ async def hsqrt(ctx, num1: int):
     a = num1**0.5
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def hfactorial(ctx, num1: int):
     a = math.factorial(num1)
@@ -1198,6 +1247,7 @@ async def hfactorial(ctx, num1: int):
 async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** ```{a}```")
+
 
 @client.command()
 async def efine(ctx, word):
