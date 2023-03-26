@@ -12,7 +12,6 @@ import requests
 import mpmath
 from bs4 import BeautifulSoup
 from autocorrect import Speller
-import emoji
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -1199,7 +1198,7 @@ async def earch(ctx, *, query: str):
         title = result.select_one(".DKV0Md").text
         link = result.select_one("a")["href"]
         snippet = result.select_one(".VwiC3b").text
-        await ctx.send(f"**Result {i+1}:**\n**{title}**\n{link}\n{snippet}\n")
+        await ctx.send(f"**__Result {i+1}:__**\n**{title}**\n{link}\n{snippet}\n")
 
 
 @client.command()
@@ -1880,3 +1879,4 @@ dare_questions_only = [
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
+
