@@ -12,6 +12,7 @@ import requests
 import mpmath
 from bs4 import BeautifulSoup
 from autocorrect import Speller
+
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
@@ -188,6 +189,15 @@ async def on_message(message):
             color=0xe78be7)
         embed.set_image(url=random.choice(hug_gif))
         embed.set_footer(text="Hope you have a great day :D")
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;cat'):
+        embed = discord.Embed(
+            title="",
+            description=f'''Meow :cat:''',
+            color=0xe78be7)
+        embed.set_image(url=random.choice(cat_images))
+        embed.set_footer(text="Hope you have a great day =^-^=")
         await message.channel.send(embed=embed)
 
     if message.content.startswith('bye'):
@@ -1150,21 +1160,25 @@ __**Games**:__
             await message.channel.send(
                 "**Invalid choice**. Please choose rock, paper or scissors.")
 
+
 #MATH COMMANDS
 @client.command()
 async def hadd(ctx, num1: int, num2: int):
     a = num1 + num2
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def hsubtract(ctx, num1: int, num2: int):
     a = num1 - num2
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def hmultiply(ctx, num1: int, num2: int):
     a = num1 * num2
     await ctx.send(f"**Result:** ```{a}```")
+
 
 @client.command()
 async def ountdown(ctx, seconds: int):
@@ -1174,6 +1188,7 @@ async def ountdown(ctx, seconds: int):
         seconds -= 1
         await message.edit(content=f'{seconds} seconds left!')
     await ctx.send(f'{ctx.author.mention}, the countdown you set is complete!')
+
 
 @client.command()
 async def earch(ctx, *, query: str):
@@ -1192,10 +1207,12 @@ async def earch(ctx, *, query: str):
         snippet = result.select_one(".VwiC3b").text
         await ctx.send(f"**__Result {i+1}:__**\n**{title}**\n{link}\n{snippet}\n")
 
+
 @client.command()
 async def hdivide(ctx, num1: int, num2: int):
     a = num1 / num2
     await ctx.send(f"**Result:** ```{a}```")
+
 
 @client.command()
 async def hgcd(ctx, num1: int, num2: int):
@@ -1207,6 +1224,7 @@ async def hgcd(ctx, num1: int, num2: int):
         a = temp
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def hpi(ctx, digits: int):
     if digits > 1000:
@@ -1217,25 +1235,30 @@ async def hpi(ctx, digits: int):
         await ctx.send(
             f"The first **{digits}** digits of pi are: ```{pi_value}```")
 
+
 @client.command()
 async def hexp(ctx, num1: int, num2: int):
     a = num1**num2
     await ctx.send(f"**Result:** ```{a}```")
+
 
 @client.command()
 async def hsqrt(ctx, num1: int):
     a = num1**0.5
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def hfactorial(ctx, num1: int):
     a = math.factorial(num1)
     await ctx.send(f"**Result:** ```{a}```")
 
+
 @client.command()
 async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** ```{a}```")
+
 
 @client.command()
 async def efine(ctx, word):
@@ -1248,7 +1271,8 @@ async def efine(ctx, word):
     else:
         await ctx.send(f"Sorry, I couldn't find the definition for **{word}**."
                        )
-        
+
+
 @client.command()
 async def oll(ctx, question, *options: str):
     if len(options) <= 1:
@@ -1270,6 +1294,7 @@ async def oll(ctx, question, *options: str):
     react_message = await ctx.send(embed=embed)
     for reaction in reactions[:len(options)]:
         await react_message.add_reaction(reaction)
+
 
 @client.command()
 async def emindme(ctx, time: int, unit: str, *, reminder: str):
@@ -1299,6 +1324,7 @@ async def emindme(ctx, time: int, unit: str, *, reminder: str):
     await ctx.send(
         f"{ctx.author.mention}, you asked me to remind you: **{reminder}**")
 
+
 #TICTACTOE
 player1 = ""
 player2 = ""
@@ -1308,6 +1334,7 @@ board = []
 winningConditions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7],
                      [2, 5, 8], [0, 4, 8], [2, 4, 6]]
 
+
 @client.command()
 async def ictactoe(ctx, p1: discord.Member, p2: discord.Member):
     global count
@@ -1315,6 +1342,7 @@ async def ictactoe(ctx, p1: discord.Member, p2: discord.Member):
     global player2
     global turn
     global gameOver
+
     if gameOver:
         global board
         board = [
@@ -1348,6 +1376,7 @@ async def ictactoe(ctx, p1: discord.Member, p2: discord.Member):
         await ctx.send(
             "A game is already in progress! Please finish it before starting a new one."
         )
+
 
 @client.command()
 async def place(ctx, pos: int):
@@ -1399,13 +1428,15 @@ async def place(ctx, pos: int):
         await ctx.send(
             "To start a new game of TicTacToe, type ``ptictactoe @player1 @player2``."
         )
-        
+
+
 def checkWinner(winningConditions, mark):
     global gameOver
     for condition in winningConditions:
         if board[condition[0]] == mark and board[
                 condition[1]] == mark and board[condition[2]] == mark:
             gameOver = True
+
 
 @ictactoe.error
 async def tictactoe_error(ctx, error):
@@ -1415,12 +1446,14 @@ async def tictactoe_error(ctx, error):
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please mention 2 players for this command.")
 
+
 @place.error
 async def place_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Please enter a position you would like to mark.")
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
+
 
 embed_footers = [
     'Thanks for using pixel :)',
