@@ -1454,7 +1454,7 @@ async def place_error(ctx, error):
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
 
-
+#footers
 embed_footers = [
     'Thanks for using pixel :)',
     'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
@@ -1465,6 +1465,7 @@ embed_footers = [
     'Your back must hurt from carrying all that amazingness :)'
 ]
 
+#A list of sad words and phrases, the bot replies to these with an uplifiting message
 sad = [
     "I am a failure", "i am failure", "i am a failure", "im a failure",
     "i'm failure", "i'm a failure", "I'm a failure", "I am a disgrace",
@@ -1499,6 +1500,7 @@ sad = [
     "i am dumbest", "I am dumbest"
 ]
 
+#encouraging responses to sad phrases
 encouraging_words = [
     "Aww! That is not true :(", "No, you are an amazing person :)",
     "Hopefully it gets better <(^-^<)",
@@ -1515,6 +1517,7 @@ encouraging_words = [
     "You are amazing :)"
 ]
 
+#when the user uses the hug command
 hug_gif = [
     "https://c.tenor.com/nUrfyD_VmM8AAAAC/hug-cute.gif",
     "https://c.tenor.com/4XQiR1rkwIAAAAAC/ghost-hug-ghost-hugs.gif",
@@ -1538,6 +1541,7 @@ hug_gif = [
     "https://c.tenor.com/SXk-WqF6PpQAAAAC/anime-hug.gif"
 ]
 
+#coin flip command
 coin_outcomes = [
     "**Heads**", "**Tails**", "**Heads**", "**Tails**", "**Heads**",
     "**Tails**", "**Heads**", "**Tails**", "**Heads**", "**Tails**",
@@ -1548,12 +1552,14 @@ coin_outcomes = [
     "**Heads**", "**Tails**"
 ]
 
+#dice outcomes
 dice_roll = [
     "You rolled a **1** :game_die:", "You rolled a **2** :game_die:",
     "You rolled a **3** :game_die:", "You rolled a **4** :game_die:",
     "You rolled a **5** :game_die:", "You rolled a **6** :game_die:"
 ]
 
+#cat images for the cat command
 cat_images = [
     "https://upload.wikimedia.org/wikipedia/commons/3/38/Adorable-animal-cat-20787.jpg",
     "https://images.rawpixel.com/image_1000/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZyYW5pbWFsX2NhdF9raXR0ZW5fYnJpdGlzaC1pbWFnZS1reWJlYXlrNC5qcGc.jpg",
@@ -1576,6 +1582,7 @@ cat_images = [
     "https://media.discordapp.net/attachments/1011341536597917705/1044029794783858808/Tumblr_l_52756928702686.gif"
 ]
 
+#would you rather questions
 wyr_questions = [
     "Give up junk food for a month **__OR__** Give up all forms of social media for a week?",
     "Be reborn as a cat **__OR__** A dog?",
@@ -1654,6 +1661,7 @@ wyr_questions = [
     "Be expelled from school for 30 days **__OR__** Be in prision for 30 days?"
 ]
 
+#random facts for the facts command
 random_facts = [
     "Sudan has more pyramids than any country in the world. :flag_sd:",
     "The bumblebee bat is the world’s smallest mammal. :bat:",
@@ -1695,6 +1703,7 @@ random_facts = [
     "The oldest known living tree on Earth is a bristlecone pine that is over 5,000 years old. :deciduous_tree:"
 ]
 
+#trivia questions
 trivia_questions = [
     ":thinking: Who was the 28th U.S. president? (Answer: || Woodrow Wilson ||)",
     ":thinking: How many countries does the continent Africa comprise of? (Answer: || 54 ||)",
@@ -1754,6 +1763,7 @@ trivia_questions = [
     ":thinking: In which state is *Mount Rushmore* located? (Answer: || South Dakota ||)"
 ]
 
+#truth or dare
 random_tod = [
     'Have you ever skipped class? If so then which class was it?',
     'Have you ever blamed something you did on someone and have gotten them in trouble?',
@@ -1817,6 +1827,7 @@ random_tod = [
     'Count up to 100 in one sitting'
 ]
 
+#truth
 truth_questions_only = [
     'Have you ever skipped class? If so then which class was it?',
     'Have you ever blamed something you did on someone and have gotten them in trouble?',
@@ -1859,6 +1870,7 @@ truth_questions_only = [
     'When was the last time you ate pizza'
 ]
 
+#dares
 dare_questions_only = [
     'Write your name with your non-dominant hand',
     'Give up all forms of social media for the next 10 minutes',
