@@ -997,13 +997,13 @@ ptictactoe''',
         await message.channel.send(embed=embed)
       
     if message.content.startswith('p;info pmathmatrixmult'):
-        ember = discord.Embed(
+        embed = discord.Embed(
             title='__**matrix multiplication**__ :1234:',
             description=
             '''Using this command, the user can multiply any two matrices they wish to find the product for. To use the command, the user must type: ``pmathmatrixmult "1 2; 3 4" "5 6;7 8" where the two matrices are surrounded by quotation marks and the rows are separated by a semi-colon.
 
 __**Syntax**__
-prps''',
+pmathmatrixmult''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -1961,4 +1961,3 @@ list_eight_ball = ["Yes.", "No.", "Maybe.", "I am not sure."]
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
-
