@@ -24,11 +24,13 @@ client = commands.Bot(
 
 cookies = {}
 
+
 #CODE
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     await client.change_presence(activity=discord.Game(name="Type p;help"))
+
 
 @client.event
 async def on_message(message):
@@ -37,7 +39,7 @@ async def on_message(message):
         return
     msg = message.content
     author = message.author
-  
+
     #INTEGRAL CALCULATOR
     if message.content.startswith('pmathintegral'):
         try:
@@ -995,7 +997,7 @@ ptictactoe''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
-      
+
     if message.content.startswith('p;info pmathmatrixmult'):
         embed = discord.Embed(
             title='__**matrix multiplication**__ :1234:',
@@ -1024,8 +1026,8 @@ __**About Me**:__
 • ``p;info <command>``: For more detailed information about the specific command (ex. p;help fact)
 • ``p;dm help``: Sends a DM to the user with a list of commands  
 • ``p;about``: Give me a chance to introduce myself!
-• ``p;ping``: Shows the real time response time of pixel
-                                 
+• ``p;ping``: Shows the real time response time of pixel  
+
 __**Actions**:__
 • ``p;hi``: Say hi to me! 
 • ``p;hug``: Free hug for the user! Everyone deserves a hug :)
@@ -1043,7 +1045,6 @@ __**Actions**:__
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
-
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
 • ``pmathsubtract <number 1> <number 2> <number 3> ... <number n>``: Substracts the inputted values.
@@ -1057,8 +1058,8 @@ __**Math**:__
 • ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
 • ``pmathpi n``: Sends the first ``n`` digits of pi.
 • ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!
-• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!
-                           
+• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!    
+
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
 • ``p;tod``: Asks a random *Truth*  or *Dare* question
@@ -1074,7 +1075,7 @@ __**Games**:__
             "https://cdn.discordapp.com/emojis/740764365749485638.gif?size=128&quality=lossless"
         )
         embed.set_footer(
-            text=random.choice(embed_footers),
+            text="If you find any issues or would like for me to add something, please make a GitHub Issue at github.com/RamGoenka/Pixel/issues",
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -1087,8 +1088,8 @@ __**About Me**:__
 • ``p;info <command>``: For more detailed information about the specific command (ex. p;help fact)
 • ``p;dm help``: Sends a DM to the user with a list of commands  
 • ``p;about``: Give me a chance to introduce myself!
-• ``p;ping``: Shows the real time response time of pixel
-                                 
+• ``p;ping``: Shows the real time response time of pixel  
+
 __**Actions**:__
 • ``p;hi``: Say hi to me! 
 • ``p;hug``: Free hug for the user! Everyone deserves a hug :)
@@ -1106,10 +1107,9 @@ __**Actions**:__
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
-
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
-• ``pmathsubtract <number 1> <number 2> <number 3> ... <number n>``: Substracts the inputted values
+• ``pmathsubtract <number 1> <number 2> <number 3> ... <number n>``: Substracts the inputted values.
 • ``pmathmultiply <number 1> <number 2> <number 3> ... <number n>``: Multiplies the inputted values.
 • ``pmathdivide x y``: Divides the inputted values
 • ``pmathexp x y``: Raises the base (x) to an exponent (y)
@@ -1120,7 +1120,7 @@ __**Math**:__
 • ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
 • ``pmathpi n``: Sends the first ``n`` digits of pi.
 • ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!
-• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!
+• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!    
 
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1137,7 +1137,7 @@ __**Games**:__
             "https://cdn.discordapp.com/emojis/740764365749485638.gif?size=128&quality=lossless"
         )
         embed.set_footer(
-            text=random.choice(embed_footers),
+            text="If you find any issues or would like for me to add something, please make a GitHub Issue at github.com/RamGoenka/Pixel/issues",
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -1207,6 +1207,7 @@ async def hadd(ctx, *args):
     except ValueError:
         await ctx.send('Please provide valid numbers as input.')
 
+
 @client.command()
 async def hsubtract(ctx, *args):
     try:
@@ -1220,7 +1221,8 @@ async def hsubtract(ctx, *args):
         await ctx.send(f"**Result:** ```{result}```")
     except ValueError:
         await ctx.send('Please provide valid numbers as input.')
-      
+
+
 @client.command()
 async def hmultiply(ctx, *args):
     try:
@@ -1231,6 +1233,7 @@ async def hmultiply(ctx, *args):
         await ctx.send(f"**Result:** ```{result}```")
     except ValueError:
         await ctx.send('Please provide valid numbers as input.')
+
 
 @client.command()
 async def ountdown(ctx, seconds: int):
@@ -1311,7 +1314,8 @@ async def hfactorial(ctx, num1: int):
 async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** ```{a}```")
-  
+
+
 @client.command()
 async def efine(ctx, word):
     url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
@@ -1323,7 +1327,8 @@ async def efine(ctx, word):
     else:
         await ctx.send(f"Sorry, I couldn't find the definition for **{word}**."
                        )
-      
+
+
 def parse_matrix(matrix_str):
     try:
         matrix = []
@@ -1333,6 +1338,7 @@ def parse_matrix(matrix_str):
         return np.array(matrix)
     except ValueError:
         return None
+
 
 @client.command()
 async def hmatrixmult(ctx, matrix1: str, matrix2: str):
@@ -1344,7 +1350,10 @@ async def hmatrixmult(ctx, matrix1: str, matrix2: str):
         product = np.matmul(mat1, mat2)
         await ctx.send(f"**Result:** ```{product}```")
     except ValueError:
-        await ctx.send('Please provide valid matrices as input. Use semicolon to separate rows and space for columns.')
+        await ctx.send(
+            'Please provide valid matrices as input. Use semicolon to separate rows and space for columns.'
+        )
+
 
 @client.command()
 async def oll(ctx, question, *options: str):
