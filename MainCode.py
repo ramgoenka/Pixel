@@ -13,6 +13,7 @@ import mpmath
 from bs4 import BeautifulSoup
 from autocorrect import Speller
 import numpy as np
+from translate import Translator
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -21,9 +22,7 @@ spell = Speller(lang='en')
 client = commands.Bot(
     intents=intents,
     command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps'])
-
 cookies = {}
-
 
 #CODE
 @client.event
@@ -426,7 +425,7 @@ p;binary''',
     if message.content.startswith('p;info autocorrect'):
         embed = discord.Embed(title="__**autocorrect**__ :white_check_mark:",
                               description='''
-Use this command to fix any potential issues with a given text. The command takes a given text as an input and returns a(n) (auto)correct version of the text free of any spelling errors. Note, the command will not successfully work 100% of the times and can cause issues thus looking at the correct version and making a decision about if or not it is the desired output might be necessary if needed. 
+Use this command to fix any potential issues with a given text. The command takes a given text as an input and returns a(n) (auto)corrected version of the text free of any spelling errors. Note, the command will not successfully work 100% of the times and can cause issues thus looking at the correct version and making a decision about if or not it is the desired output might be necessary if needed. 
                             
 __**Syntax**__
 p;autocorrect''',
@@ -443,7 +442,6 @@ p;autocorrect''',
         embed = discord.Embed(title="__**count characters**__ :1234:",
                               description='''
 Use this command to get a count of characters in a given text. To use this command, the user must type ``p;countchar`` followed by the text the want to find the count of characters for. For example if a user wishes to find the number of characters in the text "Hello Pixel," they must type ``p;countchat Hello Pixel`` and the bot will then respond with the number of characters in the given text.                                               
-
 __**Syntax**__
 p;countchar''',
                               color=0x00FFFF)
@@ -960,7 +958,7 @@ p;truth''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
     if message.content.startswith('p;info prps'):
-        ember = discord.Embed(
+        embed = discord.Embed(
             title='__**rock paper scissors**__ :rock: :scroll: :scissors:',
             description=
             '''Use this command to play a game of rock paper scissors with Pixel! To use this command, type ``prps`` followed by your move, for example ``prps rock`` if you want to use rock, and Pixel will reply with its move!
@@ -975,6 +973,25 @@ prps''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info ptranslate'):
+        embed = discord.Embed(
+            title='__**translate**__ :speech_left:',
+            description=
+            '''Use this command to translate any text from english to any other language the user wishes to! To use this command, you must type ``ptranslate`` followed by the two letter prefix of the language you wish to translate the text to. For example ``ptranslate es today is a good day`` will translate the text "today is a good day" from english to spanish. The bot uses the standard ``ISO 639-1`` language prefix for translation, so when translating to a language, please refer to the table of ``ISO 639-1`` language codes, which can be found here: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes 
+Please note that the bot does not support every single one of these languages and the bot will indicate if it does not support a particular language by returning an error instead of the translated text!
+
+__**Syntax**__
+ptranslate''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+      
     if message.content.startswith('p;info ptictactoe'):
         embed = discord.Embed(
             title='__**TicTacToe**__ :regional_indicator_x: :o2:',
@@ -1035,16 +1052,18 @@ __**Actions**:__
 • ``p;flip``: Flips a coin
 • ``p;roll``: Rolls a 6-sided dice
 • ``p;fact``: Tells you a random fact
-• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example • ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
-• ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over. 
-• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. To use this command, the user must type ``ppoll`` followed by the question and the options. Type ``p;info ppoll`` for detailed information on functionality and useage!
+• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
+• ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. 
+• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information on functionality and useage!
 • ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. 
-• ``p;countchat text``: Counts the number of characters in a given text. 
+• ``p;countchar text``: Counts the number of characters in a given text. 
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
+• ``ptranslate <prefix> <text>``: Translates a given text in English to a language chosen by the user! 
+
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
 • ``pmathsubtract <number 1> <number 2> <number 3> ... <number n>``: Substracts the inputted values.
@@ -1058,7 +1077,7 @@ __**Math**:__
 • ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
 • ``pmathpi n``: Sends the first ``n`` digits of pi.
 • ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!
-• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!    
+• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!   
 
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1072,7 +1091,7 @@ __**Games**:__
         embed.timestamp = datetime.datetime.utcnow()
         embed.set_thumbnail(
             url=
-            "https://cdn.discordapp.com/emojis/740764365749485638.gif?size=128&quality=lossless"
+            ""
         )
         embed.set_footer(
             text="If you find any issues or would like for me to add something, please make a GitHub Issue at github.com/RamGoenka/Pixel/issues",
@@ -1097,16 +1116,18 @@ __**Actions**:__
 • ``p;flip``: Flips a coin
 • ``p;roll``: Rolls a 6-sided dice
 • ``p;fact``: Tells you a random fact
-• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example • ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
-• ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over. 
-• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. To use this command, the user must type ``ppoll`` followed by the question and the options. Type ``p;info ppoll`` for detailed information on functionality and useage!
+• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
+• ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds.
+• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information on functionality and useage!
 • ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. 
-• ``p;countchat text``: Counts the number of characters in a given text. 
+• ``p;countchar text``: Counts the number of characters in a given text. 
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
+• ``ptranslate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
+
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
 • ``pmathsubtract <number 1> <number 2> <number 3> ... <number n>``: Substracts the inputted values.
@@ -1120,7 +1141,7 @@ __**Math**:__
 • ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
 • ``pmathpi n``: Sends the first ``n`` digits of pi.
 • ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!
-• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!    
+• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!  
 
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1134,7 +1155,7 @@ __**Games**:__
         embed.timestamp = datetime.datetime.utcnow()
         embed.set_thumbnail(
             url=
-            "https://cdn.discordapp.com/emojis/740764365749485638.gif?size=128&quality=lossless"
+            ""
         )
         embed.set_footer(
             text="If you find any issues or would like for me to add something, please make a GitHub Issue at github.com/RamGoenka/Pixel/issues",
@@ -1195,9 +1216,7 @@ __**Games**:__
                 "**Invalid choice**. Please choose rock, paper or scissors.")
 
 
-#MATH COMMANDS
-
-
+#COUPLE OF USEFUL COMMANDS INCLUDING MATHEMATICS AND ACTIONS
 @client.command()
 async def hadd(ctx, *args):
     try:
@@ -1206,7 +1225,6 @@ async def hadd(ctx, *args):
         await ctx.send(f"**Result:** ```{a}```")
     except ValueError:
         await ctx.send('Please provide valid numbers as input.')
-
 
 @client.command()
 async def hsubtract(ctx, *args):
@@ -1222,7 +1240,6 @@ async def hsubtract(ctx, *args):
     except ValueError:
         await ctx.send('Please provide valid numbers as input.')
 
-
 @client.command()
 async def hmultiply(ctx, *args):
     try:
@@ -1233,7 +1250,6 @@ async def hmultiply(ctx, *args):
         await ctx.send(f"**Result:** ```{result}```")
     except ValueError:
         await ctx.send('Please provide valid numbers as input.')
-
 
 @client.command()
 async def ountdown(ctx, seconds: int):
@@ -1315,6 +1331,11 @@ async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** ```{a}```")
 
+@client.command()
+async def ranslate(ctx, lang_to, *, args):
+    translator= Translator(to_lang=lang_to)
+    translation = translator.translate(args)
+    await ctx.send(translation)
 
 @client.command()
 async def efine(ctx, word):
