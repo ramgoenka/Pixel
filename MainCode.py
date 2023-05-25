@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 from autocorrect import Speller
 import numpy as np
 from translate import Translator
+from chempy import balance_stoichiometry
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -21,7 +22,7 @@ client = discord.Client(intents=intents)
 spell = Speller(lang='en')
 client = commands.Bot(
     intents=intents,
-    command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps'])
+    command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps', 'pb'])
 cookies = {}
 
 #CODE
@@ -50,6 +51,7 @@ async def on_message(message):
             await message.channel.send(
                 "No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature."
             )
+          
     if message.content.startswith('!poll'):
         poll_data = message.content[5:].split('/')
         poll_question = poll_data[0]
@@ -197,7 +199,7 @@ async def on_message(message):
         embed.set_image(url=random.choice(cat_images))
         embed.set_footer(text="Hope you have a great day =^-^=")
         await message.channel.send(embed=embed)
-
+      
     if message.content.startswith('bye'):
         await message.channel.send(
             f'''Bye {author.mention}! Hope you have a great rest of your day!'''
@@ -1260,7 +1262,6 @@ async def ountdown(ctx, seconds: int):
         await message.edit(content=f'{seconds} seconds left!')
     await ctx.send(f'{ctx.author.mention}, the countdown you set is complete!')
 
-
 @client.command()
 async def earch(ctx, *, query: str):
     query = query.replace(" ", "+")
@@ -1279,12 +1280,10 @@ async def earch(ctx, *, query: str):
         await ctx.send(
             f"**__Result {i+1}:__**\n**{title}**\n{link}\n{snippet}\n")
 
-
 @client.command()
 async def hdivide(ctx, num1: int, num2: int):
     a = num1 / num2
     await ctx.send(f"**Result:** ```{a}```")
-
 
 @client.command()
 async def hgcd(ctx, num1: int, num2: int):
@@ -1296,7 +1295,6 @@ async def hgcd(ctx, num1: int, num2: int):
         a = temp
     await ctx.send(f"**Result:** ```{a}```")
 
-
 @client.command()
 async def hpi(ctx, digits: int):
     if digits > 1000:
@@ -1307,24 +1305,20 @@ async def hpi(ctx, digits: int):
         await ctx.send(
             f"The first **{digits}** digits of pi are: ```{pi_value}```")
 
-
 @client.command()
 async def hexp(ctx, num1: int, num2: int):
     a = num1**num2
     await ctx.send(f"**Result:** ```{a}```")
-
 
 @client.command()
 async def hsqrt(ctx, num1: int):
     a = num1**0.5
     await ctx.send(f"**Result:** ```{a}```")
 
-
 @client.command()
 async def hfactorial(ctx, num1: int):
     a = math.factorial(num1)
     await ctx.send(f"**Result:** ```{a}```")
-
 
 @client.command()
 async def hlog(ctx, num1: int, num2: int):
@@ -1348,8 +1342,7 @@ async def efine(ctx, word):
     else:
         await ctx.send(f"Sorry, I couldn't find the definition for **{word}**."
                        )
-
-
+      
 def parse_matrix(matrix_str):
     try:
         matrix = []
@@ -1359,7 +1352,6 @@ def parse_matrix(matrix_str):
         return np.array(matrix)
     except ValueError:
         return None
-
 
 @client.command()
 async def hmatrixmult(ctx, matrix1: str, matrix2: str):
@@ -1374,7 +1366,17 @@ async def hmatrixmult(ctx, matrix1: str, matrix2: str):
         await ctx.send(
             'Please provide valid matrices as input. Use semicolon to separate rows and space for columns.'
         )
-
+@client.command()
+async def alance(ctx, *, equation):
+    try:
+        reactants, products = equation.split('->')
+        reactants = reactants.split('+')
+        products = products.split('+')
+        balanced = balance_stoichiometry(reactants, products)
+        balanced_eq = ' + '.join([f'{v} {k}' for k, v in balanced[0].items()]) + ' -> ' + ' + '.join([f'{v} {k}' for k, v in balanced[1].items()])
+        await ctx.send(f'__The balanced chemical equation is:__ {balanced_eq}')
+    except Exception as e:
+        await ctx.send(f'Error: {str(e)}')
 
 @client.command()
 async def oll(ctx, question, *options: str):
@@ -1991,3 +1993,4 @@ list_eight_ball = ["Yes.", "No.", "Maybe.", "I am not sure."]
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
+
