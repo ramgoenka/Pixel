@@ -959,6 +959,24 @@ p;truth''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
+      
+    if message.content.startswith('p;info pbalance'):
+        embed = discord.Embed(
+            title='__**balance **__ :test_tube:',
+            description=
+            '''Use this command to balance a chemical reaction equation. To use this command, the user must type ``pbalance`` and then the chemical reaction they wish to balance. For example if the user wishes to balance the chemical reaction ``H2 + O2 -> H2O`` they must type ``pbalance H2 + O2 -> H2O`` and the bot will respond with the balance chemical reaction equation! ``
+                            
+__**Syntax**__
+pbalance''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+      
     if message.content.startswith('p;info prps'):
         embed = discord.Embed(
             title='__**rock paper scissors**__ :rock: :scroll: :scissors:',
@@ -1064,7 +1082,8 @@ __**Actions**:__
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
-• ``ptranslate <prefix> <text>``: Translates a given text in English to a language chosen by the user! 
+• ``ptranslate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
+• ``pbalance <chemical reaction>``: Balances a given chemical reaction.
 
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
@@ -1129,6 +1148,7 @@ __**Actions**:__
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
 • ``ptranslate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
+• ``pbalance <chemical reaction>``: Balances a given chemical reaction.
 
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
@@ -1993,4 +2013,3 @@ list_eight_ball = ["Yes.", "No.", "Maybe.", "I am not sure."]
 keep_alive()
 TOKEN = os.environ.get("SECRET")
 client.run(TOKEN)
-
