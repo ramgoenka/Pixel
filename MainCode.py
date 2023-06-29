@@ -15,6 +15,7 @@ from autocorrect import Speller
 import numpy as np
 from translate import Translator
 from chempy import balance_stoichiometry
+import pytz
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -158,6 +159,7 @@ async def on_message(message):
         await message.channel.send(
             f"""Hey {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
+
     if any(word in msg for word in sad):
         await message.channel.send(random.choice(encouraging_words))
     if words[0].lower() == 'kitty':
@@ -231,7 +233,6 @@ async def on_message(message):
         await message.channel.send(embed=embed)
     if message.content.startswith('p;Roll'):
         await message.channel.send(random.choice(dice_roll))
-
     if message.content.startswith('gn'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
@@ -296,6 +297,8 @@ Thanks for checking me out and I hope you have a nice day :)
         embed = discord.Embed(title='Would you rather...',
                               description=random.choice(wyr_questions),
                               color=0xFF6600)
+        await message.channel.send(embed=embed)
+      
     if message.content.startswith('p;tod'):
         embed = discord.Embed(title=random.choice(random_tod),
                               description='Truth or Dare',
@@ -458,7 +461,7 @@ p;countchar''',
     if message.content.startswith('p;info psearch'):
         embed = discord.Embed(title="__**search**__ :mag_right:",
                               description='''
-This command returns the first few results (upto 5) realted to a query inputted by the user. To use this command the user must type ``psearch`` followed by the topic the hope to find search results for. For example if a user wants search results for cats, they must time ``psearch cat`` and the bot will return the first few web search results it is able to fetch relating to cats. 
+This command returns the first few results (upto 5) realted to a query inputted by the user. To use this command the user must type ``psearch`` followed by the topic the hope to find search results for. For example if a user wants search results for cats, they must time ``psearch cat`` and the bot will return the first few web search results it is able to fetch relating to cats. NOTE: THIS COMMAND HAS BEEN TEMPORARILY DISABLED, THE DEVELOPER IS WORKING ON FIXING THE ISSUE AND THE COMMAND WILL HOPEFULLY BE BACK AND RUNNING SOON. 
                             
 __**Syntax**__
 psearch''',
@@ -1052,6 +1055,23 @@ pmathmatrixmult''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
+    if message.content.startswith('p;info ptime'):
+        embed = discord.Embed(
+            title='__**time**__ :clock:',
+            description=
+            '''Command information to be added soon!
+
+__**Syntax**__
+ptime''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
 #HELP COMMANDS
     if message.content.startswith('p;dm help'):
         await message.channel.send(
@@ -1247,7 +1267,7 @@ async def hadd(ctx, *args):
         await ctx.send(f"**Result:** ```{a}```")
     except ValueError:
         await ctx.send('Please provide valid numbers as input.')
-
+    
 @client.command()
 async def hsubtract(ctx, *args):
     try:
@@ -1283,6 +1303,15 @@ async def ountdown(ctx, seconds: int):
     await ctx.send(f'{ctx.author.mention}, the countdown you set is complete!')
 
 @client.command()
+async def ime(ctx, *, timezone):
+    try:
+      tz = pytz.timezone(timezone)
+      current_time = datetime.datetime.now(tz)
+      await ctx.send(f'The current time at **{timezone}** is **{current_time.strftime("%H:%M:%S")}**.')
+    except pytz.exceptions.UnknownTimeZoneError: 
+      await ctx.send("Could not find the time for the inputted timezone/location.")
+
+@client.command()
 async def earch(ctx, *, query: str):
     query = query.replace(" ", "+")
     url = f"https://www.google.com/search?q={query}&num=5"
@@ -1314,7 +1343,7 @@ async def hgcd(ctx, num1: int, num2: int):
         b = a % b
         a = temp
     await ctx.send(f"**Result:** ```{a}```")
-
+  
 @client.command()
 async def hpi(ctx, digits: int):
     if digits > 1000:
