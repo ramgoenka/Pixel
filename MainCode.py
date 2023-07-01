@@ -16,6 +16,8 @@ import numpy as np
 from translate import Translator
 from chempy import balance_stoichiometry
 import pytz
+from PIL import Image
+from io import BytesIO
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -1054,6 +1056,23 @@ pmathmatrixmult''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
+    if message.content.startswith('p;info pstructure'):
+        embed = discord.Embed(
+            title='__**structure**__ :scientist:',
+            description=
+            '''Using this command, a user can request the bot to output the chemical structure of a given chemical compound. For example if the user wishes to output the chemical compound of ``methane``, the user can type ``pstructure methane`` and the bot will then respond with an image of the chemical structure of ``methane``. 
+
+__**Syntax**__
+pstructure''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
     if message.content.startswith('p;info ptime'):
         embed = discord.Embed(
             title='__**time**__ :clock:',
@@ -1103,6 +1122,7 @@ __**Actions**:__
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
 • ``ptranslate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
 • ``pbalance <chemical reaction>``: Balances a given chemical reaction.
+• ``pstructure <chemical compound>``: Returns the structure of a given chemical compound.
 
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
@@ -1168,6 +1188,7 @@ __**Actions**:__
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
 • ``ptranslate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
 • ``pbalance <chemical reaction>``: Balances a given chemical reaction.
+• ``pstructure <chemical compound>``: Returns the structure of a given chemical compound.
 
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
@@ -1325,7 +1346,6 @@ async def hgcd(ctx, num1: int, num2: int):
         a = temp
     await ctx.send(f"**Result:** ```{a}```")
 
-  
 @client.command()
 async def hpi(ctx, digits: int):
     if digits > 1000:
@@ -1336,6 +1356,22 @@ async def hpi(ctx, digits: int):
         await ctx.send(
             f"The first **{digits}** digits of pi are: ```{pi_value}```")
 
+@client.command()
+async def tructure(ctx, *, compound):
+    compound_encoded = requests.utils.quote(compound)
+    image_url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{compound_encoded}/PNG"
+    response = requests.get(image_url)
+    if response.status_code == 200:
+        img = Image.open(BytesIO(response.content))
+        img = img.resize((img.width * 2, img.height * 2))  
+        img_byte_arr = BytesIO()
+        img.save(img_byte_arr, format='PNG')
+        img_byte_arr = img_byte_arr.getvalue()
+        image_file = discord.File(BytesIO(img_byte_arr), filename="structure.png")
+        await ctx.send(file=image_file)
+    else:
+        await ctx.send("Sorry, I couldn't find a structure for that compound.")
+      
 @client.command()
 async def hexp(ctx, num1: int, num2: int):
     a = num1**num2
