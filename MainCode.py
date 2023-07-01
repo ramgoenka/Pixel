@@ -65,7 +65,6 @@ async def on_message(message):
             reaction = '️️️️️️{}️⃣'.format(i + 1)
             await poll.add_reaction(reaction)
     words = message.content.split()
-
     if message.content.startswith("Hello"):
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
@@ -461,7 +460,7 @@ p;countchar''',
     if message.content.startswith('p;info psearch'):
         embed = discord.Embed(title="__**search**__ :mag_right:",
                               description='''
-This command returns the first few results (upto 5) realted to a query inputted by the user. To use this command the user must type ``psearch`` followed by the topic the hope to find search results for. For example if a user wants search results for cats, they must time ``psearch cat`` and the bot will return the first few web search results it is able to fetch relating to cats. NOTE: THIS COMMAND HAS BEEN TEMPORARILY DISABLED, THE DEVELOPER IS WORKING ON FIXING THE ISSUE AND THE COMMAND WILL HOPEFULLY BE BACK AND RUNNING SOON. 
+~~This command returns the first few results (upto 5) realted to a query inputted by the user. To use this command the user must type ``psearch`` followed by the topic the hope to find search results for. For example if a user wants search results for cats, they must time ``psearch cat`` and the bot will return the first few web search results it is able to fetch relating to cats.~~ NOTE: THIS COMMAND HAS BEEN TEMPORARILY DISABLED. THE COMMAND IS BEING WORKED ON AND THE COMMAND WILL HOPEFULLY BE BACK AND RUNNING SOON. 
                             
 __**Syntax**__
 psearch''',
@@ -1088,7 +1087,7 @@ __**About Me**:__
 __**Actions**:__
 • ``p;hi``: Say hi to me! 
 • ``p;hug``: Free hug for the user! Everyone deserves a hug :)
-• ``p;random cat``: Sends a random cat image or GIF in the chat
+• ``p;cat``: Sends a random cat image or GIF in the chat
 • ``p;flip``: Flips a coin
 • ``p;roll``: Rolls a 6-sided dice
 • ``p;fact``: Tells you a random fact
@@ -1097,7 +1096,7 @@ __**Actions**:__
 • ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information on functionality and useage!
 • ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
-• ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. 
+• ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. TEMPORARILY DISABLED.
 • ``p;countchar text``: Counts the number of characters in a given text. 
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
@@ -1153,7 +1152,7 @@ __**About Me**:__
 __**Actions**:__
 • ``p;hi``: Say hi to me! 
 • ``p;hug``: Free hug for the user! Everyone deserves a hug :)
-• ``p;random cat``: Sends a random cat image or GIF in the chat
+• ``p;cat``: Sends a random cat image or GIF in the chat
 • ``p;flip``: Flips a coin
 • ``p;roll``: Rolls a 6-sided dice
 • ``p;fact``: Tells you a random fact
@@ -1162,7 +1161,7 @@ __**Actions**:__
 • ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information on functionality and useage!
 • ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
-• ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. 
+• ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. TEMPORARILY DISABLED.
 • ``p;countchar text``: Counts the number of characters in a given text. 
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
@@ -1312,24 +1311,6 @@ async def ime(ctx, *, timezone):
       await ctx.send("Could not find the time for the inputted timezone/location.")
 
 @client.command()
-async def earch(ctx, *, query: str):
-    query = query.replace(" ", "+")
-    url = f"https://www.google.com/search?q={query}&num=5"
-    headers = {
-        "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
-    }
-    res = requests.get(url, headers=headers)
-    soup = BeautifulSoup(res.text, "html.parser")
-    results = soup.select(".g")
-    for i, result in enumerate(results):
-        title = result.select_one(".DKV0Md").text
-        link = result.select_one("a")["href"]
-        snippet = result.select_one(".VwiC3b").text
-        await ctx.send(
-            f"**__Result {i+1}:__**\n**{title}**\n{link}\n{snippet}\n")
-
-@client.command()
 async def hdivide(ctx, num1: int, num2: int):
     a = num1 / num2
     await ctx.send(f"**Result:** ```{a}```")
@@ -1343,6 +1324,7 @@ async def hgcd(ctx, num1: int, num2: int):
         b = a % b
         a = temp
     await ctx.send(f"**Result:** ```{a}```")
+
   
 @client.command()
 async def hpi(ctx, digits: int):
