@@ -55,7 +55,7 @@ async def on_message(message):
                 "No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature."
             )
           
-    if message.content.startswith('!poll'):
+    if message.content.startswith('ppoll'):
         poll_data = message.content[5:].split('/')
         poll_question = poll_data[0]
         poll_options = [option.strip() for option in poll_data[1:]]
@@ -998,6 +998,23 @@ prps''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
+    if message.content.startswith('p;info pserverinfo'):
+        embed = discord.Embed(
+            title='__**server information**__ :page_facing_up:',
+            description=
+            '''Use this command to get information about the Discord server (that the command is being used in). Using this command results in the bot replaying with server information such as the username of the server owner, the date the server was created, the server ID, the server logo and the member count of the server. 
+
+__**Syntax**__
+pserverinfo''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
     if message.content.startswith('p;info ptranslate'):
         embed = discord.Embed(
             title='__**translate**__ :speech_left:',
@@ -1098,22 +1115,22 @@ ptime''',
                               description='''
 __**About Me**:__
 • ``p;help``: Gives a list of commands
-• ``p;info <command>``: For more detailed information about the specific command (ex. p;help fact)
+• ``p;info <command>``: For more detailed information about a specific command (ex. p;help fact)
 • ``p;dm help``: Sends a DM to the user with a list of commands  
 • ``p;about``: Give me a chance to introduce myself!
-• ``p;ping``: Shows the real time response time of pixel  
+• ``p;ping``: Shows the response time of pixel  
 
 __**Actions**:__
 • ``p;hi``: Say hi to me! 
-• ``p;hug``: Free hug for the user! Everyone deserves a hug :)
+• ``p;hug``: Hug for the user!
 • ``p;cat``: Sends a random cat image or GIF in the chat
 • ``p;flip``: Flips a coin
 • ``p;roll``: Rolls a 6-sided dice
 • ``p;fact``: Tells you a random fact
-• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
-• ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds. 
-• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information on functionality and useage!
-• ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
+• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. Type ``p;info premindme`` for more information. 
+• ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds.
+• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information.
+• ``pdefine <word>``: Allows the user to type in a word from the English language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. TEMPORARILY DISABLED.
 • ``p;countchar text``: Counts the number of characters in a given text. 
@@ -1123,6 +1140,7 @@ __**Actions**:__
 • ``ptranslate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
 • ``pbalance <chemical reaction>``: Balances a given chemical reaction.
 • ``pstructure <chemical compound>``: Returns the structure of a given chemical compound.
+• ``pserverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information.
 
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
@@ -1137,7 +1155,7 @@ __**Math**:__
 • ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
 • ``pmathpi n``: Sends the first ``n`` digits of pi.
 • ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!
-• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!   
+• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!  
 
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1164,22 +1182,22 @@ __**Games**:__
                               description='''
 __**About Me**:__
 • ``p;help``: Gives a list of commands
-• ``p;info <command>``: For more detailed information about the specific command (ex. p;help fact)
+• ``p;info <command>``: For more detailed information about a specific command (ex. p;help fact)
 • ``p;dm help``: Sends a DM to the user with a list of commands  
 • ``p;about``: Give me a chance to introduce myself!
-• ``p;ping``: Shows the real time response time of pixel  
+• ``p;ping``: Shows the response time of pixel  
 
 __**Actions**:__
 • ``p;hi``: Say hi to me! 
-• ``p;hug``: Free hug for the user! Everyone deserves a hug :)
+• ``p;hug``: Hug for the user!
 • ``p;cat``: Sends a random cat image or GIF in the chat
 • ``p;flip``: Flips a coin
 • ``p;roll``: Rolls a 6-sided dice
 • ``p;fact``: Tells you a random fact
-• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. To use this command, you must type ``premindme`` followed by the amount of time and the unit of the time and the reminder, in that order. For example ``premindme 30 minutes wash the car``, this will set a reminder for the user and will notify them after 30 minutes to wash their car! 
+• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. Type ``p;info premindme`` for more information. 
 • ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds.
-• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information on functionality and useage!
-• ``pdefine <word>``: Allows the user to type in a word from the english language that they wish to find the definition for. 
+• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information.
+• ``pdefine <word>``: Allows the user to type in a word from the English language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. TEMPORARILY DISABLED.
 • ``p;countchar text``: Counts the number of characters in a given text. 
@@ -1189,6 +1207,7 @@ __**Actions**:__
 • ``ptranslate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
 • ``pbalance <chemical reaction>``: Balances a given chemical reaction.
 • ``pstructure <chemical compound>``: Returns the structure of a given chemical compound.
+• ``pserverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
 
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
@@ -1421,6 +1440,30 @@ def parse_matrix(matrix_str):
         return None
 
 @client.command()
+async def erverinfo(ctx):
+    name = str(ctx.guild.name)
+    description = str(ctx.guild.description) if ctx.guild.description else ""
+    owner_id = ctx.guild.owner_id
+    owner = await client.fetch_user(owner_id)
+    id = str(ctx.guild.id)
+    memberCount = str(ctx.guild.member_count)
+    creation_date = ctx.guild.created_at.strftime("%B %d, %Y")
+    icon_url = str(ctx.guild.icon.url) if ctx.guild.icon else None
+    embed = discord.Embed(
+        title=name + " Information",
+        description=description,
+        color=discord.Color.blue()
+    )
+    if icon_url:
+        embed.set_thumbnail(url=icon_url)
+    embed.add_field(name="Owner", value=owner, inline=True)
+    embed.add_field(name="Server ID", value=id, inline=True)
+    embed.add_field(name="Member Count", value=memberCount, inline=True)
+    embed.add_field(name="Created On", value=creation_date, inline=True)
+
+    await ctx.send(embed=embed)
+  
+@client.command()
 async def hmatrixmult(ctx, matrix1: str, matrix2: str):
     try:
         mat1 = parse_matrix(matrix1)
@@ -1495,7 +1538,6 @@ async def emindme(ctx, time: int, unit: str, *, reminder: str):
         return
     await ctx.send(
         f"{ctx.author.mention}, you asked me to remind you: **{reminder}**")
-
 
 #TICTACTOE
 player1 = ""
