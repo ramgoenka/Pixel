@@ -34,10 +34,10 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     await client.change_presence(activity=discord.Game(name="Type p;help"))
 
-
 @client.event
 async def on_message(message):
     await client.process_commands(message)
+    global active
     if message.author == client.user:
         return
     msg = message.content
@@ -52,7 +52,7 @@ async def on_message(message):
             await message.channel.send(f"**Result:** ```{result}```")
         except IndexError:
             await message.channel.send(
-                "No function to integrate. Please enter a function to integrate and try again! Use ``p;info integral`` to learn how to use this feature."
+                "No function to integrate. Please enter a function to integrate and try again! Use ``p;info pmathintegral`` to learn how to use this feature."
             )
           
     if message.content.startswith('ppoll'):
@@ -67,6 +67,9 @@ async def on_message(message):
             reaction = '️️️️️️{}️⃣'.format(i + 1)
             await poll.add_reaction(reaction)
     words = message.content.split()
+    if message.content.startswith("hola"):
+        await message.channel.send(
+            f"""Hola {author.mention}! I Hope you have a great day!""")
     if message.content.startswith("Hello"):
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
@@ -79,17 +82,17 @@ async def on_message(message):
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
-    if message.content.startswith("hola"):
-        await message.channel.send(
-            f"""Hola {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if message.content.startswith("Hola"):
         await message.channel.send(
             f"""Hola {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
+    if message.content.startswith('🥺'):
+        num_emojis = message.content.count('🥺')
+        await message.channel.send('🥺' * num_emojis)
     if message.content.startswith("HOLA"):
         await message.channel.send(
-            f"""Hika {author.mention}! I Hope you have a great day!""")
+            f"""Hola {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('howdy'):
         await message.channel.send(
@@ -1172,7 +1175,7 @@ __**Games**:__
             ""
         )
         embed.set_footer(
-            text="If you find any issues or would like for me to add something, please make a GitHub Issue at github.com/RamGoenka/Pixel/issues",
+            text="Have a nice day :D",
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
@@ -1239,11 +1242,12 @@ __**Games**:__
             ""
         )
         embed.set_footer(
-            text="If you find any issues or would like for me to add something, please make a GitHub Issue at github.com/RamGoenka/Pixel/issues",
+            text="Have a nice day :D",
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
         await message.channel.send(embed=embed)
+
 
 #ROCK PAPER SCISSORS
     if message.content.startswith("prps"):
@@ -1510,7 +1514,6 @@ async def oll(ctx, question, *options: str):
     for reaction in reactions[:len(options)]:
         await react_message.add_reaction(reaction)
 
-
 @client.command()
 async def emindme(ctx, time: int, unit: str, *, reminder: str):
     await ctx.send(f"{ctx.author.mention}, I will make sure to remind you :)")
@@ -1651,7 +1654,6 @@ def checkWinner(winningConditions, mark):
                 condition[1]] == mark and board[condition[2]] == mark:
             gameOver = True
 
-
 @ictactoe.error
 async def tictactoe_error(ctx, error):
     print(error)
@@ -1667,7 +1669,6 @@ async def place_error(ctx, error):
         await ctx.send("Please enter a position you would like to mark.")
     elif isinstance(error, commands.BadArgument):
         await ctx.send("Please make sure to enter an integer.")
-
 
 embed_footers = [
     'Thanks for using pixel :)',
