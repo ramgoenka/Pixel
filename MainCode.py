@@ -18,6 +18,7 @@ from chempy import balance_stoichiometry
 import pytz
 from PIL import Image
 from io import BytesIO
+
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
@@ -301,6 +302,8 @@ Thanks for checking me out and I hope you have a nice day :)
                               description=random.choice(random_facts),
                               color=0xadd8e6)
         await message.channel.send(embed=embed)
+    if message.content.startswith("p;server_count"):
+        await message.channel.send(f"I am in currently in ``{len(client.guilds)}`` servers!")
     if message.content.startswith('p;trivia'):
         await message.channel.send(random.choice(trivia_questions))
     if message.content.startswith('I appreciate pixel'):
@@ -954,7 +957,25 @@ p;truth''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
-      
+
+    if message.content.startswith('p;info server_count'):
+        embed = discord.Embed(
+            title='__**server count**__ :bar_chart:',
+            description=
+            '''Use this command to check the number of Discord servers Pixel is currently in!
+                            
+__**Syntax**__
+p;server_count''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+  
     if message.content.startswith('p;info pbalance'):
         embed = discord.Embed(
             title='__**balance **__ :test_tube:',
@@ -1109,7 +1130,8 @@ __**About Me**:__
 • ``p;info <command>``: For more detailed information about a specific command (ex. p;help fact)
 • ``p;dm help``: Sends a DM to the user with a list of commands  
 • ``p;about``: Give me a chance to introduce myself!
-• ``p;ping``: Shows the response time of pixel  
+• ``p;ping``: Shows the response time of pixel 
+• ``p;server_count``: Shows the number of servers I am in
 
 __**Actions**:__
 • ``p;hi``: Say hi to me! 
@@ -1176,7 +1198,8 @@ __**About Me**:__
 • ``p;info <command>``: For more detailed information about a specific command (ex. p;help fact)
 • ``p;dm help``: Sends a DM to the user with a list of commands  
 • ``p;about``: Give me a chance to introduce myself!
-• ``p;ping``: Shows the response time of pixel  
+• ``p;ping``: Shows the response time of pixel
+• ``p;server_count``: Shows the number of servers I am in
 
 __**Actions**:__
 • ``p;hi``: Say hi to me! 
