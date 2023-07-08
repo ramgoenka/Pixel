@@ -18,7 +18,6 @@ from chempy import balance_stoichiometry
 import pytz
 from PIL import Image
 from io import BytesIO
-
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
@@ -27,7 +26,6 @@ client = commands.Bot(
     intents=intents,
     command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps', 'pb'])
 cookies = {}
-
 #CODE
 @client.event
 async def on_ready():
@@ -54,7 +52,6 @@ async def on_message(message):
             await message.channel.send(
                 "No function to integrate. Please enter a function to integrate and try again! Use ``p;info pmathintegral`` to learn how to use this feature."
             )
-          
     if message.content.startswith('ppoll'):
         poll_data = message.content[5:].split('/')
         poll_question = poll_data[0]
@@ -70,18 +67,9 @@ async def on_message(message):
     if message.content.startswith("hola"):
         await message.channel.send(
             f"""Hola {author.mention}! I Hope you have a great day!""")
-    if message.content.startswith("Hello"):
+    if message.author.id not in ignore_list and message.content.lower() == "hello":
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith("hello"):
-        await message.channel.send(
-            f"""Hello {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith("HELLO"):
-        await message.channel.send(
-            f"""Hello {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
         await message.add_reaction('\U0001F44B')
     if message.content.startswith("Hola"):
         await message.channel.send(
@@ -346,7 +334,7 @@ Thanks for checking me out and I hope you have a nice day :)
                 f'Here is the corrected text: **{corrected}**')
         else:
             await message.channel.send('No errors found in the given text.')
-    if client.user in message.mentions:
+    if message.author.id not in ignore_list and client.user in message.mentions:
         await message.channel.send(
             f"Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"
             "")
@@ -1771,7 +1759,7 @@ dice_roll = [
 
 cat_images = [
     "https://upload.wikimedia.org/wikipedia/commons/3/38/Adorable-animal-cat-20787.jpg",
-    "https://images.rawpixel.com/image_1000/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZyYW5pbWFsX2NhdF9raXR0ZW5fYnJpdGlzaC1pbWFnZS1reWJlYXlrNC5qcGc.jpg",
+"https://images.rawpixel.com/image_1000/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZyYW5pbWFsX2NhdF9raXR0ZW5fYnJpdGlzaC1pbWFnZS1reWJlYXlrNC5qcGc.jpg",
     "https://cc0.photo/wp-content/uploads/2016/10/Striped-cat-on-a-meadow-2048x1365.jpg",
     "https://c.pxhere.com/images/8d/1e/604c6eb3dca5d46f3854ae974ccf-1603569.jpg!d",
     "https://pixnio.com/free-images/2021/09/14/2021-09-14-08-25-52-1049x1350.jpg",
@@ -1966,7 +1954,20 @@ trivia_questions = [
     ":thinking: What is the day after Christmas called? (Answer: || Boxing Day ||)",
     ":thinking: How many years in a decade? (Answer: || 10 years ||)",
     ":thinking: How many years in a century? (Answer: || 100 years ||)",
-    ":thinking: In which state is *Mount Rushmore* located? (Answer: || South Dakota ||)"
+    ":thinking: In which state is *Mount Rushmore* located? (Answer: || South Dakota ||)",
+    ":thinking: What is the capital of Bhutan? (Answer: || Thimphu ||)",
+    ":thinking: What is the chemical symbol for the element Silver? (Answer: || Ag ||)",
+    ":thinking: What is the capital of Spain? (Answer: || Madrid ||)",
+    ":thinking: Which nation won the 2022 FIFA Mens World Cup? And where was it hosted? (Answer: || Argentina won the FIFA Mens World Cup in 2022 which was hosted in Qatar ||)",
+    ":thinking: Who discovered the law of universal graviation?  (Answer: || Sir Isaac Newton ||)",
+    ":thinking: What is the capital of Japan? (Answer: || Tokyo ||)",
+    ":thinking: Who won the 2022-2023 Premier League Golden Boot (Answer: || Erling Haaland ||)",
+    ":thinking: Who composed ``Für Elise``? (Answer: || Ludwig van Beethoven ||)", 
+    ":thinking: What is the scientific name for the process plants use to convert sunlight into food? (Answer: || Photosynthesis ||)",
+    ":thinking: True or False: Dubai is the capital of the United Arab Emirates (Answer: || False. The capital of the U.A.E. is Abu Dhabi ||)",
+    ":thinking: In which year did the Russian October Revolution begin? (Answer: || 1917 ||)",
+    ":thinking: "
+  
 ]
 
 random_tod = [
@@ -2099,6 +2100,8 @@ dare_questions_only = [
 ]
 
 list_eight_ball = ["Yes.", "No.", "Maybe.", "I am not sure."]
+
+ignore_list = ['837011037894737951']
 
 keep_alive()
 TOKEN = os.environ.get("SECRET")
