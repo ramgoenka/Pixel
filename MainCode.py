@@ -18,6 +18,7 @@ from chempy import balance_stoichiometry
 import pytz
 from PIL import Image
 from io import BytesIO
+import matplotlib.pyplot as plt
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -25,8 +26,9 @@ client = discord.Client(intents=intents)
 spell = Speller(lang='en')
 client = commands.Bot(
     intents=intents,
-    command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps', 'pb'])
+    command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps', 'pb', 'pf'])
 cookies = {}
+x = symbols('x')
 #CODE
 @client.event
 async def on_ready():
@@ -164,6 +166,9 @@ async def on_message(message):
     if words[0].lower() == 'meow':
         await message.add_reaction('\U0001F431')
         await message.channel.send('meow :cat:')
+    if words[0].lower() == 'purr':
+        await message.add_reaction('\U0001F431')
+        await message.channel.send('purr :cat:')
     if message.content.startswith('p;cookie'):
         if len(message.mentions) == 0:
             await message.channel.send(
@@ -175,8 +180,7 @@ async def on_message(message):
                     f'Aww, thank you for the cookie, {message.author.mention}! :cookie:'
                 )
             else:
-                await message.channel.send(
-                    f':cookie: {message.author.mention} has given a cookie to {user.mention}! :cookie:'
+                await message.channel.send(f':cookie: {message.author.mention} has given a cookie to {user.mention}! :cookie:'
                 )
     if message.content.startswith('p;hug'):
         embed = discord.Embed(
@@ -194,7 +198,6 @@ async def on_message(message):
         embed.set_image(url=random.choice(cat_images))
         embed.set_footer(text="Hope you have a great day =^-^=")
         await message.channel.send(embed=embed)
-      
     if message.content.startswith('bye'):
         await message.channel.send(
             f'''Bye {author.mention}! Hope you have a great rest of your day!'''
@@ -685,6 +688,23 @@ p;fact''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
+    if message.content.startswith('p;info pmathplot'):
+        embed = discord.Embed(
+            title="__**math: plot**__ :chart_with_upwards_trend:",
+            description=
+            '''Returns the image of the graph of a given function. To use the command, the user must first type ``pmathplot`` followed by the function they wish to generate the graph for. For example, if the user want's to graph the function ``x^2 + 2x + 4 = 0``, they must type ``pmathplot x**2 + 2*x + 4`` and the bot will return an image of the plot of the function. If the user wishes to plot a logarithmic, trigonometric or square root function, they must type the following respectively: ``pmathplot k * np.log(x)``, ``pmathplot k * np.trigfunction(x)``, ``pmathplot k * np.sqrt(x)``, where ``k`` is some numerical constant.
+
+__**Syntax**__
+pmathplot''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
     if message.content.startswith('p;info pmathsubtract'):
         embed = discord.Embed(
             title="__**math: subtraction**__ <:subtraction:982885939686813717>",
@@ -1104,12 +1124,12 @@ pstructure''',
 
     if message.content.startswith('p;info ptime'):
         embed = discord.Embed(
-            title='__**time**__ :clock:',
+            title='__**pfind_time**__ :clock:',
             description=
             '''Command information to be added soon!
 
 __**Syntax**__
-ptime''',
+pfind_time''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -1145,7 +1165,6 @@ __**Actions**:__
 • ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information.
 • ``pdefine <word>``: Allows the user to type in a word from the English language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
-• ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. TEMPORARILY DISABLED.
 • ``p;countchar text``: Counts the number of characters in a given text. 
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
@@ -1154,6 +1173,7 @@ __**Actions**:__
 • ``pbalance <chemical reaction>``: Balances a given chemical reaction.
 • ``pstructure <chemical compound>``: Returns the structure of a given chemical compound.
 • ``pserverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information.
+• ``pfind_time``: Information to be added
 
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
@@ -1169,6 +1189,7 @@ __**Math**:__
 • ``pmathpi n``: Sends the first ``n`` digits of pi.
 • ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!
 • ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!  
+• ``pmathplot f(x)``: Returns the graph of a given function. For detailed information on useage type ``p;info pmathgraph``
 
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1213,7 +1234,6 @@ __**Actions**:__
 • ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information.
 • ``pdefine <word>``: Allows the user to type in a word from the English language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
-• ``psearch query``: Returns the first few results (upto 5 maximum) related to a query inputted by the user. TEMPORARILY DISABLED.
 • ``p;countchar text``: Counts the number of characters in a given text. 
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
@@ -1222,6 +1242,7 @@ __**Actions**:__
 • ``pbalance <chemical reaction>``: Balances a given chemical reaction.
 • ``pstructure <chemical compound>``: Returns the structure of a given chemical compound.
 • ``pserverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
+• ``pfind_time``: Information to be added
 
 __**Math**:__                                   
 • ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
@@ -1237,6 +1258,7 @@ __**Math**:__
 • ``pmathpi n``: Sends the first ``n`` digits of pi.
 • ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!
 • ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!  
+• ``pmathplot f(x)``: Returns the graph of a given function. For detailed information on useage type ``p;info pmathgraph``
 
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1348,6 +1370,15 @@ async def hmultiply(ctx, *args):
         await ctx.send('Please provide valid numbers as input.')
 
 @client.command()
+async def story(ctx, topic):
+  """Writes a story based on the given topic."""
+  story = ""
+  for i in range(10):
+    word = random.choice(open("words.txt", encoding="utf-8").readlines())
+    story += " " + word.strip()
+  await ctx.send(f"Here is a story about {topic}: \n{story}")
+
+@client.command()
 async def ountdown(ctx, seconds: int):
     message = await ctx.send(f'{seconds} seconds left!')
     while seconds > 0:
@@ -1357,7 +1388,7 @@ async def ountdown(ctx, seconds: int):
     await ctx.send(f'{ctx.author.mention}, the countdown you set is complete!')
 
 @client.command()
-async def ime(ctx, *, timezone):
+async def ind_time(ctx, *, timezone):
     try:
       tz = pytz.timezone(timezone)
       current_time = datetime.datetime.now(tz)
@@ -1431,6 +1462,23 @@ async def ranslate(ctx, lang_to, *, args):
     translator= Translator(to_lang=lang_to)
     translation = translator.translate(args)
     await ctx.send(translation)
+
+@client.command()
+async def hplot(ctx, *, func: str):
+    x = np.linspace(-10, 10, 400)
+    y_func = np.frompyfunc(lambda x: eval(func), 1, 1)
+    y = y_func(x).astype(np.float)
+    plt.figure()
+    plt.plot(x, y)
+    plt.axhline(0, color='black',linewidth=1.0)
+    plt.axvline(0, color='black',linewidth=1.0)
+    plt.grid(True)
+    plt.title(func)
+    plt.ylim([-20, 20])
+    with BytesIO() as image_binary:
+        plt.savefig(image_binary, format='png')
+        image_binary.seek(0)
+        await ctx.send(file=discord.File(fp=image_binary, filename='plot.png'))
 
 @client.command()
 async def efine(ctx, word):
