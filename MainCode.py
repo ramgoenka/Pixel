@@ -1370,15 +1370,6 @@ async def hmultiply(ctx, *args):
         await ctx.send('Please provide valid numbers as input.')
 
 @client.command()
-async def story(ctx, topic):
-  """Writes a story based on the given topic."""
-  story = ""
-  for i in range(10):
-    word = random.choice(open("words.txt", encoding="utf-8").readlines())
-    story += " " + word.strip()
-  await ctx.send(f"Here is a story about {topic}: \n{story}")
-
-@client.command()
 async def ountdown(ctx, seconds: int):
     message = await ctx.send(f'{seconds} seconds left!')
     while seconds > 0:
