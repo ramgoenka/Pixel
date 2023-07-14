@@ -19,6 +19,7 @@ import pytz
 from PIL import Image
 from io import BytesIO
 import matplotlib.pyplot as plt
+import sympy
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -125,6 +126,18 @@ async def on_message(message):
         await message.channel.send(
             f"""Hewwo {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
+    if message.content.startswith('p;calculate'):
+        expression = ' '.join(message.content.split()[1:])
+        allowed_chars = set('0123456789+-*/() ')
+        if set(expression).issubset(allowed_chars):
+            try:
+                result = sympy.sympify(expression)
+                await message.channel.send(f"**Result:** ```{result}```")
+            except Exception as e:
+                await message.channel.send(f"Error in calculation: {str(e)}")
+        else:
+            await message.channel.send("Invalid characters in expression. Only numbers and +, -, *, /, (, ) are allowed.")
+          
     if message.content.startswith('Hewwo'):
         await message.channel.send(
             f"""Hewwo {author.mention}! I Hope you have a great day!""")
@@ -654,23 +667,6 @@ p;roll''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pmathadd'):
-        embed = discord.Embed(
-            title="__**math: addition**__ <:addition:982883419774140436>",
-            description=
-            '''Followed by the function (``pmathadd``), the user must input all the numeric values and pixel will give an output as the sum of the numeric values. For example: ``pmathadd 10 5`` <-- this will result in Pixel giving an output of 15.0, which is the sum of 10 and 5 when added. Another example: ``pmathadd 23412 14234 12223``` <-- will result in Pixel giving an output of 49869.0, which is the sum of the three numbers.  
-
-__**Syntax**__
-pmathadd''',
-            color=0x00FFFF)
-        embed.set_footer(
-            text=random.choice(embed_footers),
-            icon_url=
-            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)
-
     if message.content.startswith('p;info fact'):
         embed = discord.Embed(
             title="__**fact**__ :books:",
@@ -705,31 +701,14 @@ pmathplot''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pmathsubtract'):
+    if message.content.startswith('p;info calculate'):
         embed = discord.Embed(
-            title="__**math: subtraction**__ <:subtraction:982885939686813717>",
+            title="__**math: calculate**__ :abacus:",
             description=
-            '''Followed by the function (``pmathsubtract``), the user must input as many numeric values as they wish to substract, and Pixel will give an output as the difference of the numeric values (ex. ``pmathsubtract 10 5`` <-- this will result in pixel giving an output of 5, which is the difference between 10 and 5).
+            '''This command allows the bot to function as a 4-function calculator. Followed by the command name (``p;calculate``), the user must provide with the expression they wish. For example, if the user wishes to calculate ``8 + 11 - 4 + 3 * 4`` then they must type ``p;calculate 8 + 11 - 4 + 3 * 4`` and the bot will return the result, which is ``27``. Note that order of operations matter and that ``8 + 11 - 4 + 3 * 4`` is not the same as ``8 + 11 - (4 + 3) * 4`` as the inputting the latter in the bot will output ``-9``. Use ``+`` for addition, ``-`` for subtraction, ``*`` for multiplication, and ``/`` for division. 
 
 __**Syntax**__
-pmathsubtract''',
-            color=0x00FFFF)
-        embed.set_footer(
-            text=random.choice(embed_footers),
-            icon_url=
-            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)
-
-    if message.content.startswith('p;info pmathdivide'):
-        embed = discord.Embed(
-            title="__**math: division**__ <:division:982888820666167306>",
-            description=
-            '''Followed by the function (``pmathdivide``), the user must input two numeric values and pixel will give an output as the quotient of the two values (ex. ``pmathdivide 10 5`` <-- this will result in pixel giving an output of 2, which is the quotient when 10 is divided by 5).
-
-__**Syntax**__
-pmathdivide''',
+p;calculate''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -747,24 +726,6 @@ pmathdivide''',
 
 __**Syntax**__
 pmathpi''',
-            color=0x00FFFF)
-        embed.set_footer(
-            text=random.choice(embed_footers),
-            icon_url=
-            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)
-
-    if message.content.startswith('p;info pmathmultiply'):
-        embed = discord.Embed(
-            title=
-            "__**math: multiplication**__ <:multiplication:982890472886382632>",
-            description=
-            '''Followed by the function (``pmathmultiply``), the user must input as many numeric values as they wish to multiply and pixel will give an output as the product of the numeric values (ex. ``pmathmultiply 10 5`` <-- this will result in pixel giving an output of 50, which is the product when 10 is multiplied by 5).
-
-__**Syntax**__
-pmathmultiply''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -1176,10 +1137,7 @@ __**Actions**:__
 • ``pfind_time``: Information to be added
 
 __**Math**:__                                   
-• ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
-• ``pmathsubtract <number 1> <number 2> <number 3> ... <number n>``: Substracts the inputted values.
-• ``pmathmultiply <number 1> <number 2> <number 3> ... <number n>``: Multiplies the inputted values.
-• ``pmathdivide x y``: Divides the inputted values
+• ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Allowed symbols: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, +, -, *, /, (, )
 • ``pmathexp x y``: Raises the base (x) to an exponent (y)
 • ``pmathfactorial x``: Finds the factorial of the value inputted
 • ``pmathsqrt x``: Finds the square root of the value inputted     
@@ -1211,6 +1169,7 @@ __**Games**:__
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
         await message.author.send(embed=embed)
+  
     if message.content.startswith('p;help'):
         embed = discord.Embed(title="Commands :cat:",
                               description='''
@@ -1245,10 +1204,7 @@ __**Actions**:__
 • ``pfind_time``: Information to be added
 
 __**Math**:__                                   
-• ``pmathadd <number 1> <number 2> <number 3> ... <number n>``: Adds the inputted values. 
-• ``pmathsubtract <number 1> <number 2> <number 3> ... <number n>``: Substracts the inputted values.
-• ``pmathmultiply <number 1> <number 2> <number 3> ... <number n>``: Multiplies the inputted values.
-• ``pmathdivide x y``: Divides the inputted values
+• ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Allowed symbols: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, +, -, *, /, (, )
 • ``pmathexp x y``: Raises the base (x) to an exponent (y)
 • ``pmathfactorial x``: Finds the factorial of the value inputted
 • ``pmathsqrt x``: Finds the square root of the value inputted     
@@ -1334,41 +1290,7 @@ __**Games**:__
                 "**Invalid choice**. Please choose rock, paper or scissors.")
 
 
-#COUPLE OF USEFUL COMMANDS INCLUDING MATHEMATICS AND ACTIONS
-@client.command()
-async def hadd(ctx, *args):
-    try:
-        numbers = [float(num) for num in args]
-        a = sum(numbers)
-        await ctx.send(f"**Result:** ```{a}```")
-    except ValueError:
-        await ctx.send('Please provide valid numbers as input.')
-    
-@client.command()
-async def hsubtract(ctx, *args):
-    try:
-        if len(args) < 2:
-            await ctx.send('Please provide at least two numbers.')
-            return
-        numbers = [float(num) for num in args]
-        result = numbers[0]
-        for num in numbers[1:]:
-            result -= num
-        await ctx.send(f"**Result:** ```{result}```")
-    except ValueError:
-        await ctx.send('Please provide valid numbers as input.')
-
-@client.command()
-async def hmultiply(ctx, *args):
-    try:
-        numbers = [float(num) for num in args]
-        result = 1
-        for num in numbers:
-            result *= num
-        await ctx.send(f"**Result:** ```{result}```")
-    except ValueError:
-        await ctx.send('Please provide valid numbers as input.')
-
+#COUPLE OF USEFUL COMMANDS INCLUDING MATHEMATICS AND ACTIONS      
 @client.command()
 async def ountdown(ctx, seconds: int):
     message = await ctx.send(f'{seconds} seconds left!')
@@ -1386,11 +1308,6 @@ async def ind_time(ctx, *, timezone):
       await ctx.send(f'The current time at **{timezone}** is **{current_time.strftime("%H:%M:%S")}**.')
     except pytz.exceptions.UnknownTimeZoneError: 
       await ctx.send("Could not find the time for the inputted timezone/location.")
-
-@client.command()
-async def hdivide(ctx, num1: int, num2: int):
-    a = num1 / num2
-    await ctx.send(f"**Result:** ```{a}```")
 
 @client.command()
 async def hgcd(ctx, num1: int, num2: int):
