@@ -1221,30 +1221,7 @@ p;translate''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
-      
-    if message.content.startswith('p;info ptictactoe'):
-        embed = discord.Embed(
-            title='__**TicTacToe**__ :regional_indicator_x: :o2:',
-            description=
-            '''NOTE: THIS COMMAND IS CURRENTLY NOT AVAILABLE AND IS UNDER DEVELOPMENT. Use this command to play a game of tictactoe or have two people play a game of tictacoe. To start the game type ``ptictactoe`` followed by the the userID of the first place (i.e pinging the first player) and the userID of the second of the second player (i.e. pinging the second player), it should look something like this: ``ptictactoe @player1 @player2``. Once the game has started, the player who makes the first move is pinged by pixel. To mark a tyle type ``ptplace`` followed by an integer between 1 - 9 (included) corresponding to the value of the tile you want to mark, make sure that the tile hasn't already been marked before, (ex. ``ptplace 4`` <-- this marks the 4th tile). The tiles are numbered in the following manner:
-            
-1 2 3
-4 5 6 
-7 8 9
-
-Good luck!
-                            
-__**Syntax**__
-ptictactoe''',
-            color=0x00FFFF)
-        embed.set_footer(
-            text=random.choice(embed_footers),
-            icon_url=
-            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)
-      
+          
     if message.content.startswith('p;info structure'):
         embed = discord.Embed(
             title='__**structure**__ :scientist:',
@@ -1333,8 +1310,7 @@ __**Games**:__
 • ``p;trivia``: Asks a trivia question!
 • ``p;dare``: Gives a dare
 • ``p;truth``: Asks a question for you to answer, truthfully
-• ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
-• ``ptictactoe @player1 @player2``: NOTE: THIS COMMAND IS CURRENTLY UNAVAILABLE AND IS UNDER DEVELOPMENT. This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
+• ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
         embed.set_thumbnail(
@@ -1399,8 +1375,7 @@ __**Games**:__
 • ``p;trivia``: Asks a trivia question!
 • ``p;dare``: Gives a dare
 • ``p;truth``: Asks a question for you to answer, truthfully
-• ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
-• ``ptictactoe @player1 @player2``: NOTE: THIS COMMAND IS CURRENTLY UNAVAILABLE AND IS UNDER DEVELOPMENT. This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
+• ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
         embed.set_thumbnail(
@@ -1413,134 +1388,6 @@ __**Games**:__
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
         await message.channel.send(embed=embed)
-
-#TICTACTOE
-player1 = ""
-player2 = ""
-turn = ""
-gameOver = True
-board = []
-winningConditions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7],
-                     [2, 5, 8], [0, 4, 8], [2, 4, 6]]
-
-
-@client.command()
-async def ictactoe(ctx, p1: discord.Member, p2: discord.Member):
-    global count
-    global player1
-    global player2
-    global turn
-    global gameOver
-
-    if gameOver:
-        global board
-        board = [
-            ":white_large_square:", ":white_large_square:",
-            ":white_large_square:", ":white_large_square:",
-            ":white_large_square:", ":white_large_square:",
-            ":white_large_square:", ":white_large_square:",
-            ":white_large_square:"
-        ]
-        turn = ""
-        gameOver = False
-        count = 0
-        player1 = p1
-        player2 = p2
-        line = ""
-        for x in range(len(board)):
-            if x == 2 or x == 5 or x == 8:
-                line += " " + board[x]
-                await ctx.send(line)
-                line = ""
-            else:
-                line += " " + board[x]
-        num = random.randint(1, 2)
-        if num == 1:
-            turn = player1
-            await ctx.send("It is <@" + str(player1.id) + ">'s turn.")
-        elif num == 2:
-            turn = player2
-            await ctx.send("It is <@" + str(player2.id) + ">'s turn.")
-    else:
-        await ctx.send(
-            "A game is already in progress! Please finish it before starting a new one."
-        )
-
-
-@client.command()
-async def place(ctx, pos: int):
-    global turn
-    global player1
-    global player2
-    global board
-    global count
-    global gameOver
-
-    if not gameOver:
-        mark = ""
-        if turn == ctx.author:
-            if turn == player1:
-                mark = ":regional_indicator_x:"
-            elif turn == player2:
-                mark = ":o2:"
-            if 0 < pos < 10 and board[pos - 1] == ":white_large_square:":
-                board[pos - 1] = mark
-                count += 1
-                line = ""
-                for x in range(len(board)):
-                    if x == 2 or x == 5 or x == 8:
-                        line += " " + board[x]
-                        await ctx.send(line)
-                        line = ""
-                    else:
-                        line += " " + board[x]
-
-                checkWinner(winningConditions, mark)
-                print(count)
-                if gameOver == True:
-                    await ctx.send(
-                        f"""**Result**: {mark} is the winner! :tada:""")
-                elif count >= 9:
-                    gameOver = True
-                    await ctx.send("**Result**: It's a tie!")
-                if turn == player1:
-                    turn = player2
-                elif turn == player2:
-                    turn = player1
-            else:
-                await ctx.send(
-                    "Please type ``ptictactoe @player1 @player2`` to start a game of TicTacToe. Type ``ptplace`` followed by an integer from 1 - 9 (inclusive) corresponding to the tile you want to mark. Make sure the tile hasn't already been marked and is empty. Good luck!"
-                )
-        else:
-            await ctx.send("It is not your turn yet.")
-    else:
-        await ctx.send(
-            "To start a new game of TicTacToe, type ``ptictactoe @player1 @player2``."
-        )
-
-
-def checkWinner(winningConditions, mark):
-    global gameOver
-    for condition in winningConditions:
-        if board[condition[0]] == mark and board[
-                condition[1]] == mark and board[condition[2]] == mark:
-            gameOver = True
-
-@ictactoe.error
-async def tictactoe_error(ctx, error):
-    print(error)
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Please mention 2 players for this command.")
-    elif isinstance(error, commands.BadArgument):
-        await ctx.send("Please mention 2 players for this command.")
-
-
-@place.error
-async def place_error(ctx, error):
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Please enter a position you would like to mark.")
-    elif isinstance(error, commands.BadArgument):
-        await ctx.send("Please make sure to enter an integer.")
 
 embed_footers = [
     'Thanks for using pixel :)',
