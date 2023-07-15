@@ -32,6 +32,7 @@ cookies = {}
 poll_emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
 yes_no_emojis = ['👍', '👎']
 x = symbols('x')
+
 #CODE
 @client.event
 async def on_ready():
@@ -48,7 +49,7 @@ async def on_message(message):
     author = message.author
 
     #INTEGRAL CALCULATOR
-    if message.content.startswith('pmathintegral'):
+    if message.content.startswith('p;integral'):
         try:
             words = message.content.split(None, 1)
             x = symbols('x')
@@ -201,7 +202,24 @@ async def on_message(message):
         embed.set_image(url=random.choice(hug_gif))
         embed.set_footer(text="Hope you have a great day :D")
         await message.channel.send(embed=embed)
-
+    choices = ["rock", "paper", "scissors"]
+    if message.content.startswith("p;rps"):
+        args = message.content.split()
+        if len(args) != 2 or args[1].lower() not in choices:
+            await message.channel.send("Invalid choice. Choose one: rock, paper, or scissors.")
+            return
+        user_choice = args[1].lower()
+        bot_choice = random.choice(choices)
+        await message.channel.send(f"You chose **{user_choice}**. I chose **{bot_choice}**.")
+        if user_choice == bot_choice:
+            await message.channel.send("It's a **tie**!")
+        elif (user_choice == "rock" and bot_choice == "scissors") or \
+                (user_choice == "paper" and bot_choice == "rock") or \
+                (user_choice == "scissors" and bot_choice == "paper"):
+            await message.channel.send("**You** win!")
+        else:
+            await message.channel.send("**I** win!")
+        await client.process_commands(message)
     if message.content.startswith('p;cat'):
         embed = discord.Embed(title="",
                               description=f'''Meow :cat:''',
@@ -296,23 +314,50 @@ Thanks for checking me out and I hope you have a nice day :)
         await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good morning! Hope you have a great day :sunny:')
+    if message.content.startswith('p;structure'):
+        try:
+            _, *compound_parts = message.content.split()
+            compound = ' '.join(compound_parts)
+            compound_encoded = requests.utils.quote(compound)
+            image_url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{compound_encoded}/PNG"
+            response = requests.get(image_url)
+            if response.status_code == 200:
+                img = Image.open(BytesIO(response.content))
+                img = img.resize((img.width * 2, img.height * 2))
+                img_byte_arr = BytesIO()
+                img.save(img_byte_arr, format='PNG')
+                img_byte_arr = img_byte_arr.getvalue()
+                image_file = discord.File(BytesIO(img_byte_arr), filename="structure.png")
+                await message.channel.send(file=image_file)
+            else:
+                await message.channel.send("Sorry, I couldn't find a structure for that compound.")
+        except Exception as e:
+            await message.channel.send(f"An error occurred: {str(e)}")
     if message.content.startswith('p;binary'):
         decimal = int(message.content.split(' ')[1])
         binary = bin(decimal)[2:]
         await message.channel.send(
             f'The binary equivalent of {decimal} is: **{binary}**.')
+    if message.content.startswith('p;avatar'):
+        try:
+            member = message.mentions[0] if message.mentions else message.author
+            embed = discord.Embed(title = f"{member}'s avatar", color = discord.Color.blurple())
+            embed.set_image(url = member.avatar_url)
+            await message.channel.send(embed=embed)
+        except Exception as e:
+            await message.channel.send(f"An error occurred: {str(e)}")
+    await client.process_commands(message)
     if message.content.startswith('p;wyr'):
         embed = discord.Embed(title='Would you rather...',
                               description=random.choice(wyr_questions),
                               color=0xFF6600)
-        await message.channel.send(embed=embed)
-      
+        await message.channel.send(embed=embed)  
     if message.content.startswith('p;tod'):
         embed = discord.Embed(title=random.choice(random_tod),
                               description='Truth or Dare',
                               color=0xFF6600)
         await message.channel.send(embed=embed)
-    if message.content.startswith('p;fact'):
+    if message.content.startswith('p;random_fact'):
         embed = discord.Embed(title="Did you know...",
                               description=random.choice(random_facts),
                               color=0xadd8e6)
@@ -370,7 +415,175 @@ Thanks for checking me out and I hope you have a nice day :)
                 'Invalid input or syntax. Please try again.')
     if message.content.startswith("p;8ball"):
         await message.channel.send(random.choice(list_eight_ball))
+      
 
+    if message.content.startswith("p;"):
+        command = message.content.split(";", 1)[1].strip()
+
+        if command.startswith("countdown "):
+            _, seconds = command.split()
+            seconds = int(seconds)
+            message = await message.channel.send(f'{seconds} seconds left!')
+            while seconds > 0:
+                await asyncio.sleep(1)
+                seconds -= 1
+                await message.edit(content=f'{seconds} seconds left!')
+            await message.channel.send(f'{message.author.mention}, the countdown you set is complete!')
+
+        elif command.startswith("find_time "):
+            _, timezone = command.split(" ", 1)
+            try:
+                tz = pytz.timezone(timezone)
+                current_time = datetime.datetime.now(tz)
+                await message.channel.send(f'The current time at **{timezone}** is **{current_time.strftime("%H:%M:%S")}**.')
+            except pytz.exceptions.UnknownTimeZoneError: 
+                await message.channel.send("Could not find the time for the inputted timezone/location.")
+
+        elif command.startswith("gcd "):
+            _, num1, num2 = command.split()
+            num1, num2 = int(num1), int(num2)
+            a = max(num1, num2)
+            b = min(num1, num2)
+            while b != 0:
+                temp = b
+                b = a % b
+                a = temp
+            await message.channel.send(f"**Result:** ```{a}```")
+
+        elif command.startswith("pi "):
+            _, digits = command.split()
+            digits = int(digits)
+            if digits > 1000:
+                await message.channel.send("Sorry, I only know up to 1000 digits of pi.")
+            else:
+                mpmath.mp.dps = digits
+                pi_value = str(mpmath.pi)
+                await message.channel.send(f"The first **{digits}** digits of pi are: ```{pi_value}```")
+
+        elif command.startswith("exp "):
+            _, num1, num2 = command.split()
+            num1, num2 = int(num1), int(num2)
+            result = num1**num2
+            await message.channel.send(f"**Result:** ```{result}```")
+
+        elif command.startswith("sqrt "):
+            _, num = command.split()
+            num = int(num)
+            result = num**0.5
+            await message.channel.send(f"**Result:** ```{result}```")
+          
+        elif command.startswith("factorial "):
+            _, num = command.split()
+            num = int(num)
+            result = math.factorial(num)
+            await message.channel.send(f"**Result:** ```{result}```")
+        elif command.startswith("log "):
+            _, num1, num2 = command.split()
+            num1, num2 = int(num1), int(num2)
+            result = math.log(num1, num2)
+            await message.channel.send(f"**Result:** ```{result}```")
+        elif command.startswith("log "):
+            _, num1, num2 = command.split()
+            num1, num2 = int(num1), int(num2)
+            result = math.log(num1, num2)
+            await message.channel.send(f"**Result:** ```{result}```")
+        elif command.startswith("balance "):
+            _, equation = command.split(" ", 1)
+            try:
+                reactants, products = equation.split('->')
+                reactants = reactants.split('+')
+                products = products.split('+')
+                balanced = balance_stoichiometry(reactants, products)
+                balanced_eq = ' + '.join([f'{v} {k}' for k, v in balanced[0].items()]) + ' -> ' + ' + '.join([f'{v} {k}' for k, v in balanced[1].items()])
+                await message.channel.send(f'__The balanced chemical equation is:__ {balanced_eq}')
+            except Exception as e:
+                await message.channel.send(f'Error: {str(e)}')
+        elif command.startswith("plot "):
+            _, func = command.split(" ", 1)
+            x = np.linspace(-10, 10, 400)
+            y_func = np.frompyfunc(lambda x: eval(func), 1, 1)
+            y = y_func(x).astype(np.float)
+            plt.figure()
+            plt.plot(x, y)
+            plt.axhline(0, color='black',linewidth=1.0)
+            plt.axvline(0, color='black',linewidth=1.0)
+            plt.grid(True)
+            plt.title(func)
+            plt.ylim([-20, 20])
+            with BytesIO() as image_binary:
+                plt.savefig(image_binary, format='png')
+                image_binary.seek(0)
+                await message.channel.send(file=discord.File(fp=image_binary, filename='plot.png'))
+        elif command.startswith("define "):
+            _, word = command.split(" ", 1)
+            url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
+            response = requests.get(url)
+            if response.status_code == 200:
+                data = response.json()[0]['meanings'][0]['definitions'][0]['definition']
+                await message.channel.send(f"**{word}**: {data}")
+            else:
+                await message.channel.send(f"Sorry, I couldn't find the definition for **{word}**.")
+        elif command.startswith("remindme "):
+            _, time, unit, reminder = command.split(" ", 3)
+            try:
+                time = int(time)
+                unit = unit.lower()
+                if unit in ["second", "seconds"]:
+                    await message.channel.send(
+                        f"{message.author.mention}, I will make sure to remind you: **{reminder}**"
+                    )
+                    await asyncio.sleep(time)
+                elif unit in ["minute", "minutes"]:
+                    await message.channel.send(
+                        f"{message.author.mention}, I will make sure to remind you: **{reminder}**"
+                    )
+                    await asyncio.sleep(time * 60)
+                elif unit in ["hour", "hours"]:
+                    await message.channel.send(
+                        f"{message.author.mention}, I will make sure to remind you: **{reminder}**"
+                    )
+                    await asyncio.sleep(time * 60 * 60)
+                elif unit in ["day", "days"]:
+                    await message.channel.send(
+                        f"{message.author.mention}, I will make sure to remind you: **{reminder}**"
+                    )
+                    await asyncio.sleep(time * 60 * 60 * 24)
+                else:
+                    await message.channel.send(
+                        f"{message.author.mention}, please provide a valid time unit (second/seconds/minute/minutes/hour/hours/day/days)."
+                    )
+                    return
+                await message.channel.send(
+                    f"{message.author.mention}, you asked me to remind you: **{reminder}**"
+                )
+            except ValueError:
+                await message.channel.send(
+                    f"{message.author.mention}, please provide a valid time (integer)."
+                )
+
+                await client.process_commands(message)
+        elif command.startswith("serverinfo"):
+            name = str(message.guild.name)
+            description = str(message.guild.description) if message.guild.description else ""
+            owner_id = message.guild.owner_id
+            owner = await client.fetch_user(int(owner_id))
+            id = str(message.guild.id)
+            memberCount = str(message.guild.member_count)
+            creation_date = message.guild.created_at.strftime("%B %d, %Y")
+            icon_url = str(message.guild.icon.url) if message.guild.icon else None
+            embed = discord.Embed(
+                title=name + " Information",
+                description=description,
+                color=discord.Color.blue()
+            )
+            if icon_url:
+                embed.set_thumbnail(url=icon_url)
+            embed.add_field(name="Owner", value=owner, inline=True)
+            embed.add_field(name="Server ID", value=id, inline=True)
+            embed.add_field(name="Member Count", value=memberCount, inline=True)
+            embed.add_field(name="Created On", value=creation_date, inline=True)
+            await message.channel.send(embed=embed)
+            await client.process_commands(message)
 #INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
 
     if message.content.startswith('p;info help'):
@@ -468,22 +681,6 @@ p;countchar''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info psearch'):
-        embed = discord.Embed(title="__**search**__ :mag_right:",
-                              description='''
-~~This command returns the first few results (upto 5) realted to a query inputted by the user. To use this command the user must type ``psearch`` followed by the topic the hope to find search results for. For example if a user wants search results for cats, they must time ``psearch cat`` and the bot will return the first few web search results it is able to fetch relating to cats.~~ NOTE: THIS COMMAND HAS BEEN TEMPORARILY DISABLED. THE COMMAND IS BEING WORKED ON AND THE COMMAND WILL HOPEFULLY BE BACK AND RUNNING SOON. 
-                            
-__**Syntax**__
-psearch''',
-                              color=0x00FFFF)
-        embed.set_footer(
-            text=random.choice(embed_footers),
-            icon_url=
-            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)
-
     if message.content.startswith('p;info poll'):
         embed = discord.Embed(title="__**poll**__ :ballot_box:",
                               description='''
@@ -500,7 +697,7 @@ p;poll''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pdefine'):
+    if message.content.startswith('p;info define'):
         embed = discord.Embed(title="__**define**__ :book:",
                               description='''
 Use this command to find the definiton of any word in the english langauge. For example, if the user wishes to find the definition of the word "dessert", then the user must type ``pdefine dessert`` and the bot will reply with the definition of the word "dessert". 
@@ -516,14 +713,14 @@ pdefine''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith("p;info pmathgcd"):
+    if message.content.startswith("p;info gcd"):
         embed = discord.Embed(
             title="__**math: greatest common divisor**__ :asterisk:",
             description=
-            '''This command can be used to calculate the greatest common divisor (gcd) of two numbers. To use this command, the user must type ``pmathgcd`` and then the two numbers they desire to calculate the gcd for. For example if a user wishes to find the gcd of ``4`` and ``2`` they must type ``pmathgcd 4 2`` and the bot will respond with the result which is ``2``.
+            '''This command can be used to calculate the greatest common divisor (gcd) of two numbers. To use this command, the user must type ``p;gcd`` and then the two numbers they desire to calculate the gcd for. For example if a user wishes to find the gcd of ``4`` and ``2`` they must type ``p;gcd 4 2`` and the bot will respond with the result which is ``2``.
 
 __**Syntax**__
-pmathgcd''',
+p;gcd''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -666,14 +863,14 @@ p;roll''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info fact'):
+    if message.content.startswith('p;info random_fact'):
         embed = discord.Embed(
             title="__**fact**__ :books:",
             description=
             '''Tells you a random fact, because who doesn't enjoy a random cool fact :)
 
 __**Syntax**__
-p;fact''',
+p;random_fact''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -683,14 +880,14 @@ p;fact''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pmathplot'):
+    if message.content.startswith('p;info plot'):
         embed = discord.Embed(
             title="__**math: plot**__ :chart_with_upwards_trend:",
             description=
-            '''Returns the image of the graph of a given function. To use the command, the user must first type ``pmathplot`` followed by the function they wish to generate the graph for. For example, if the user want's to graph the function ``x^2 + 2x + 4 = 0``, they must type ``pmathplot x**2 + 2*x + 4`` and the bot will return an image of the plot of the function. If the user wishes to plot a logarithmic, trigonometric or square root function, they must type the following respectively: ``pmathplot k * np.log(x)``, ``pmathplot k * np.trigfunction(x)``, ``pmathplot k * np.sqrt(x)``, where ``k`` is some numerical constant.
+            '''Returns the image of the graph of a given function. To use the command, the user must first type ``p;plot`` followed by the function they wish to generate the graph for. For example, if the user want's to graph the function ``x^2 + 2x + 4 = 0``, they must type ``p;plot x**2 + 2*x + 4`` and the bot will return an image of the plot of the function. If the user wishes to plot a logarithmic, trigonometric or square root function, they must type the following respectively: ``p;plot k * np.log(x)``, ``p;plot k * np.trigfunction(x)``, ``p;plot k * np.sqrt(x)``, where ``k`` is some numerical constant.
 
 __**Syntax**__
-pmathplot''',
+p;plot''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -717,7 +914,7 @@ p;calculate''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pmathpi'):
+    if message.content.startswith('p;info pi'):
         embed = discord.Embed(
             title="__**math: pi**__ :pie:",
             description=
@@ -734,14 +931,14 @@ pmathpi''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pmathexp'):
+    if message.content.startswith('p;info exp'):
         embed = discord.Embed(
             title='__**math: exponent**__ <:exponent:982926856103796736>',
             description=
-            '''Followed by the function (``pmathexp``), the user must input two numeric values and pixel will give the output as the result where the first value is the base and the second value is the exponent (ex. ``pmathexp 2 4`` <-- this will result in pixel giving an output of 16, which is the result when 2 is raised to 4).
+            '''Followed by the function (``p;exp``), the user must input two numeric values and pixel will give the output as the result where the first value is the base and the second value is the exponent (ex. ``p;exp 2 4`` <-- this will result in pixel giving an output of 16, which is the result when 2 is raised to 4).
                             
 __**Syntax**__
-pmathexp''',
+p;exp''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -751,14 +948,14 @@ pmathexp''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pcountdown'):
+    if message.content.startswith('p;info countdown'):
         embed = discord.Embed(
             title='__**countdown...**__ :hourglass_flowing_sand:',
             description=
-            '''Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``pcountdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over.
+            '''Allows the user to set a countdown timer for ``x`` amount of seconds. For example, if a user wants to set a timer for ``30`` seconds, the user can type ``p;countdown 30`` and the bot will display a message that shows the remaining time left in the countdown and will ping the user when the countdown is over.
                             
 __**Syntax**__
-pcountdown''',
+p;countdown''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -785,14 +982,14 @@ p;cookie''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pmathfactorial'):
+    if message.content.startswith('p;info factorial'):
         embed = discord.Embed(
             title='__**math: factorial**__ <:factorial:982929962946424862>',
             description=
-            '''Followed by the function (``pmathfactorial``), the user must input one numeric value and pixel will give the output as the factorial of the inputted value (ex. ``pmathfactorial 4`` <-- this will result in pixel giving an output of 24, which is the factorial of 4).
+            '''Followed by the function (``p;factorial``), the user must input one numeric value and pixel will give the output as the factorial of the inputted value (ex. ``p;factorial 4`` <-- this will result in pixel giving an output of 24, which is the factorial of 4).
                             
 __**Syntax**__
-pmathfactorial''',
+p;factorial''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -802,14 +999,14 @@ pmathfactorial''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pmathsqrt'):
+    if message.content.startswith('p;info sqrt'):
         embed = discord.Embed(
             title='__**math: square root**__ <:squareRoot:982932222820614194>',
             description=
-            '''Followed by the function (``pmathsqrt``), the user must input one numeric value and pixel will give the output as the result of the sqaure root of the inputted value (ex. ``pmathsqrt 4`` <-- this will result in pixel giving an output of 2, which is the sqaure root of 4).
+            '''Followed by the function (``p;sqrt``), the user must input one numeric value and pixel will give the output as the result of the sqaure root of the inputted value (ex. ``p;sqrt 4`` <-- this will result in pixel giving an output of 2, which is the sqaure root of 4).
                             
 __**Syntax**__
-pmathsqrt''',
+p;sqrt''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -819,14 +1016,14 @@ pmathsqrt''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info premindme'):
+    if message.content.startswith('p;info remindme'):
         embed = discord.Embed(
             title='__**remind me!**__ :timer:',
             description=
-            '''The ``premindme`` command allows the user to set a reminder for themselves for any amount of time they desire to. To use this command, the user must first type ``premindme`` and then follow it by the amount of time and units and the reminder they want to set. An example of this would be: ``premindme 10 minutes go for a walk``, the bot will ping the user after 10 minutes reminding them that they need to go for a walk. Note that only the following units are acceptable and in must be written in the command in the following manner only: ``seconds``, ``seconds``, ``minute``, ``minutes``, ``hour``, ``hours``, ``day``, ``days``. The case of the input does not matter (i.e. the bot will accept: Second, SeCONds, SeconD, so the case of the letters in the input does not matter). 
+            '''The ``p;remindme`` command allows the user to set a reminder for themselves for any amount of time they desire to. To use this command, the user must first type ``p;remindme`` and then follow it by the amount of time and units and the reminder they want to set. An example of this would be: ``p;remindme 10 minutes go for a walk``, the bot will ping the user after 10 minutes reminding them that they need to go for a walk. Note that only the following units are acceptable and in must be written in the command in the following manner only: ``seconds``, ``seconds``, ``minute``, ``minutes``, ``hour``, ``hours``, ``day``, ``days``. The case of the input does not matter (i.e. the bot will accept: Second, SeCONds, SeconD, so the case of the letters in the input does not matter). 
           
 __**Syntax**__
-premindme''',
+p;remindme''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -836,14 +1033,14 @@ premindme''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pmathlog'):
+    if message.content.startswith('p;info log'):
         embed = discord.Embed(
             title='__**math: logrithm**__ :wood:',
             description=
             '''Followed by the function (``pmathlog``), the user must input two numeric values and pixel will give the output as the result of a logrithm where the first inputted value is what we want to find the logrithm of, and the second inputted value is the base of the logrithm. (ex. ``pmathlog 4 2`` <-- this will result in pixel giving an output of 2, which is the logrithmic value given that 4 is the value we want to find the logirthm for and 2 is the base).
                             
 __**Syntax**__
-pmathlog''',
+p;log''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -853,14 +1050,14 @@ pmathlog''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pmathintegral'):
+    if message.content.startswith('p;info integral'):
         embed = discord.Embed(
             title='__**math: integral**__ :man_teacher:',
             description=
-            '''Followed by the function (pmathintegral), the user must input some mathemtaical function f(x) for which they wish to find the integral of. Here are ways to interpret the result: For example if the user inputs the function `x`, the output will be `x**2/2` which means `x` to the second power, divided by two                        
+            '''Followed by the function ``(p;integral)``, the user must input some mathemtaical function f(x) for which they wish to find the integral of. Here are ways to interpret the result: For example if the user inputs the function ``x``, the output will be ``x**2/2`` which means ``x`` to the second power, divided by two                        
 
 __**Syntax**__
-pmathintegral''',
+p;integral''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -956,14 +1153,14 @@ p;server_count''',
         await message.channel.send(embed=embed)
 
   
-    if message.content.startswith('p;info pbalance'):
+    if message.content.startswith('p;info balance'):
         embed = discord.Embed(
             title='__**balance **__ :test_tube:',
             description=
-            '''Use this command to balance a chemical reaction equation. To use this command, the user must type ``pbalance`` and then the chemical reaction they wish to balance. For example if the user wishes to balance the chemical reaction ``H2 + O2 -> H2O`` they must type ``pbalance H2 + O2 -> H2O`` and the bot will respond with the balance chemical reaction equation! ``
+            '''Use this command to balance a chemical reaction equation. To use this command, the user must type ``p;balance`` and then the chemical reaction they wish to balance. For example if the user wishes to balance the chemical reaction ``H2 + O2 -> H2O`` they must type ``p;balance H2 + O2 -> H2O`` and the bot will respond with the balance chemical reaction equation!
                             
 __**Syntax**__
-pbalance''',
+p;balance''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -973,14 +1170,14 @@ pbalance''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
       
-    if message.content.startswith('p;info prps'):
+    if message.content.startswith('p;info rps'):
         embed = discord.Embed(
             title='__**rock paper scissors**__ :rock: :scroll: :scissors:',
             description=
-            '''Use this command to play a game of rock paper scissors with Pixel! To use this command, type ``prps`` followed by your move, for example ``prps rock`` if you want to use rock, and Pixel will reply with its move!
+            '''Use this command to play a game of rock paper scissors with Pixel! To use this command, type ``prps`` followed by your move, for example ``p;rps rock`` if you want to use rock, and Pixel will reply with its move!
 
 __**Syntax**__
-prps''',
+p;rps''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -990,14 +1187,14 @@ prps''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info pserverinfo'):
+    if message.content.startswith('p;info serverinfo'):
         embed = discord.Embed(
             title='__**server information**__ :page_facing_up:',
             description=
             '''Use this command to get information about the Discord server (that the command is being used in). Using this command results in the bot replaying with server information such as the username of the server owner, the date the server was created, the server ID, the server logo and the member count of the server. 
 
 __**Syntax**__
-pserverinfo''',
+p;serverinfo''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -1029,7 +1226,7 @@ p;translate''',
         embed = discord.Embed(
             title='__**TicTacToe**__ :regional_indicator_x: :o2:',
             description=
-            '''Use this command to play a game of tictactoe or have two people play a game of tictacoe. To start the game type ``ptictactoe`` followed by the the userID of the first place (i.e pinging the first player) and the userID of the second of the second player (i.e. pinging the second player), it should look something like this: ``ptictactoe @player1 @player2``. Once the game has started, the player who makes the first move is pinged by pixel. To mark a tyle type ``ptplace`` followed by an integer between 1 - 9 (included) corresponding to the value of the tile you want to mark, make sure that the tile hasn't already been marked before, (ex. ``ptplace 4`` <-- this marks the 4th tile). The tiles are numbered in the following manner:
+            '''NOTE: THIS COMMAND IS CURRENTLY NOT AVAILABLE AND IS UNDER DEVELOPMENT. Use this command to play a game of tictactoe or have two people play a game of tictacoe. To start the game type ``ptictactoe`` followed by the the userID of the first place (i.e pinging the first player) and the userID of the second of the second player (i.e. pinging the second player), it should look something like this: ``ptictactoe @player1 @player2``. Once the game has started, the player who makes the first move is pinged by pixel. To mark a tyle type ``ptplace`` followed by an integer between 1 - 9 (included) corresponding to the value of the tile you want to mark, make sure that the tile hasn't already been marked before, (ex. ``ptplace 4`` <-- this marks the 4th tile). The tiles are numbered in the following manner:
             
 1 2 3
 4 5 6 
@@ -1047,32 +1244,15 @@ ptictactoe''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
-
-    if message.content.startswith('p;info pmathmatrixmult'):
-        embed = discord.Embed(
-            title='__**matrix multiplication**__ :1234:',
-            description=
-            '''Using this command, the user can multiply any two matrices they wish to find the product for. To use the command, the user must type: ``pmathmatrixmult "1 2; 3 4" "5 6;7 8" where the two matrices are surrounded by quotation marks and the rows are separated by a semi-colon.
-
-__**Syntax**__
-pmathmatrixmult''',
-            color=0x00FFFF)
-        embed.set_footer(
-            text=random.choice(embed_footers),
-            icon_url=
-            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)
-
-    if message.content.startswith('p;info pstructure'):
+      
+    if message.content.startswith('p;info structure'):
         embed = discord.Embed(
             title='__**structure**__ :scientist:',
             description=
-            '''Using this command, a user can request the bot to output the chemical structure of a given chemical compound. For example if the user wishes to output the chemical compound of ``methane``, the user can type ``pstructure methane`` and the bot will then respond with an image of the chemical structure of ``methane``. 
+            '''Using this command, a user can request the bot to output the chemical structure of a given chemical compound. For example if the user wishes to output the chemical compound of ``methane``, the user can type ``p;structure methane`` and the bot will then respond with an image of the chemical structure of ``methane``. 
 
 __**Syntax**__
-pstructure''',
+p;structure''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -1082,14 +1262,14 @@ pstructure''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info ptime'):
+    if message.content.startswith('p;info find_time'):
         embed = discord.Embed(
-            title='__**pfind_time**__ :clock:',
+            title='__**find time**__ :clock:',
             description=
             '''Command information to be added soon!
 
 __**Syntax**__
-pfind_time''',
+p;find_time''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -1107,7 +1287,7 @@ pfind_time''',
                               description='''
 __**About Me**:__
 • ``p;help``: Gives a list of commands
-• ``p;info <command>``: For more detailed information about a specific command (ex. p;help fact)
+• ``p;info <command>``: For more detailed information about a specific command (ex. p;help flip)
 • ``p;dm help``: Sends a DM to the user with a list of commands  
 • ``p;about``: Give me a chance to introduce myself!
 • ``p;ping``: Shows the response time of pixel 
@@ -1119,34 +1299,33 @@ __**Actions**:__
 • ``p;cat``: Sends a random cat image or GIF in the chat
 • ``p;flip``: Flips a coin
 • ``p;roll``: Rolls a 6-sided dice
-• ``p;fact``: Tells you a random fact
-• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. Type ``p;info premindme`` for more information. 
-• ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds.
+• ``p;random_fact``: Tells you a random fact
+• ``p;remindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. Type ``p;info remindme`` for more information. 
+• ``p;countdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds.
 • ``p;poll question - option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info poll`` for detailed information.
-• ``pdefine <word>``: Allows the user to type in a word from the English language that they wish to find the definition for. 
+• ``p;define <word>``: Allows the user to type in a word from the English language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``p;countchar text``: Counts the number of characters in a given text. 
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
 • ``p;translate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
-• ``pbalance <chemical reaction>``: Balances a given chemical reaction.
-• ``pstructure <chemical compound>``: Returns the structure of a given chemical compound.
-• ``pserverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information.
-• ``pfind_time``: Information to be added
+• ``p;balance <chemical reaction>``: Balances a given chemical reaction.
+• ``p;structure <chemical compound>``: Returns the structure of a given chemical compound.
+• ``p;serverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
+• ``p;find_time``: Information to be added
 
 __**Math**:__                                   
 • ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Type ``p;info calculate`` for a detailed description!
-• ``pmathexp x y``: Raises the base (x) to an exponent (y)
-• ``pmathfactorial x``: Finds the factorial of the value inputted
-• ``pmathsqrt x``: Finds the square root of the value inputted     
-• ``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
-• ``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
-• ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
-• ``pmathpi n``: Sends the first ``n`` digits of pi.
-• ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!
-• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!  
-• ``pmathplot f(x)``: Returns the graph of a given function. For detailed information on useage type ``p;info pmathgraph``
+• ``p;exp x y``: Raises the base (x) to an exponent (y)
+• ``p;factorial x``: Finds the factorial of the value inputted
+• ``p;sqrt x``: Finds the square root of the value inputted     
+• ``p;log x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
+• ``p;integral f(x)``: Finds the integral of a given function, please use ``p;info integral`` to learn more!
+• ``p;gcd x y``: Finds the greatest common divisor between the two given numbers. 
+• ``p;pi n``: Sends the first ``n`` digits of pi.
+• ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!  
+• ``p;plot f(x)``: Returns the graph of a given function. For detailed information on useage type ``p;info plot``
 
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1154,8 +1333,8 @@ __**Games**:__
 • ``p;trivia``: Asks a trivia question!
 • ``p;dare``: Gives a dare
 • ``p;truth``: Asks a question for you to answer, truthfully
-• ``prps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
-• ``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
+• ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
+• ``ptictactoe @player1 @player2``: NOTE: THIS COMMAND IS CURRENTLY UNAVAILABLE AND IS UNDER DEVELOPMENT. This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
         embed.set_thumbnail(
@@ -1186,11 +1365,11 @@ __**Actions**:__
 • ``p;cat``: Sends a random cat image or GIF in the chat
 • ``p;flip``: Flips a coin
 • ``p;roll``: Rolls a 6-sided dice
-• ``p;fact``: Tells you a random fact
-• ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. Type ``p;info premindme`` for more information. 
-• ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds.
+• ``p;random_fact``: Tells you a random fact
+• ``p;remindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. Type ``p;info remindme`` for more information. 
+• ``p;countdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds.
 • ``p;poll question - option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info poll`` for detailed information.
-• ``pdefine <word>``: Allows the user to type in a word from the English language that they wish to find the definition for. 
+• ``p;define <word>``: Allows the user to type in a word from the English language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``p;countchar text``: Counts the number of characters in a given text. 
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
@@ -1198,22 +1377,21 @@ __**Actions**:__
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
 • ``p;translate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
 • ``pbalance <chemical reaction>``: Balances a given chemical reaction.
-• ``pstructure <chemical compound>``: Returns the structure of a given chemical compound.
-• ``pserverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
-• ``pfind_time``: Information to be added
+• ``p;structure <chemical compound>``: Returns the structure of a given chemical compound.
+• ``p;serverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
+• ``p;find_time``: Information to be added
 
 __**Math**:__                                   
 • ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Type ``p;info calculate`` for a detailed description!
-• ``pmathexp x y``: Raises the base (x) to an exponent (y)
-• ``pmathfactorial x``: Finds the factorial of the value inputted
-• ``pmathsqrt x``: Finds the square root of the value inputted     
-• ``pmathlog x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
-• ``pmathintegral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
-• ``pmathgcd x y``: Finds the greatest common divisor between the two given numbers. 
-• ``pmathpi n``: Sends the first ``n`` digits of pi.
-• ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!
-• ``pmathmatrixmult <matrix 1> <matrix 2>``: Returns the result as the product of two matrices. Type ``p;info pmathmatrixmult`` for more information!  
-• ``pmathplot f(x)``: Returns the graph of a given function. For detailed information on useage type ``p;info pmathgraph``
+• ``p;exp x y``: Raises the base (x) to an exponent (y)
+• ``p;factorial x``: Finds the factorial of the value inputted
+• ``p;sqrt x``: Finds the square root of the value inputted     
+• ``p;log x y``: Finds the logrithm of the inputted value (x) with respect to the inputted base (y)
+• ``p;integral f(x)``: Finds the integral of a given function, please use ``p;info pmathintegral`` to learn more!
+• ``p;gcd x y``: Finds the greatest common divisor between the two given numbers. 
+• ``p;pi n``: Sends the first ``n`` digits of pi.
+• ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!  
+• ``p;plot f(x)``: Returns the graph of a given function. For detailed information on useage type ``p;info pmathgraph``
 
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1221,8 +1399,8 @@ __**Games**:__
 • ``p;trivia``: Asks a trivia question!
 • ``p;dare``: Gives a dare
 • ``p;truth``: Asks a question for you to answer, truthfully
-• ``prps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
-• ``ptictactoe @player1 @player2``: This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
+• ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``
+• ``ptictactoe @player1 @player2``: NOTE: THIS COMMAND IS CURRENTLY UNAVAILABLE AND IS UNDER DEVELOPMENT. This allows the two pinged users to play a game of TicTacToe! Type ``ptplace`` followed by an integer from 1 - 9 to mark your tile. Type ``p;info ptictactoe`` for more detailed information.''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
         embed.set_thumbnail(
@@ -1235,250 +1413,6 @@ __**Games**:__
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
         await message.channel.send(embed=embed)
-
-
-#ROCK PAPER SCISSORS
-    if message.content.startswith("prps"):
-        choices = choices = [
-            "rock", "paper", "scissors", "rock", "paper", "scissors", "rock",
-            "paper", "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors", "rock", "paper", "scissors", "rock", "paper",
-            "scissors"
-        ]
-        bot_choice = random.choice(choices)
-        user_choice = message.content[5:]
-        if user_choice.lower() in choices:
-            if user_choice.lower() == bot_choice:
-                await message.channel.send("I choose **" + bot_choice +
-                                           "** too! It's a tie.")
-            elif (user_choice.lower() == "rock" and bot_choice == "scissors"
-                  ) or (user_choice.lower() == "scissors" and bot_choice
-                        == "paper") or (user_choice.lower() == "paper"
-                                        and bot_choice == "rock"):
-                await message.channel.send("I choose **" + bot_choice +
-                                           "**. You win!")
-            else:
-                await message.channel.send("I choose **" + bot_choice +
-                                           "**. I win!")
-        else:
-            await message.channel.send(
-                "**Invalid choice**. Please choose rock, paper or scissors.")
-
-
-#COUPLE OF USEFUL COMMANDS INCLUDING MATHEMATICS AND ACTIONS      
-@client.command()
-async def ountdown(ctx, seconds: int):
-    message = await ctx.send(f'{seconds} seconds left!')
-    while seconds > 0:
-        await asyncio.sleep(1)
-        seconds -= 1
-        await message.edit(content=f'{seconds} seconds left!')
-    await ctx.send(f'{ctx.author.mention}, the countdown you set is complete!')
-
-@client.command()
-async def ind_time(ctx, *, timezone):
-    try:
-      tz = pytz.timezone(timezone)
-      current_time = datetime.datetime.now(tz)
-      await ctx.send(f'The current time at **{timezone}** is **{current_time.strftime("%H:%M:%S")}**.')
-    except pytz.exceptions.UnknownTimeZoneError: 
-      await ctx.send("Could not find the time for the inputted timezone/location.")
-
-@client.command()
-async def hgcd(ctx, num1: int, num2: int):
-    a = max(num1, num2)
-    b = min(num1, num2)
-    while b != 0:
-        temp = b
-        b = a % b
-        a = temp
-    await ctx.send(f"**Result:** ```{a}```")
-
-@client.command()
-async def hpi(ctx, digits: int):
-    if digits > 1000:
-        await ctx.send("Sorry, I only know up to 1000 digits of pi.")
-    else:
-        mpmath.mp.dps = digits
-        pi_value = str(mpmath.pi)
-        await ctx.send(
-            f"The first **{digits}** digits of pi are: ```{pi_value}```")
-
-@client.command()
-async def tructure(ctx, *, compound):
-    compound_encoded = requests.utils.quote(compound)
-    image_url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{compound_encoded}/PNG"
-    response = requests.get(image_url)
-    if response.status_code == 200:
-        img = Image.open(BytesIO(response.content))
-        img = img.resize((img.width * 2, img.height * 2))  
-        img_byte_arr = BytesIO()
-        img.save(img_byte_arr, format='PNG')
-        img_byte_arr = img_byte_arr.getvalue()
-        image_file = discord.File(BytesIO(img_byte_arr), filename="structure.png")
-        await ctx.send(file=image_file)
-    else:
-        await ctx.send("Sorry, I couldn't find a structure for that compound.")
-      
-@client.command()
-async def hexp(ctx, num1: int, num2: int):
-    a = num1**num2
-    await ctx.send(f"**Result:** ```{a}```")
-
-@client.command()
-async def hsqrt(ctx, num1: int):
-    a = num1**0.5
-    await ctx.send(f"**Result:** ```{a}```")
-
-@client.command()
-async def hfactorial(ctx, num1: int):
-    a = math.factorial(num1)
-    await ctx.send(f"**Result:** ```{a}```")
-
-@client.command()
-async def hlog(ctx, num1: int, num2: int):
-    a = math.log(num1, num2)
-    await ctx.send(f"**Result:** ```{a}```")
-  
-@client.command()
-async def hplot(ctx, *, func: str):
-    x = np.linspace(-10, 10, 400)
-    y_func = np.frompyfunc(lambda x: eval(func), 1, 1)
-    y = y_func(x).astype(np.float)
-    plt.figure()
-    plt.plot(x, y)
-    plt.axhline(0, color='black',linewidth=1.0)
-    plt.axvline(0, color='black',linewidth=1.0)
-    plt.grid(True)
-    plt.title(func)
-    plt.ylim([-20, 20])
-    with BytesIO() as image_binary:
-        plt.savefig(image_binary, format='png')
-        image_binary.seek(0)
-        await ctx.send(file=discord.File(fp=image_binary, filename='plot.png'))
-
-@client.command()
-async def efine(ctx, word):
-    url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json(
-        )[0]['meanings'][0]['definitions'][0]['definition']
-        await ctx.send(f"**{word}**: {data}")
-    else:
-        await ctx.send(f"Sorry, I couldn't find the definition for **{word}**."
-                       )
-      
-def parse_matrix(matrix_str):
-    try:
-        matrix = []
-        rows = matrix_str.split(';')
-        for row in rows:
-            matrix.append([float(num) for num in row.split()])
-        return np.array(matrix)
-    except ValueError:
-        return None
-
-@client.command()
-async def erverinfo(ctx):
-    name = str(ctx.guild.name)
-    description = str(ctx.guild.description) if ctx.guild.description else ""
-    owner_id = ctx.guild.owner_id
-    owner = await client.fetch_user(owner_id)
-    id = str(ctx.guild.id)
-    memberCount = str(ctx.guild.member_count)
-    creation_date = ctx.guild.created_at.strftime("%B %d, %Y")
-    icon_url = str(ctx.guild.icon.url) if ctx.guild.icon else None
-    embed = discord.Embed(
-        title=name + " Information",
-        description=description,
-        color=discord.Color.blue()
-    )
-    if icon_url:
-        embed.set_thumbnail(url=icon_url)
-    embed.add_field(name="Owner", value=owner, inline=True)
-    embed.add_field(name="Server ID", value=id, inline=True)
-    embed.add_field(name="Member Count", value=memberCount, inline=True)
-    embed.add_field(name="Created On", value=creation_date, inline=True)
-
-    await ctx.send(embed=embed)
-  
-@client.command()
-async def hmatrixmult(ctx, matrix1: str, matrix2: str):
-    try:
-        mat1 = parse_matrix(matrix1)
-        mat2 = parse_matrix(matrix2)
-        if mat1 is None or mat2 is None:
-            raise ValueError
-        product = np.matmul(mat1, mat2)
-        await ctx.send(f"**Result:** ```{product}```")
-    except ValueError:
-        await ctx.send(
-            'Please provide valid matrices as input. Use semicolon to separate rows and space for columns.'
-        )
-@client.command()
-async def alance(ctx, *, equation):
-    try:
-        reactants, products = equation.split('->')
-        reactants = reactants.split('+')
-        products = products.split('+')
-        balanced = balance_stoichiometry(reactants, products)
-        balanced_eq = ' + '.join([f'{v} {k}' for k, v in balanced[0].items()]) + ' -> ' + ' + '.join([f'{v} {k}' for k, v in balanced[1].items()])
-        await ctx.send(f'__The balanced chemical equation is:__ {balanced_eq}')
-    except Exception as e:
-        await ctx.send(f'Error: {str(e)}')
-
-@client.command()
-async def emindme(ctx, time: int, unit: str, *, reminder: str):
-    await ctx.send(f"{ctx.author.mention}, I will make sure to remind you :)")
-    unit = unit.lower()
-    if unit == 'seconds':
-        await asyncio.sleep(time)
-    elif unit == 'second':
-        await asyncio.sleep(time)
-    elif unit == 'minutes':
-        await asyncio.sleep(time * 60)
-    elif unit == 'minute':
-        await asyncio.sleep(time * 60)
-    elif unit == 'hours':
-        await asyncio.sleep(time * 60 * 60)
-    elif unit == 'hour':
-        await asyncio.sleep(time * 60 * 60)
-    elif unit == 'days':
-        await asyncio.sleep(time * 60 * 60 * 24)
-    elif unit == 'day':
-        await asyncio.sleep(time * 60 * 60 * 24)
-    else:
-        await ctx.send(
-            f"{ctx.author.mention}, please provide a valid time unit (second/seconds/minute/minutes/hour/hours/day/days)."
-        )
-        return
-    await ctx.send(
-        f"{ctx.author.mention}, you asked me to remind you: **{reminder}**")
 
 #TICTACTOE
 player1 = ""
