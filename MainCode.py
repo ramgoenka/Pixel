@@ -29,6 +29,8 @@ client = commands.Bot(
     intents=intents,
     command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps', 'pb', 'pf'])
 cookies = {}
+poll_emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
+yes_no_emojis = ['👍', '👎']
 x = symbols('x')
 #CODE
 @client.event
@@ -56,18 +58,6 @@ async def on_message(message):
             await message.channel.send(
                 "No function to integrate. Please enter a function to integrate and try again! Use ``p;info pmathintegral`` to learn how to use this feature."
             )
-    if message.content.startswith('ppoll'):
-        poll_data = message.content[5:].split('/')
-        poll_question = poll_data[0]
-        poll_options = [option.strip() for option in poll_data[1:]]
-        poll_message = '**{}**\n\n'.format(poll_question)
-        for i, option in enumerate(poll_options):
-            poll_message += '{}️⃣ {}\n'.format(i + 1, option)
-        poll = await message.channel.send(poll_message)
-        for i in range(len(poll_options)):
-            reaction = '️️️️️️{}️⃣'.format(i + 1)
-            await poll.add_reaction(reaction)
-    words = message.content.split()
     if message.content.startswith("hola"):
         await message.channel.send(
             f"""Hola {author.mention}! I Hope you have a great day!""")
@@ -137,15 +127,20 @@ async def on_message(message):
                 await message.channel.send(f"Error in calculation: {str(e)}")
         else:
             await message.channel.send("Invalid characters in expression. Only numbers and +, -, *, /, (, ) are allowed.")
-          
+    await client.process_commands(message)
     if message.content.startswith('Hewwo'):
         await message.channel.send(
-            f"""Hewwo {author.mention}! I Hope you have a great day!""")
+            f"""Hewwo {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
+        )
         await message.add_reaction('\U0001F44B')
+    if message.content.startswith('hewwo'):
+        await message.channel.send(
+            f"""Hewwo {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
+        )
     if message.content.startswith('HEWWO'):
         await message.channel.send(
-            f"""Hewwo {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
+            f"""Hewwo {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
+        )
     if message.content.startswith('p;Hi'):
         await message.channel.send(
             f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
@@ -155,33 +150,36 @@ async def on_message(message):
         await message.channel.send(
             f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
         )
-    if message.content.startswith('hey'):
-        await message.channel.send(
-            f"""Hey {author.mention}! I Hope you have a great day!""")
+    hey_word = ['hey']
+    lc = message.content.lower()
+    if any(lc.startswith(keyword) for keyword in hey_word):
         await message.add_reaction('\U0001F44B')
-    if message.content.startswith('Hey'):
-        await message.channel.send(
-            f"""Hey {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith('HEY'):
-        await message.channel.send(
-            f"""Hey {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-
+        await message.channel.send(f"""Hey {author.mention}! I Hope you have a great day!""")
+    await client.process_commands(message)
     if any(word in msg for word in sad):
         await message.channel.send(random.choice(encouraging_words))
-    if words[0].lower() == 'kitty':
-        await message.channel.send('meow :cat:')
-        await message.add_reaction('\U0001F431')
-    if words[0].lower() == 'cat':
-        await message.add_reaction('\U0001F431')
-        await message.channel.send('meow :cat:')
-    if words[0].lower() == 'meow':
+    kitty_words = ['meow', 'kitty', 'cat']
+    lowercase_content = message.content.lower()
+    if any(lowercase_content.startswith(keyword) for keyword in kitty_words):
         await message.add_reaction('\U0001F431')
         await message.channel.send('meow :cat:')
-    if words[0].lower() == 'purr':
-        await message.add_reaction('\U0001F431')
-        await message.channel.send('purr :cat:')
+    await client.process_commands(message)
+    if message.content.startswith('p;poll'):
+        poll_message = message.content[6:]
+        poll_options = poll_message.split('-')
+        question = poll_options[0].strip()
+        options = [option.strip() for option in poll_options[1:]]
+        if len(options) > 10:
+            await message.channel.send("Sorry, maximum number of options is 10.")
+            return
+        poll_embed = discord.Embed(title=question, description='\n'.join([f'{poll_emojis[i]} {option}' for i, option in enumerate(options)]))
+        poll = await message.channel.send(embed=poll_embed)
+        if options[0].lower() == "yes" and options[1].lower() == "no":
+            for emoji in yes_no_emojis:
+                await poll.add_reaction(emoji)
+        else:
+            for emoji in poll_emojis[:len(options)]:
+                await poll.add_reaction(emoji)
     if message.content.startswith('p;cookie'):
         if len(message.mentions) == 0:
             await message.channel.send(
@@ -266,6 +264,16 @@ async def on_message(message):
     if message.content.startswith('GN'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
+    if message.content.startswith('p;translate'):
+        try:
+            _, to_language, *text = message.content.split()
+            text = ' '.join(text)
+            translator= Translator(to_lang=to_language)
+            translation = translator.translate(text)
+            await message.channel.send(translation)
+        except Exception as e:
+            await message.channel.send(f"An error occurred: {str(e)}")
+    await client.process_commands(message)
     if message.content.startswith('GOODNIGHT'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
@@ -280,15 +288,6 @@ Thanks for checking me out and I hope you have a nice day :)
     if message.content.startswith('p;ping'):
         await message.channel.send(
             f'**:ping_pong: Bot latency**: {client.latency * 10000} ms')
-
-    if words[0].lower() == 'gm':
-        await message.add_reaction('\U0001F304')
-        await message.channel.send(
-            'Good morning! Hope you have a great day :sunny:')
-    if words[0].lower() == 'goodmorning':
-        await message.add_reaction('\U0001F304')
-        await message.channel.send(
-            'Good morning! Hope you have a great day :sunny:')
     if message.content.startswith('good morning'):
         await message.add_reaction('\U0001F304')
         await message.channel.send(
@@ -485,13 +484,13 @@ psearch''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info ppoll'):
+    if message.content.startswith('p;info poll'):
         embed = discord.Embed(title="__**poll**__ :ballot_box:",
                               description='''
-Use this command to create a poll with a question and upto 10 options. For example, if the user wishes to ask the question: "What is the best animal?", with the options: "Cats Dogs Lions Tigers", then they must type ``ppoll What is the best animal? Cats Dogs Lions Tigers`` and the bot will create a poll with reactions for members to be able to react and show their choice. For yes or no style questions, the user must type "yes" or "no" as the options. For example: ``ppoll Should I get a haircut? Yes No``. 
+Use this command to create a poll with a question and upto 10 options. For example, if the user wishes to ask the question: "What is the best animal?", with the options: "Cats Dogs Lions Tigers", then they must type ``p;poll What is the best animal? - Cats - Dogs - Lions - Tigers`` and the bot will create a poll with reactions for members to be able to react and show their choice. For yes or no style questions, the user must type "yes" or "no" as the options. For example: ``p;poll Should I get a haircut? - Yes - No``. Note that after the poll question, the user must use a "-" before mentioning the first option and then put a "-" to add a new option as shown in the examples above.
                           
 __**Syntax**__
-ppoll''',
+p;poll''',
                               color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -1008,15 +1007,15 @@ pserverinfo''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info ptranslate'):
+    if message.content.startswith('p;info translate'):
         embed = discord.Embed(
             title='__**translate**__ :speech_left:',
             description=
-            '''Use this command to translate any text from english to any other language the user wishes to! To use this command, you must type ``ptranslate`` followed by the two letter prefix of the language you wish to translate the text to. For example ``ptranslate es today is a good day`` will translate the text "today is a good day" from english to spanish. The bot uses the standard ``ISO 639-1`` language prefix for translation, so when translating to a language, please refer to the table of ``ISO 639-1`` language codes, which can be found here: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes 
+            '''Use this command to translate any text from english to any other language the user wishes to! To use this command, you must type ``p;translate`` followed by the two letter prefix of the language you wish to translate the text to. For example ``p;translate es today is a good day`` will translate the text "today is a good day" from english to spanish. The bot uses the standard ``ISO 639-1`` language prefix for translation, so when translating to a language, please refer to the table of ``ISO 639-1`` language codes, which can be found here: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes 
 Please note that the bot does not support every single one of these languages and the bot will indicate if it does not support a particular language by returning an error instead of the translated text!
 
 __**Syntax**__
-ptranslate''',
+p;translate''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -1123,21 +1122,21 @@ __**Actions**:__
 • ``p;fact``: Tells you a random fact
 • ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. Type ``p;info premindme`` for more information. 
 • ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds.
-• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information.
+• ``p;poll question - option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info poll`` for detailed information.
 • ``pdefine <word>``: Allows the user to type in a word from the English language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``p;countchar text``: Counts the number of characters in a given text. 
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
-• ``ptranslate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
+• ``p;translate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
 • ``pbalance <chemical reaction>``: Balances a given chemical reaction.
 • ``pstructure <chemical compound>``: Returns the structure of a given chemical compound.
 • ``pserverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information.
 • ``pfind_time``: Information to be added
 
 __**Math**:__                                   
-• ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Allowed symbols: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, +, -, *, /, (, )
+• ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Type ``p;info calculate`` for a detailed description!
 • ``pmathexp x y``: Raises the base (x) to an exponent (y)
 • ``pmathfactorial x``: Finds the factorial of the value inputted
 • ``pmathsqrt x``: Finds the square root of the value inputted     
@@ -1190,21 +1189,21 @@ __**Actions**:__
 • ``p;fact``: Tells you a random fact
 • ``premindme <number> <unit> <reminder>``: Allows the user to set a reminder for themselves. Type ``p;info premindme`` for more information. 
 • ``pcountdown x``: Allows the user to set a countdown timer for ``x`` amount of seconds.
-• ``ppoll question option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info ppoll`` for detailed information.
+• ``p;poll question - option(s)``: Allows the user to set up a poll with upto 10 options. Type ``p;info poll`` for detailed information.
 • ``pdefine <word>``: Allows the user to type in a word from the English language that they wish to find the definition for. 
 • ``p;cookie <@user>``: Give a cookie to someone in the Discord server! 
 • ``p;countchar text``: Counts the number of characters in a given text. 
 • ``p;autocorrect text``: Autocorrects a given text by finding any issues with it. Please type ``p;info autocorrect`` for more details. 
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
-• ``ptranslate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
+• ``p;translate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
 • ``pbalance <chemical reaction>``: Balances a given chemical reaction.
 • ``pstructure <chemical compound>``: Returns the structure of a given chemical compound.
 • ``pserverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
 • ``pfind_time``: Information to be added
 
 __**Math**:__                                   
-• ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Allowed symbols: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, +, -, *, /, (, )
+• ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Type ``p;info calculate`` for a detailed description!
 • ``pmathexp x y``: Raises the base (x) to an exponent (y)
 • ``pmathfactorial x``: Finds the factorial of the value inputted
 • ``pmathsqrt x``: Finds the square root of the value inputted     
@@ -1364,13 +1363,7 @@ async def hfactorial(ctx, num1: int):
 async def hlog(ctx, num1: int, num2: int):
     a = math.log(num1, num2)
     await ctx.send(f"**Result:** ```{a}```")
-
-@client.command()
-async def ranslate(ctx, lang_to, *, args):
-    translator= Translator(to_lang=lang_to)
-    translation = translator.translate(args)
-    await ctx.send(translation)
-
+  
 @client.command()
 async def hplot(ctx, *, func: str):
     x = np.linspace(-10, 10, 400)
@@ -1458,28 +1451,6 @@ async def alance(ctx, *, equation):
         await ctx.send(f'__The balanced chemical equation is:__ {balanced_eq}')
     except Exception as e:
         await ctx.send(f'Error: {str(e)}')
-
-@client.command()
-async def oll(ctx, question, *options: str):
-    if len(options) <= 1:
-        await ctx.send("You need more than one option to create a poll!")
-        return
-    if len(options) > 10:
-        await ctx.send("You cannot create a poll with more than 10 options!")
-        return
-    if len(options) == 2 and options[0] == 'yes' and options[1] == 'no':
-        reactions = ['👍', '👎']
-    else:
-        reactions = [
-            '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'
-        ]
-    description = []
-    for i, option in enumerate(options):
-        description += '\n {} {}'.format(reactions[i], option)
-    embed = discord.Embed(title=question, description=''.join(description))
-    react_message = await ctx.send(embed=embed)
-    for reaction in reactions[:len(options)]:
-        await react_message.add_reaction(reaction)
 
 @client.command()
 async def emindme(ctx, time: int, unit: str, *, reminder: str):
