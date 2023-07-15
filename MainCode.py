@@ -1310,7 +1310,7 @@ __**Games**:__
 • ``p;trivia``: Asks a trivia question!
 • ``p;dare``: Gives a dare
 • ``p;truth``: Asks a question for you to answer, truthfully
-• ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``''',
+• ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``p;rps rock``''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
         embed.set_thumbnail(
@@ -1375,7 +1375,7 @@ __**Games**:__
 • ``p;trivia``: Asks a trivia question!
 • ``p;dare``: Gives a dare
 • ``p;truth``: Asks a question for you to answer, truthfully
-• ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``prps rock``''',
+• ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``p;rps rock``''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
         embed.set_thumbnail(
