@@ -20,6 +20,17 @@ from PIL import Image
 from io import BytesIO
 import matplotlib.pyplot as plt
 import sympy
+from sympy.abc import x
+
+#from chatterbot import ChatBot
+#from chatterbot.trainers import ChatterBotCorpusTrainer
+
+#chatbot = ChatBot('Bot')
+#trainer = ChatterBotCorpusTrainer(chatbot)
+#trainer.train(
+    #"chatterbot.corpus.english.greetings",
+    #"chatterbot.corpus.english.conversations"
+#)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -29,7 +40,9 @@ client = commands.Bot(
     intents=intents,
     command_prefix=['pmat', 'pt', 'pr', 'pc', 'pp', 'pd', 'ps', 'pb', 'pf'])
 cookies = {}
-poll_emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
+poll_emojis = [
+    '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'
+]
 yes_no_emojis = ['👍', '👎']
 x = symbols('x')
 
@@ -38,6 +51,7 @@ x = symbols('x')
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     await client.change_presence(activity=discord.Game(name="Type p;help"))
+
 
 @client.event
 async def on_message(message):
@@ -62,7 +76,8 @@ async def on_message(message):
     if message.content.startswith("hola"):
         await message.channel.send(
             f"""Hola {author.mention}! I Hope you have a great day!""")
-    if message.author.id not in ignore_list and message.content.lower() == "hello":
+    if message.author.id not in ignore_list and message.content.lower(
+    ) == "hello":
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
@@ -119,7 +134,7 @@ async def on_message(message):
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('p;calculate'):
         expression = ' '.join(message.content.split()[1:])
-        allowed_chars = set('0123456789+-*/() ')
+        allowed_chars = set('0123456789+-*/(). ')
         if set(expression).issubset(allowed_chars):
             try:
                 result = sympy.sympify(expression)
@@ -127,7 +142,9 @@ async def on_message(message):
             except Exception as e:
                 await message.channel.send(f"Error in calculation: {str(e)}")
         else:
-            await message.channel.send("Invalid characters in expression. Only numbers and +, -, *, /, (, ) are allowed.")
+            await message.channel.send(
+                "Invalid characters in expression. Only numbers and +, -, *, /, (, ), . are allowed."
+            )
     await client.process_commands(message)
     if message.content.startswith('Hewwo'):
         await message.channel.send(
@@ -142,6 +159,7 @@ async def on_message(message):
         await message.channel.send(
             f"""Hewwo {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
         )
+        await message.add_reaction('\U0001F44B')
     if message.content.startswith('p;Hi'):
         await message.channel.send(
             f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
@@ -151,11 +169,13 @@ async def on_message(message):
         await message.channel.send(
             f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
         )
+        await message.add_reaction('\U0001F44B')
     hey_word = ['hey']
     lc = message.content.lower()
     if any(lc.startswith(keyword) for keyword in hey_word):
         await message.add_reaction('\U0001F44B')
-        await message.channel.send(f"""Hey {author.mention}! I Hope you have a great day!""")
+        await message.channel.send(
+            f"""Hey {author.mention}! I Hope you have a great day!""")
     await client.process_commands(message)
     if any(word in msg for word in sad):
         await message.channel.send(random.choice(encouraging_words))
@@ -171,9 +191,14 @@ async def on_message(message):
         question = poll_options[0].strip()
         options = [option.strip() for option in poll_options[1:]]
         if len(options) > 10:
-            await message.channel.send("Sorry, maximum number of options is 10.")
+            await message.channel.send(
+                "Sorry, maximum number of options is 10.")
             return
-        poll_embed = discord.Embed(title=question, description='\n'.join([f'{poll_emojis[i]} {option}' for i, option in enumerate(options)]))
+        poll_embed = discord.Embed(title=question,
+                                   description='\n'.join([
+                                       f'{poll_emojis[i]} {option}'
+                                       for i, option in enumerate(options)
+                                   ]))
         poll = await message.channel.send(embed=poll_embed)
         if options[0].lower() == "yes" and options[1].lower() == "no":
             for emoji in yes_no_emojis:
@@ -192,7 +217,8 @@ async def on_message(message):
                     f'Aww, thank you for the cookie, {message.author.mention}! :cookie:'
                 )
             else:
-                await message.channel.send(f':cookie: {message.author.mention} has given a cookie to {user.mention}! :cookie:'
+                await message.channel.send(
+                    f':cookie: {message.author.mention} has given a cookie to {user.mention}! :cookie:'
                 )
     if message.content.startswith('p;hug'):
         embed = discord.Embed(
@@ -206,11 +232,13 @@ async def on_message(message):
     if message.content.startswith("p;rps"):
         args = message.content.split()
         if len(args) != 2 or args[1].lower() not in choices:
-            await message.channel.send("Invalid choice. Choose one: rock, paper, or scissors.")
+            await message.channel.send(
+                "Invalid choice. Choose one: rock, paper, or scissors.")
             return
         user_choice = args[1].lower()
         bot_choice = random.choice(choices)
-        await message.channel.send(f"You chose **{user_choice}**. I chose **{bot_choice}**.")
+        await message.channel.send(
+            f"You chose **{user_choice}**. I chose **{bot_choice}**.")
         if user_choice == bot_choice:
             await message.channel.send("It's a **tie**!")
         elif (user_choice == "rock" and bot_choice == "scissors") or \
@@ -279,6 +307,15 @@ async def on_message(message):
     if message.content.startswith('Gn'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
+    if message.content.startswith('p;factorize'):
+        number = message.content.split(' ')[1]
+        try:
+            num = int(number)
+            factors = sympy.factorint(num)
+            factors_str = ' * '.join([f"{factor}^{power}" for factor, power in factors.items()])
+            await message.channel.send(f"The prime factorization of ``{num}`` is:```\n{factors_str}```")
+        except ValueError:
+            await message.channel.send("Invalid input. Please provide a valid integer.")
     if message.content.startswith('GN'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
@@ -286,7 +323,7 @@ async def on_message(message):
         try:
             _, to_language, *text = message.content.split()
             text = ' '.join(text)
-            translator= Translator(to_lang=to_language)
+            translator = Translator(to_lang=to_language)
             translation = translator.translate(text)
             await message.channel.send(translation)
         except Exception as e:
@@ -327,10 +364,12 @@ Thanks for checking me out and I hope you have a nice day :)
                 img_byte_arr = BytesIO()
                 img.save(img_byte_arr, format='PNG')
                 img_byte_arr = img_byte_arr.getvalue()
-                image_file = discord.File(BytesIO(img_byte_arr), filename="structure.png")
+                image_file = discord.File(BytesIO(img_byte_arr),
+                                          filename="structure.png")
                 await message.channel.send(file=image_file)
             else:
-                await message.channel.send("Sorry, I couldn't find a structure for that compound.")
+                await message.channel.send(
+                    "Sorry, I couldn't find a structure for that compound.")
         except Exception as e:
             await message.channel.send(f"An error occurred: {str(e)}")
     if message.content.startswith('p;binary'):
@@ -341,8 +380,9 @@ Thanks for checking me out and I hope you have a nice day :)
     if message.content.startswith('p;avatar'):
         try:
             member = message.mentions[0] if message.mentions else message.author
-            embed = discord.Embed(title = f"{member}'s avatar", color = discord.Color.blurple())
-            embed.set_image(url = member.avatar_url)
+            embed = discord.Embed(title=f"{member}'s avatar",
+                                  color=discord.Color.blurple())
+            embed.set_image(url=member.avatar_url)
             await message.channel.send(embed=embed)
         except Exception as e:
             await message.channel.send(f"An error occurred: {str(e)}")
@@ -351,7 +391,7 @@ Thanks for checking me out and I hope you have a nice day :)
         embed = discord.Embed(title='Would you rather...',
                               description=random.choice(wyr_questions),
                               color=0xFF6600)
-        await message.channel.send(embed=embed)  
+        await message.channel.send(embed=embed)
     if message.content.startswith('p;tod'):
         embed = discord.Embed(title=random.choice(random_tod),
                               description='Truth or Dare',
@@ -363,7 +403,8 @@ Thanks for checking me out and I hope you have a nice day :)
                               color=0xadd8e6)
         await message.channel.send(embed=embed)
     if message.content.startswith("p;server_count"):
-        await message.channel.send(f"I am in currently in ``{len(client.guilds)}`` servers!")
+        await message.channel.send(
+            f"Currently I am in ``{len(client.guilds)}`` Discord servers!")
     if message.content.startswith('p;trivia'):
         await message.channel.send(random.choice(trivia_questions))
     if message.content.startswith('I appreciate pixel'):
@@ -384,6 +425,21 @@ Thanks for checking me out and I hope you have a nice day :)
         await message.channel.send('Aww! I appreciate you too :blush:')
     if message.content.startswith('i appreciate Pixel'):
         await message.channel.send('Aww! I appreciate you too :blush:')
+    if message.content.startswith('p;joke'):
+        response = requests.get(
+            "https://official-joke-api.appspot.com/jokes/general/random")
+        if response.status_code == 200:
+            joke_data = response.json()
+            joke_setup = joke_data[0]["setup"]
+            joke_punchline = joke_data[0]["punchline"]
+            joke_message = f"**Q:** {joke_setup}\n**A:** {joke_punchline}"
+            await message.channel.send(joke_message)
+        else:
+            await message.channel.send(
+                "Sorry, I couldn't fetch a joke at the moment. Please try again later."
+            )
+
+    await client.process_commands(message)
     if message.content.startswith('p;countchar'):
         text = message.content.split(' ', 1)[1]
         count = len(text)
@@ -415,7 +471,6 @@ Thanks for checking me out and I hope you have a nice day :)
                 'Invalid input or syntax. Please try again.')
     if message.content.startswith("p;8ball"):
         await message.channel.send(random.choice(list_eight_ball))
-      
 
     if message.content.startswith("p;"):
         command = message.content.split(";", 1)[1].strip()
@@ -423,21 +478,28 @@ Thanks for checking me out and I hope you have a nice day :)
         if command.startswith("countdown "):
             _, seconds = command.split()
             seconds = int(seconds)
+            user_mention = message.author.mention
             message = await message.channel.send(f'{seconds} seconds left!')
             while seconds > 0:
                 await asyncio.sleep(1)
                 seconds -= 1
                 await message.edit(content=f'{seconds} seconds left!')
-            await message.channel.send(f'{message.author.mention}, the countdown you set is complete!')
+            await message.channel.send(
+                f'{user_mention}, the countdown you set is complete!'
+            )
 
         elif command.startswith("find_time "):
             _, timezone = command.split(" ", 1)
             try:
                 tz = pytz.timezone(timezone)
                 current_time = datetime.datetime.now(tz)
-                await message.channel.send(f'The current time at **{timezone}** is **{current_time.strftime("%H:%M:%S")}**.')
-            except pytz.exceptions.UnknownTimeZoneError: 
-                await message.channel.send("Could not find the time for the inputted timezone/location.")
+                await message.channel.send(
+                    f'The current time at **{timezone}** is **{current_time.strftime("%H:%M:%S")}**.'
+                )
+            except pytz.exceptions.UnknownTimeZoneError:
+                await message.channel.send(
+                    "Could not find the time for the inputted timezone/location."
+                )
 
         elif command.startswith("gcd "):
             _, num1, num2 = command.split()
@@ -454,11 +516,14 @@ Thanks for checking me out and I hope you have a nice day :)
             _, digits = command.split()
             digits = int(digits)
             if digits > 1000:
-                await message.channel.send("Sorry, I only know up to 1000 digits of pi.")
+                await message.channel.send(
+                    "Sorry, I only know up to 1000 digits of pi.")
             else:
                 mpmath.mp.dps = digits
                 pi_value = str(mpmath.pi)
-                await message.channel.send(f"The first **{digits}** digits of pi are: ```{pi_value}```")
+                await message.channel.send(
+                    f"The first **{digits}** digits of pi are: ```{pi_value}```"
+                )
 
         elif command.startswith("exp "):
             _, num1, num2 = command.split()
@@ -471,7 +536,7 @@ Thanks for checking me out and I hope you have a nice day :)
             num = int(num)
             result = num**0.5
             await message.channel.send(f"**Result:** ```{result}```")
-          
+
         elif command.startswith("factorial "):
             _, num = command.split()
             num = int(num)
@@ -494,8 +559,12 @@ Thanks for checking me out and I hope you have a nice day :)
                 reactants = reactants.split('+')
                 products = products.split('+')
                 balanced = balance_stoichiometry(reactants, products)
-                balanced_eq = ' + '.join([f'{v} {k}' for k, v in balanced[0].items()]) + ' -> ' + ' + '.join([f'{v} {k}' for k, v in balanced[1].items()])
-                await message.channel.send(f'__The balanced chemical equation is:__ {balanced_eq}')
+                balanced_eq = ' + '.join(
+                    [f'{v} {k}'
+                     for k, v in balanced[0].items()]) + ' -> ' + ' + '.join(
+                         [f'{v} {k}' for k, v in balanced[1].items()])
+                await message.channel.send(
+                    f'__The balanced chemical equation is:__ {balanced_eq}')
             except Exception as e:
                 await message.channel.send(f'Error: {str(e)}')
         elif command.startswith("plot "):
@@ -505,24 +574,27 @@ Thanks for checking me out and I hope you have a nice day :)
             y = y_func(x).astype(np.float)
             plt.figure()
             plt.plot(x, y)
-            plt.axhline(0, color='black',linewidth=1.0)
-            plt.axvline(0, color='black',linewidth=1.0)
+            plt.axhline(0, color='black', linewidth=1.0)
+            plt.axvline(0, color='black', linewidth=1.0)
             plt.grid(True)
             plt.title(func)
             plt.ylim([-20, 20])
             with BytesIO() as image_binary:
                 plt.savefig(image_binary, format='png')
                 image_binary.seek(0)
-                await message.channel.send(file=discord.File(fp=image_binary, filename='plot.png'))
+                await message.channel.send(
+                    file=discord.File(fp=image_binary, filename='plot.png'))
         elif command.startswith("define "):
             _, word = command.split(" ", 1)
             url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
             response = requests.get(url)
             if response.status_code == 200:
-                data = response.json()[0]['meanings'][0]['definitions'][0]['definition']
+                data = response.json(
+                )[0]['meanings'][0]['definitions'][0]['definition']
                 await message.channel.send(f"**{word}**: {data}")
             else:
-                await message.channel.send(f"Sorry, I couldn't find the definition for **{word}**.")
+                await message.channel.send(
+                    f"Sorry, I couldn't find the definition for **{word}**.")
         elif command.startswith("remindme "):
             _, time, unit, reminder = command.split(" ", 3)
             try:
@@ -530,7 +602,7 @@ Thanks for checking me out and I hope you have a nice day :)
                 unit = unit.lower()
                 if unit in ["second", "seconds"]:
                     await message.channel.send(
-                        f"{message.author.mention}, I will make sure to remind you: **{reminder}**"
+                        f"{message.author.mention}, I will make sure to remind you :)"
                     )
                     await asyncio.sleep(time)
                 elif unit in ["minute", "minutes"]:
@@ -564,24 +636,28 @@ Thanks for checking me out and I hope you have a nice day :)
                 await client.process_commands(message)
         elif command.startswith("serverinfo"):
             name = str(message.guild.name)
-            description = str(message.guild.description) if message.guild.description else ""
+            description = str(
+                message.guild.description) if message.guild.description else ""
             owner_id = message.guild.owner_id
             owner = await client.fetch_user(int(owner_id))
             id = str(message.guild.id)
             memberCount = str(message.guild.member_count)
             creation_date = message.guild.created_at.strftime("%B %d, %Y")
-            icon_url = str(message.guild.icon.url) if message.guild.icon else None
-            embed = discord.Embed(
-                title=name + " Information",
-                description=description,
-                color=discord.Color.blue()
-            )
+            icon_url = str(
+                message.guild.icon.url) if message.guild.icon else None
+            embed = discord.Embed(title=name + " Information",
+                                  description=description,
+                                  color=discord.Color.blue())
             if icon_url:
                 embed.set_thumbnail(url=icon_url)
             embed.add_field(name="Owner", value=owner, inline=True)
             embed.add_field(name="Server ID", value=id, inline=True)
-            embed.add_field(name="Member Count", value=memberCount, inline=True)
-            embed.add_field(name="Created On", value=creation_date, inline=True)
+            embed.add_field(name="Member Count",
+                            value=memberCount,
+                            inline=True)
+            embed.add_field(name="Created On",
+                            value=creation_date,
+                            inline=True)
             await message.channel.send(embed=embed)
             await client.process_commands(message)
 #INFORMATION COMMANDS FOR EACH OF THE BOT COMMANDS
@@ -1152,7 +1228,6 @@ p;server_count''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-  
     if message.content.startswith('p;info balance'):
         embed = discord.Embed(
             title='__**balance **__ :test_tube:',
@@ -1169,7 +1244,7 @@ p;balance''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
-      
+
     if message.content.startswith('p;info rps'):
         embed = discord.Embed(
             title='__**rock paper scissors**__ :rock: :scroll: :scissors:',
@@ -1221,7 +1296,7 @@ p;translate''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
-          
+
     if message.content.startswith('p;info structure'):
         embed = discord.Embed(
             title='__**structure**__ :scientist:',
@@ -1242,8 +1317,7 @@ p;structure''',
     if message.content.startswith('p;info find_time'):
         embed = discord.Embed(
             title='__**find time**__ :clock:',
-            description=
-            '''Command information to be added soon!
+            description='''Command information to be added soon!
 
 __**Syntax**__
 p;find_time''',
@@ -1255,6 +1329,7 @@ p;find_time''',
         )
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
+
 
 #HELP COMMANDS
     if message.content.startswith('p;dm help'):
@@ -1291,6 +1366,7 @@ __**Actions**:__
 • ``p;structure <chemical compound>``: Returns the structure of a given chemical compound.
 • ``p;serverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
 • ``p;find_time``: Information to be added
+• ``p;joke``: Says a random (perhaps corny) joke
 
 __**Math**:__                                   
 • ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Type ``p;info calculate`` for a detailed description!
@@ -1303,6 +1379,7 @@ __**Math**:__
 • ``p;pi n``: Sends the first ``n`` digits of pi.
 • ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!  
 • ``p;plot f(x)``: Returns the graph of a given function. For detailed information on useage type ``p;info plot``
+• ``p;factorize n``: Returns the prime factorization of a given number ``n``
 
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1313,17 +1390,14 @@ __**Games**:__
 • ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``p;rps rock``''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
-        embed.set_thumbnail(
-            url=
-            ""
-        )
+        embed.set_thumbnail(url="")
         embed.set_footer(
             text="Have a nice day :D",
             icon_url=
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
         await message.author.send(embed=embed)
-  
+
     if message.content.startswith('p;help'):
         embed = discord.Embed(title="Commands :cat:",
                               description='''
@@ -1352,10 +1426,11 @@ __**Actions**:__
 • ``p;binary n``: Converts a decimal ``n`` to binary. 
 • ``p;8ball <question>``: Use this command to ask the bot a yes/no style question.
 • ``p;translate <prefix> <text>``: Translates a given text in English to a language chosen by the user!
-• ``pbalance <chemical reaction>``: Balances a given chemical reaction.
+• ``p;balance <chemical reaction>``: Balances a given chemical reaction.
 • ``p;structure <chemical compound>``: Returns the structure of a given chemical compound.
 • ``p;serverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
 • ``p;find_time``: Information to be added
+• ``p;joke``: Says a random (perhaps corny) joke
 
 __**Math**:__                                   
 • ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Type ``p;info calculate`` for a detailed description!
@@ -1368,6 +1443,7 @@ __**Math**:__
 • ``p;pi n``: Sends the first ``n`` digits of pi.
 • ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!  
 • ``p;plot f(x)``: Returns the graph of a given function. For detailed information on useage type ``p;info pmathgraph``
+• ``p;factorize n``: Returns the prime factorization of a given number ``n``
 
 __**Games**:__
 • ``p;wyr``: Asks a *would you rather* question
@@ -1378,10 +1454,7 @@ __**Games**:__
 • ``p;rps``: Plays a game of rock, paper, scissors with the user. You must input your move with the command, for example if you want to use ``rock`` you must type ``p;rps rock``''',
                               color=0xFFFF00)
         embed.timestamp = datetime.datetime.utcnow()
-        embed.set_thumbnail(
-            url=
-            ""
-        )
+        embed.set_thumbnail(url="")
         embed.set_footer(
             text="Have a nice day :D",
             icon_url=
@@ -1490,7 +1563,7 @@ dice_roll = [
 
 cat_images = [
     "https://upload.wikimedia.org/wikipedia/commons/3/38/Adorable-animal-cat-20787.jpg",
-"https://images.rawpixel.com/image_1000/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZyYW5pbWFsX2NhdF9raXR0ZW5fYnJpdGlzaC1pbWFnZS1reWJlYXlrNC5qcGc.jpg",
+    "https://images.rawpixel.com/image_1000/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2ZyYW5pbWFsX2NhdF9raXR0ZW5fYnJpdGlzaC1pbWFnZS1reWJlYXlrNC5qcGc.jpg",
     "https://cc0.photo/wp-content/uploads/2016/10/Striped-cat-on-a-meadow-2048x1365.jpg",
     "https://c.pxhere.com/images/8d/1e/604c6eb3dca5d46f3854ae974ccf-1603569.jpg!d",
     "https://pixnio.com/free-images/2021/09/14/2021-09-14-08-25-52-1049x1350.jpg",
@@ -1693,12 +1766,11 @@ trivia_questions = [
     ":thinking: Who discovered the law of universal graviation?  (Answer: || Sir Isaac Newton ||)",
     ":thinking: What is the capital of Japan? (Answer: || Tokyo ||)",
     ":thinking: Who won the 2022-2023 Premier League Golden Boot (Answer: || Erling Haaland ||)",
-    ":thinking: Who composed ``Für Elise``? (Answer: || Ludwig van Beethoven ||)", 
+    ":thinking: Who composed ``Für Elise``? (Answer: || Ludwig van Beethoven ||)",
     ":thinking: What is the scientific name for the process plants use to convert sunlight into food? (Answer: || Photosynthesis ||)",
     ":thinking: True or False: Dubai is the capital of the United Arab Emirates (Answer: || False. The capital of the U.A.E. is Abu Dhabi ||)",
     ":thinking: In which year did the Russian October Revolution begin? (Answer: || 1917 ||)",
     ":thinking: "
-  
 ]
 
 random_tod = [
