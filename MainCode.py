@@ -28,23 +28,22 @@ from sympy.abc import x
 #chatbot = ChatBot('Bot')
 #trainer = ChatterBotCorpusTrainer(chatbot)
 #trainer.train(
-    #"chatterbot.corpus.english.greetings",
-    #"chatterbot.corpus.english.conversations"
+#"chatterbot.corpus.english.greetings",
+#"chatterbot.corpus.english.conversations"
 #)
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 spell = Speller(lang='en')
-client = commands.Bot(
-    intents=intents,
-    command_prefix=[])
+client = commands.Bot(intents=intents, command_prefix=[])
 cookies = {}
 poll_emojis = [
     '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'
 ]
 yes_no_emojis = ['👍', '👎']
 x = symbols('x')
+
 
 #CODE
 @client.event
@@ -100,6 +99,19 @@ async def on_message(message):
         await message.channel.send(
             f"""Howdy {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('🤠')
+    if message.content.startswith('p;choose'):
+        options = message.content[len('p;choose'):].strip().split('-')
+        options = [option.strip() for option in options]
+        if not options or options == ['']:
+            await message.channel.send(
+                "No choices provided. Please use ``p;info choose`` to learn more about the command useage."
+            )
+        else:
+            choice = random.choice(options)
+            embed = discord.Embed(title=f":bulb: I choose: **{choice}**",
+                                  description="",
+                                  color=0x00ff00)
+            await message.channel.send(embed=embed)
     if message.content.startswith('HOWDY'):
         await message.channel.send(
             f"""Howdy {author.mention}! I Hope you have a great day!""")
@@ -138,7 +150,9 @@ async def on_message(message):
         if set(expression).issubset(allowed_chars):
             try:
                 result = sympy.sympify(expression)
-                await message.channel.send(f"**Result:** ```{result}```")
+                result_decimal = float(result)
+                await message.channel.send(
+                    f"**Result:** ```{result_decimal}```")
             except Exception as e:
                 await message.channel.send(f"Error in calculation: {str(e)}")
         else:
@@ -147,15 +161,6 @@ async def on_message(message):
             )
     await client.process_commands(message)
     if message.content.startswith('Hewwo'):
-        await message.channel.send(
-            f"""Hewwo {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
-        )
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith('hewwo'):
-        await message.channel.send(
-            f"""Hewwo {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
-        )
-    if message.content.startswith('HEWWO'):
         await message.channel.send(
             f"""Hewwo {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
         )
@@ -284,8 +289,6 @@ async def on_message(message):
     if message.content.startswith('p;roll'):
         embed = discord.Embed(title="", description=random.choice(dice_roll))
         await message.channel.send(embed=embed)
-    if message.content.startswith('p;Roll'):
-        await message.channel.send(random.choice(dice_roll))
     if message.content.startswith('gn'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
@@ -312,10 +315,14 @@ async def on_message(message):
         try:
             num = int(number)
             factors = sympy.factorint(num)
-            factors_str = ' * '.join([f"{factor}^{power}" for factor, power in factors.items()])
-            await message.channel.send(f"The prime factorization of ``{num}`` is:```\n{factors_str}```")
+            factors_str = ' * '.join(
+                [f"{factor}^{power}" for factor, power in factors.items()])
+            await message.channel.send(
+                f"The prime factorization of ``{num}`` is:```\n{factors_str}```"
+            )
         except ValueError:
-            await message.channel.send("Invalid input. Please provide a valid integer.")
+            await message.channel.send(
+                "Invalid input. Please provide a valid integer.")
     if message.content.startswith('GN'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
@@ -485,8 +492,7 @@ Thanks for checking me out and I hope you have a nice day :)
                 seconds -= 1
                 await message.edit(content=f'{seconds} seconds left!')
             await message.channel.send(
-                f'{user_mention}, the countdown you set is complete!'
-            )
+                f'{user_mention}, the countdown you set is complete!')
 
         elif command.startswith("find_time "):
             _, timezone = command.split(" ", 1)
@@ -569,7 +575,7 @@ Thanks for checking me out and I hope you have a nice day :)
                 await message.channel.send(f'Error: {str(e)}')
         elif command.startswith("plot "):
             _, func = command.split(" ", 1)
-            x = np.linspace(-10, 10, 400)
+            x = np.linspace(-20, 20, 400)
             y_func = np.frompyfunc(lambda x: eval(func), 1, 1)
             y = y_func(x).astype(np.float)
             plt.figure()
@@ -745,7 +751,7 @@ p;autocorrect''',
     if message.content.startswith('p;info countchar'):
         embed = discord.Embed(title="__**count characters**__ :1234:",
                               description='''
-Use this command to get a count of characters in a given text. To use this command, the user must type ``p;countchar`` followed by the text the want to find the count of characters for. For example if a user wishes to find the number of characters in the text "Hello Pixel," they must type ``p;countchat Hello Pixel`` and the bot will then respond with the number of characters in the given text.                                               
+Use this command to get a count of characters in a given text. To use this command, the user must type ``p;countchar`` followed by the text the want to find the count of characters for. For example if a user wishes to find the number of characters in the text "Hello Pixel," they must type ``p;countchar Hello Pixel`` and the bot will then respond with the number of characters in the given text.                                               
 __**Syntax**__
 p;countchar''',
                               color=0x00FFFF)
@@ -1032,6 +1038,23 @@ p;exp''',
                             
 __**Syntax**__
 p;countdown''',
+            color=0x00FFFF)
+        embed.set_footer(
+            text=random.choice(embed_footers),
+            icon_url=
+            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await message.channel.send(embed=embed)
+
+    if message.content.startswith('p;info choose'):
+        embed = discord.Embed(
+            title='__**choose**__ :bulb:',
+            description=
+            '''Using this command, the user can ask the bot to make a choice from a list of choices. For example if the user types ``p;choose apple - banana - berry - orange``, the bot will random choose one of the four choices and return it. Make sure to separate each choice using ``-``. Perhaps a helpful command for moments in which narrowing it down to one option is hard :)
+                            
+__**Syntax**__
+p;choose''',
             color=0x00FFFF)
         embed.set_footer(
             text=random.choice(embed_footers),
@@ -1367,6 +1390,7 @@ __**Actions**:__
 • ``p;serverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
 • ``p;find_time``: Information to be added
 • ``p;joke``: Says a random (perhaps corny) joke
+• ``p;choose``: Makes and returns a random choice from a list of choices. Type ``p;info choose`` for detailed description. 
 
 __**Math**:__                                   
 • ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Type ``p;info calculate`` for a detailed description!
@@ -1431,6 +1455,7 @@ __**Actions**:__
 • ``p;serverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
 • ``p;find_time``: Information to be added
 • ``p;joke``: Says a random (perhaps corny) joke
+• ``p;choose``: Makes and returns a random choice from a list of choices. Type ``p;info choose`` for detailed description. 
 
 __**Math**:__                                   
 • ``p;calculate <expression to operate>``: Works as a simple 4-function calculator. Type ``p;info calculate`` for a detailed description!
