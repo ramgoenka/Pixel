@@ -61,6 +61,8 @@ async def on_message(message):
     msg = message.content
     author = message.author
 
+    if str(message.author.id) in ignore_list:
+        return
     #INTEGRAL CALCULATOR
     if message.content.startswith('p;integral'):
         try:
@@ -72,30 +74,19 @@ async def on_message(message):
             await message.channel.send(
                 "No function to integrate. Please enter a function to integrate and try again! Use ``p;info pmathintegral`` to learn how to use this feature."
             )
-    if message.content.startswith("hola"):
+    if message.content.lower().startswith("hola"):
         await message.channel.send(
             f"""Hola {author.mention}! I Hope you have a great day!""")
-    if message.author.id not in ignore_list and message.content.lower(
-    ) == "hello":
+        await message.add_reaction('\U0001F44B')
+    if message.content.lower().startswith("hello"):
         await message.channel.send(
             f"""Hello {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith("Hola"):
-        await message.channel.send(
-            f"""Hola {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if message.content.startswith('🥺'):
         num_emojis = message.content.count('🥺')
         await message.channel.send('🥺' * num_emojis)
-    if message.content.startswith("HOLA"):
-        await message.channel.send(
-            f"""Hola {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
-    if message.content.startswith('howdy'):
-        await message.channel.send(
-            f"""Howdy {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('🤠')
-    if message.content.startswith('Howdy'):
+    if message.content.lower().startswith('howdy'):
         await message.channel.send(
             f"""Howdy {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('🤠')
@@ -112,35 +103,15 @@ async def on_message(message):
                                   description="",
                                   color=0x00ff00)
             await message.channel.send(embed=embed)
-    if message.content.startswith('HOWDY'):
-        await message.channel.send(
-            f"""Howdy {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('🤠')
-    if message.content.startswith('heya'):
+    if message.content.lower().startswith('heya'):
         await message.channel.send(
             f"""Heya {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
-    if message.content.startswith('Heya'):
-        await message.channel.send(
-            f"""Heya {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith('HEYA'):
-        await message.channel.send(
-            f"""Heya {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith('heyo'):
+    if message.content.lower().startswith('heyo'):
         await message.channel.send(
             f"""Heyo {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
-    if message.content.startswith('Heyo'):
-        await message.channel.send(
-            f"""Heyo {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith('HEYO'):
-        await message.channel.send(
-            f"""Heyo {author.mention}! I Hope you have a great day!""")
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith('hewwo'):
+    if message.content.lower().startswith('hewwo'):
         await message.channel.send(
             f"""Hewwo {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
@@ -159,17 +130,7 @@ async def on_message(message):
             await message.channel.send(
                 "Invalid characters in expression. Only numbers and +, -, *, /, (, ), . are allowed."
             )
-    await client.process_commands(message)
-    if message.content.startswith('Hewwo'):
-        await message.channel.send(
-            f"""Hewwo {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
-        )
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith('p;Hi'):
-        await message.channel.send(
-            f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
-        )
-        await message.add_reaction('\U0001F44B')
+        await client.process_commands(message)
     if message.content.startswith('p;hi'):
         await message.channel.send(
             f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
@@ -260,22 +221,11 @@ async def on_message(message):
         embed.set_image(url=random.choice(cat_images))
         embed.set_footer(text="Hope you have a great day =^-^=")
         await message.channel.send(embed=embed)
-    if message.content.startswith('bye'):
+    if message.content.lower().startswith('bye'):
         await message.channel.send(
             f'''Bye {author.mention}! Hope you have a great rest of your day!'''
         )
         await message.add_reaction('\U0001F44B')
-    if message.content.startswith('Bye'):
-        await message.channel.send(
-            f'''Bye {author.mention}! Hope you have a great rest of your day!'''
-        )
-        await message.add_reaction('\U0001F44B')
-    if message.content.startswith('BYE'):
-        await message.channel.send(
-            f'''Bye {author.mention}! Hope you have a great rest of your day!'''
-        )
-        await message.add_reaction('\U0001F44B')
-
     if message.content.startswith('p;flip'):
         embed = discord.Embed(title="",
                               description=random.choice(coin_outcomes))
@@ -289,27 +239,17 @@ async def on_message(message):
     if message.content.startswith('p;roll'):
         embed = discord.Embed(title="", description=random.choice(dice_roll))
         await message.channel.send(embed=embed)
+      
     if message.content.startswith('gn'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
-    if message.content.startswith('goodnight'):
+    if message.content.lower().startswith('goodnight'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
-    if message.content.startswith('Goodnight'):
+    if message.content.lower().startswith('good night'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
-    if message.content.startswith('good night'):
-        await message.add_reaction('\U0001F634')
-        await message.channel.send('Good night & sweet dreams! :sleeping:')
-    if message.content.startswith('Good night'):
-        await message.add_reaction('\U0001F634')
-        await message.channel.send('Good night & sweet dreams! :sleeping:')
-    if message.content.startswith('Good Night'):
-        await message.add_reaction('\U0001F634')
-        await message.channel.send('Good night & sweet dreams! :sleeping:')
-    if message.content.startswith('Gn'):
-        await message.add_reaction('\U0001F634')
-        await message.channel.send('Good night & sweet dreams! :sleeping:')
+      
     if message.content.startswith('p;factorize'):
         number = message.content.split(' ')[1]
         try:
@@ -323,9 +263,6 @@ async def on_message(message):
         except ValueError:
             await message.channel.send(
                 "Invalid input. Please provide a valid integer.")
-    if message.content.startswith('GN'):
-        await message.add_reaction('\U0001F634')
-        await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.startswith('p;translate'):
         try:
             _, to_language, *text = message.content.split()
@@ -335,10 +272,7 @@ async def on_message(message):
             await message.channel.send(translation)
         except Exception as e:
             await message.channel.send(f"An error occurred: {str(e)}")
-    await client.process_commands(message)
-    if message.content.startswith('GOODNIGHT'):
-        await message.add_reaction('\U0001F634')
-        await message.channel.send('Good night & sweet dreams! :sleeping:')
+        await client.process_commands(message)
     if message.content.startswith('p;about'):
         await message.channel.send('''Hello! 
             
@@ -350,11 +284,15 @@ Thanks for checking me out and I hope you have a nice day :)
     if message.content.startswith('p;ping'):
         await message.channel.send(
             f'**:ping_pong: Bot latency**: {client.latency * 10000} ms')
-    if message.content.startswith('good morning'):
+    if message.content.lower().startswith('good morning'):
         await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good morning! Hope you have a great day :sunny:')
-    if message.content.startswith('Good morning'):
+    if message.content.lower().startswith('goodmorning'):
+        await message.add_reaction('\U0001F304')
+        await message.channel.send(
+            'Good morning! Hope you have a great day :sunny:')
+    if message.content.lower().startswith('gm'):
         await message.add_reaction('\U0001F304')
         await message.channel.send(
             'Good morning! Hope you have a great day :sunny:')
@@ -1683,7 +1621,14 @@ wyr_questions = [
     "Give up cursing and using any sort of swear words and foul language forever **__OR__** Have to run 5 miles every single morning for the rest of your life?",
     "Do an amazing trickshot but have no one witness it **__OR__** Do something embarrassing and have a lot of people witness it?",
     "Give up ice-cream **__OR__** Give up cola and soda?",
-    "Be expelled from school for 30 days **__OR__** Be in prision for 30 days?"
+    "Be expelled from school for 30 days **__OR__** Be in prision for 30 days?",
+    "Would you rather be stranded on a deserted island with your best friend **__OR__** with someone who is a survival expert you dislike?",
+    "Would you rather become someone else forever **__OR__** just stay you?",
+    "Would you rather be the most popular person at work or school **__OR__** the smartest?",
+    "Would you rather always be sad deep inside but always make others happy and laugh around you **__OR__** be the only happy person in a world full of perpetually sad people?",
+    "Would you rather work in a group **__OR__** work alone?",
+    "Would you rather date someone you met online **__OR__** go on a blind date?",
+    "Would you rather eat a meal of cow tongue **__OR__** octopus?"
 ]
 
 random_facts = [
@@ -1858,7 +1803,13 @@ random_tod = [
     'Do any missing homework or assignments or any pending work for at least the next one hour',
     'Drink a glass of water',
     'Rickroll the 5th person in your DMs (Direct Message)',
-    'Count up to 100 in one sitting'
+    'Count up to 100 in one sitting',
+    'What is one thing you wish you could change about your life right now?',
+    'Tell a one-minute story about a random item in your room.',
+    'Use a cheesy pick-up line on a random person in the server.',
+    'Who in this server do you trust the most?',
+    "What is the best gift you have ever gotten?",
+    "What is one of your biggest regrets?"
 ]
 
 truth_questions_only = [
@@ -1900,7 +1851,11 @@ truth_questions_only = [
     'Who would be your *plus 1* to a concert by your favorite artist / band?',
     'Would you consider your sleep schedule to be good/normal?',
     'How many hours did you sleep last night?',
-    'When was the last time you ate pizza'
+    'When was the last time you ate pizza',
+    'What is one thing you wish you could change about your life right now?',
+    'Who in this server do you trust the most?',
+    'What is the best gift you have ever received?',
+    'What is your biggest regret'
 ]
 
 dare_questions_only = [
@@ -1924,7 +1879,9 @@ dare_questions_only = [
     'Do any missing homework or assignments or any pending work for at least the next one hour',
     'Drink a glass of water',
     'Rickroll the 5th person in your DMs (Direct Message)',
-    'Count up to 100 in one sitting'
+    'Count up to 100 in one sitting',
+    'Tell a two-minute story about a random item in your room.',
+    'Use a cheesy pick-up line on a random person in the server.'
 ]
 
 list_eight_ball = ["Yes.", "No.", "Maybe.", "I am not sure."]
