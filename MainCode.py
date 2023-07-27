@@ -1425,6 +1425,9 @@ __**Games**:__
         )
         await message.channel.send(embed=embed)
 
+
+#PRE-DEFINED SETS OF WORDS. THE MAIN PURPOSE OF THESE IS TO DETECT THEM IN A USER MESSAGE AND OUTPUT A RELEVANT RESPONSE. 
+
 embed_footers = [
     'Thanks for using pixel :)',
     'You must be tired from being so purr-fect :D', 'You are very pawsome :)',
