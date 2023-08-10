@@ -22,16 +22,6 @@ import matplotlib.pyplot as plt
 import sympy
 from sympy.abc import x
 
-#from chatterbot import ChatBot
-#from chatterbot.trainers import ChatterBotCorpusTrainer
-
-#chatbot = ChatBot('Bot')
-#trainer = ChatterBotCorpusTrainer(chatbot)
-#trainer.train(
-#"chatterbot.corpus.english.greetings",
-#"chatterbot.corpus.english.conversations"
-#)
-
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
