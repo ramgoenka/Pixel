@@ -1,4 +1,5 @@
 #IMPORTING NEEDED LIBRARIES AND SETTING UP THE CLIENT
+
 import discord
 import os
 import random
@@ -10,14 +11,11 @@ from sympy import *
 import asyncio
 import requests
 import mpmath
-from bs4 import BeautifulSoup
 from autocorrect import Speller
 import numpy as np
 from translate import Translator
 from chempy import balance_stoichiometry
 import pytz
-from PIL import Image
-from io import BytesIO
 import matplotlib.pyplot as plt
 import sympy
 from sympy.abc import x
@@ -75,7 +73,7 @@ async def on_message(message):
     if message.content.startswith('🥺'):
         num_emojis = message.content.count('🥺')
         await message.channel.send('🥺' * num_emojis)
-        await message.add_reaction('\U0001F44B')
+        await message.add_reaction('\U0001F97A')
     if message.content.lower().startswith('howdy'):
         await message.channel.send(
             f"""Howdy {author.mention}! I Hope you have a great day!""")
@@ -97,9 +95,13 @@ async def on_message(message):
         await message.channel.send(
             f"""Heya {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
-    if message.content.lower().startswith('heyo'):
+    elif message.content.lower().startswith('heyo'):
         await message.channel.send(
             f"""Heyo {author.mention}! I Hope you have a great day!""")
+        await message.add_reaction('\U0001F44B')
+    elif message.content.lower().startswith('hey'):
+        await message.channel.send(
+            f"""Hey {author.mention}! I Hope you have a great day!""")
         await message.add_reaction('\U0001F44B')
     if message.content.lower().startswith('hewwo'):
         await message.channel.send(
@@ -126,13 +128,6 @@ async def on_message(message):
             f"""Hi {author.mention}! To check out my commands please type ``p;help``. I Hope you have a great day!"""
         )
         await message.add_reaction('\U0001F44B')
-    hey_word = ['hey']
-    lc = message.content.lower()
-    if any(lc.startswith(keyword) for keyword in hey_word):
-        await message.add_reaction('\U0001F44B')
-        await message.channel.send(
-            f"""Hey {author.mention}! I Hope you have a great day!""")
-    await client.process_commands(message)
     if any(word in msg for word in sad):
         await message.channel.send(random.choice(encouraging_words))
     kitty_words = ['meow', 'kitty', 'cat']
@@ -229,8 +224,8 @@ async def on_message(message):
     if message.content.startswith('p;roll'):
         embed = discord.Embed(title="", description=random.choice(dice_roll))
         await message.channel.send(embed=embed)
-      
-    if message.content.startswith('gn'):
+
+    if message.content.lower().startswith('gn'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
     if message.content.lower().startswith('goodnight'):
@@ -239,7 +234,7 @@ async def on_message(message):
     if message.content.lower().startswith('good night'):
         await message.add_reaction('\U0001F634')
         await message.channel.send('Good night & sweet dreams! :sleeping:')
-      
+
     if message.content.startswith('p;factorize'):
         number = message.content.split(' ')[1]
         try:
@@ -337,9 +332,6 @@ Thanks for checking me out and I hope you have a nice day :)
                               description=random.choice(random_facts),
                               color=0xadd8e6)
         await message.channel.send(embed=embed)
-    if message.content.startswith("p;server_count"):
-        await message.channel.send(
-            f"Currently I am in ``{len(client.guilds)}`` Discord servers!")
     if message.content.startswith('p;trivia'):
         await message.channel.send(random.choice(trivia_questions))
     if message.content.startswith('I appreciate pixel'):
@@ -421,20 +413,6 @@ Thanks for checking me out and I hope you have a nice day :)
                 await message.edit(content=f'{seconds} seconds left!')
             await message.channel.send(
                 f'{user_mention}, the countdown you set is complete!')
-
-        elif command.startswith("find_time "):
-            _, timezone = command.split(" ", 1)
-            try:
-                tz = pytz.timezone(timezone)
-                current_time = datetime.datetime.now(tz)
-                await message.channel.send(
-                    f'The current time at **{timezone}** is **{current_time.strftime("%H:%M:%S")}**.'
-                )
-            except pytz.exceptions.UnknownTimeZoneError:
-                await message.channel.send(
-                    "Could not find the time for the inputted timezone/location."
-                )
-
         elif command.startswith("gcd "):
             _, num1, num2 = command.split()
             num1, num2 = int(num1), int(num2)
@@ -890,23 +868,6 @@ p;random_fact''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info plot'):
-        embed = discord.Embed(
-            title="__**math: plot**__ :chart_with_upwards_trend:",
-            description=
-            '''Returns the image of the graph of a given function. To use the command, the user must first type ``p;plot`` followed by the function they wish to generate the graph for. For example, if the user want's to graph the function ``x^2 + 2x + 4 = 0``, they must type ``p;plot x**2 + 2*x + 4`` and the bot will return an image of the plot of the function. If the user wishes to plot a logarithmic, trigonometric or square root function, they must type the following respectively: ``p;plot k * np.log(x)``, ``p;plot k * np.trigfunction(x)``, ``p;plot k * np.sqrt(x)``, where ``k`` is some numerical constant.
-
-__**Syntax**__
-p;plot''',
-            color=0x00FFFF)
-        embed.set_footer(
-            text=random.choice(embed_footers),
-            icon_url=
-            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)
-
     if message.content.startswith('p;info calculate'):
         embed = discord.Embed(
             title="__**math: calculate**__ :abacus:",
@@ -1162,23 +1123,6 @@ p;truth''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info server_count'):
-        embed = discord.Embed(
-            title='__**server count**__ :bar_chart:',
-            description=
-            '''Use this command to check the number of Discord servers Pixel is currently in!
-                            
-__**Syntax**__
-p;server_count''',
-            color=0x00FFFF)
-        embed.set_footer(
-            text=random.choice(embed_footers),
-            icon_url=
-            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)
-
     if message.content.startswith('p;info balance'):
         embed = discord.Embed(
             title='__**balance **__ :test_tube:',
@@ -1265,22 +1209,6 @@ p;structure''',
         embed.timestamp = datetime.datetime.utcnow()
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('p;info find_time'):
-        embed = discord.Embed(
-            title='__**find time**__ :clock:',
-            description='''Command information to be added soon!
-
-__**Syntax**__
-p;find_time''',
-            color=0x00FFFF)
-        embed.set_footer(
-            text=random.choice(embed_footers),
-            icon_url=
-            "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await message.channel.send(embed=embed)
-
 
 #HELP COMMANDS
     if message.content.startswith('p;dm help'):
@@ -1294,7 +1222,6 @@ __**About Me**:__
 • ``p;dm help``: Sends a DM to the user with a list of commands  
 • ``p;about``: Give me a chance to introduce myself!
 • ``p;ping``: Shows the response time of pixel 
-• ``p;server_count``: Shows the number of servers I am in
 
 __**Actions**:__
 • ``p;hi``: Say hi to me! 
@@ -1316,7 +1243,6 @@ __**Actions**:__
 • ``p;balance <chemical reaction>``: Balances a given chemical reaction.
 • ``p;structure <chemical compound>``: Returns the structure of a given chemical compound.
 • ``p;serverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
-• ``p;find_time``: Information to be added
 • ``p;joke``: Says a random (perhaps corny) joke
 • ``p;choose``: Makes and returns a random choice from a list of choices. Type ``p;info choose`` for detailed description. 
 
@@ -1330,7 +1256,6 @@ __**Math**:__
 • ``p;gcd x y``: Finds the greatest common divisor between the two given numbers. 
 • ``p;pi n``: Sends the first ``n`` digits of pi.
 • ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!  
-• ``p;plot f(x)``: Returns the graph of a given function. For detailed information on useage type ``p;info plot``
 • ``p;factorize n``: Returns the prime factorization of a given number ``n``
 
 __**Games**:__
@@ -1359,7 +1284,6 @@ __**About Me**:__
 • ``p;dm help``: Sends a DM to the user with a list of commands  
 • ``p;about``: Give me a chance to introduce myself!
 • ``p;ping``: Shows the response time of pixel
-• ``p;server_count``: Shows the number of servers I am in
 
 __**Actions**:__
 • ``p;hi``: Say hi to me! 
@@ -1381,7 +1305,6 @@ __**Actions**:__
 • ``p;balance <chemical reaction>``: Balances a given chemical reaction.
 • ``p;structure <chemical compound>``: Returns the structure of a given chemical compound.
 • ``p;serverinfo``: Sends information about the Discord server. Type ``p;info pserverinfo`` for detailed information. 
-• ``p;find_time``: Information to be added
 • ``p;joke``: Says a random (perhaps corny) joke
 • ``p;choose``: Makes and returns a random choice from a list of choices. Type ``p;info choose`` for detailed description. 
 
@@ -1395,7 +1318,6 @@ __**Math**:__
 • ``p;gcd x y``: Finds the greatest common divisor between the two given numbers. 
 • ``p;pi n``: Sends the first ``n`` digits of pi.
 • ``p;solve f(x)``: Finds the solution to a function ``f(x)``. Type the command ``p;info solve`` for more information!  
-• ``p;plot f(x)``: Returns the graph of a given function. For detailed information on useage type ``p;info pmathgraph``
 • ``p;factorize n``: Returns the prime factorization of a given number ``n``
 
 __**Games**:__
@@ -1414,9 +1336,6 @@ __**Games**:__
             "https://cdn.discordapp.com/avatars/978663279926870046/b43a03b91e449bfeb318823d64c8b7fc.png?size=4096"
         )
         await message.channel.send(embed=embed)
-
-
-#PRE-DEFINED SETS OF WORDS. THE MAIN PURPOSE OF THESE IS TO DETECT THEM IN A USER MESSAGE AND OUTPUT A RELEVANT RESPONSE. 
 
 embed_footers = [
     'Thanks for using pixel :)',
@@ -1878,8 +1797,6 @@ dare_questions_only = [
 ]
 
 list_eight_ball = ["Yes.", "No.", "Maybe.", "I am not sure."]
-
-ignore_list = ['837011037894737951']
 
 keep_alive()
 TOKEN = os.environ.get("SECRET")
